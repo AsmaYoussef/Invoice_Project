@@ -1,0 +1,12 @@
+{
+  "document": {
+    "type": "Document",
+    "source_file": "C:\\Users\\ALIENWARE\\Desktop\\asma-roua-pfe\\asma-data\\pharmasud medis.pdf",
+    "total_pages": 3
+  },
+  "line_items": [],
+  "debug": {
+    "bootstrap": true,
+    "text_sample_length": 0
+  }
+}

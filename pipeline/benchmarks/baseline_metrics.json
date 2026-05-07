@@ -1,0 +1,11 @@
+{
+  "cases": {},
+  "aggregate": {
+    "field_accuracy": 0.0,
+    "line_item_accuracy": 0.0,
+    "placement_accuracy": 0.0,
+    "field_total": 0,
+    "line_item_total": 0,
+    "placement_total": 0
+  }
+}

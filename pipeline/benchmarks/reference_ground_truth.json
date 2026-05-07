@@ -1,0 +1,28 @@
+{
+  "cases": [
+    {
+      "id": "avenir_medis",
+      "source_file": "C:/Users/ALIENWARE/Desktop/asma-roua-pfe/asma-data/avenir medis.pdf",
+      "document": {},
+      "line_items": []
+    },
+    {
+      "id": "modele_proforma",
+      "source_file": "C:/Users/ALIENWARE/Desktop/asma-roua-pfe/asma-data/MODELE PROFORMA.pdf",
+      "document": {},
+      "line_items": []
+    },
+    {
+      "id": "omnipharmmedis",
+      "source_file": "C:/Users/ALIENWARE/Desktop/asma-roua-pfe/asma-data/omnipharmmedis.pdf",
+      "document": {},
+      "line_items": []
+    },
+    {
+      "id": "pharmasud_medis",
+      "source_file": "C:/Users/ALIENWARE/Desktop/asma-roua-pfe/asma-data/pharmasud medis.pdf",
+      "document": {},
+      "line_items": []
+    }
+  ]
+}

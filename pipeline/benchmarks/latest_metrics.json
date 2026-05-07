@@ -1,0 +1,63 @@
+{
+  "cases": {
+    "avenir_medis": {
+      "field_accuracy": 0.0,
+      "line_item_accuracy": 0.0,
+      "placement_accuracy": 0.0,
+      "field_total": 0,
+      "line_item_total": 0,
+      "placement_total": 0,
+      "quantite_empty_rate": 0.0,
+      "code_article_empty_rate": 0.0,
+      "designation_polluted_rate": 0.0,
+      "mismatches": []
+    },
+    "modele_proforma": {
+      "field_accuracy": 0.0,
+      "line_item_accuracy": 0.0,
+      "placement_accuracy": 0.0,
+      "field_total": 0,
+      "line_item_total": 0,
+      "placement_total": 0,
+      "quantite_empty_rate": 0.0,
+      "code_article_empty_rate": 0.0,
+      "designation_polluted_rate": 0.0,
+      "mismatches": []
+    },
+    "omnipharmmedis": {
+      "field_accuracy": 0.0,
+      "line_item_accuracy": 0.0,
+      "placement_accuracy": 0.0,
+      "field_total": 0,
+      "line_item_total": 0,
+      "placement_total": 0,
+      "quantite_empty_rate": 0.0,
+      "code_article_empty_rate": 0.0,
+      "designation_polluted_rate": 0.0,
+      "mismatches": []
+    },
+    "pharmasud_medis": {
+      "field_accuracy": 0.0,
+      "line_item_accuracy": 0.0,
+      "placement_accuracy": 0.0,
+      "field_total": 0,
+      "line_item_total": 0,
+      "placement_total": 0,
+      "quantite_empty_rate": 0.0,
+      "code_article_empty_rate": 0.0,
+      "designation_polluted_rate": 0.0,
+      "mismatches": []
+    }
+  },
+  "aggregate": {
+    "field_accuracy": 0.0,
+    "line_item_accuracy": 0.0,
+    "placement_accuracy": 0.0,
+    "field_total": 0,
+    "line_item_total": 0,
+    "placement_total": 0,
+    "quantite_empty_rate": 0.0,
+    "code_article_empty_rate": 0.0,
+    "designation_polluted_rate": 0.0
+  }
+}

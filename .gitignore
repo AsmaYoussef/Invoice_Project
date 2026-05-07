@@ -1,0 +1,20 @@
+# The specific Windows folders clogging your Git
+Lib/
+Scripts/
+Include/
+pyvenv.cfg
+
+# Other common environment names
+venv/
+.venv/
+env/
+
+# Python cache and temporary files
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Database and data (to keep it clean)
+*.pdf
+*.sqlite3
+.env

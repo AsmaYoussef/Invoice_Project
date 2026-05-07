@@ -1,0 +1,39 @@
+{
+  "files": {
+    "C:\\Users\\ALIENWARE\\Desktop\\asma-roua-pfe\\asma-data\\json files\\MODELE PROFORMA_data.json": {
+      "rows": 110,
+      "quantite_empty_rate": 0.6818,
+      "code_article_empty_rate": 0.3091,
+      "date_empty_rate": 1.0,
+      "designation_polluted_rate": 0.0
+    },
+    "C:\\Users\\ALIENWARE\\Desktop\\asma-roua-pfe\\asma-data\\json files\\avenir medis_data.json": {
+      "rows": 37,
+      "quantite_empty_rate": 0.9189,
+      "code_article_empty_rate": 1.0,
+      "date_empty_rate": 1.0,
+      "designation_polluted_rate": 0.0
+    },
+    "C:\\Users\\ALIENWARE\\Desktop\\asma-roua-pfe\\asma-data\\json files\\omnipharmmedis_data.json": {
+      "rows": 92,
+      "quantite_empty_rate": 0.9348,
+      "code_article_empty_rate": 1.0,
+      "date_empty_rate": 1.0,
+      "designation_polluted_rate": 0.0
+    },
+    "C:\\Users\\ALIENWARE\\Desktop\\asma-roua-pfe\\asma-data\\json files\\pharmasud medis_data.json": {
+      "rows": 65,
+      "quantite_empty_rate": 0.7692,
+      "code_article_empty_rate": 1.0,
+      "date_empty_rate": 1.0,
+      "designation_polluted_rate": 0.2462
+    }
+  },
+  "aggregate": {
+    "rows": 304,
+    "quantite_empty_rate": 0.8059,
+    "code_article_empty_rate": 0.75,
+    "date_empty_rate": 1.0,
+    "designation_polluted_rate": 0.0526
+  }
+}
