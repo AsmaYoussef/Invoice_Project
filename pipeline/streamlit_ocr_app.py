@@ -107,62 +107,63 @@ except Exception:
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-# ═══════════════════════════════════════════════════════════════
-# PAGE CONFIG
-# ═══════════════════════════════════════════════════════════════
-st.set_page_config(page_title="Invoice OCR Pipeline", page_icon="🔬",
-                   layout="wide", initial_sidebar_state="expanded")
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700&display=swap');
-html,body,[class*="css"]{font-family:'Syne',sans-serif;}
-code,.stCode,pre{font-family:'JetBrains Mono',monospace!important;}
-.stApp{background:#0f1117;color:#e8e8e2;}
-h1{font-family:'Syne';font-weight:700;letter-spacing:-1px;color:#f0f0ea;}
-h2,h3{font-family:'Syne';font-weight:600;color:#d4d4ce;}
-.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
-.metric-card{background:#1a1d26;border:1px solid #2a2d3a;border-radius:8px;padding:14px 16px 12px;position:relative;min-height:72px;}
-.addr-card{grid-column:1/-1;}
-.metric-label{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
-.metric-value{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7ee8a2;word-break:break-word;}
-.metric-value.addr-val{color:#7ec8e8;font-size:12px;}
-.metric-value.warn-val{color:#e8c87e;}
-.metric-value.empty-val{color:#333849;font-style:italic;}
-.conf-badge{position:absolute;top:10px;right:10px;font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 6px;border-radius:6px;font-weight:600;}
-.cb-high{background:#1a3a2a;color:#7ee8a2;border:1px solid #2a5a3a;}
-.cb-medium{background:#3a3a1a;color:#e8e87e;border:1px solid #5a5a2a;}
-.cb-low{background:#3a1a1a;color:#e87e7e;border:1px solid #5a2a2a;}
-.conf-hint{font-size:11px;color:#445;margin-bottom:12px;font-family:'JetBrains Mono';}
-.tag-bc{background:#1a3a2a;color:#7ee8a2;padding:2px 10px;border-radius:12px;font-size:11px;border:1px solid #2a5a3a;}
-.tag-proforma{background:#1a2a3a;color:#7ec8e8;padding:2px 10px;border-radius:12px;font-size:11px;border:1px solid #2a4a5a;}
-.tag-facture{background:#3a2a1a;color:#e8c87e;padding:2px 10px;border-radius:12px;font-size:11px;border:1px solid #5a4a2a;}
-.tag-stat{background:#2a1a3a;color:#c87ee8;padding:2px 10px;border-radius:12px;font-size:11px;border:1px solid #4a2a5a;}
-div[data-testid="stSidebar"]{background:#13151f;border-right:1px solid #1e2130;}
-.stButton>button{background:#7ee8a2;color:#0f1117;border:none;font-family:'Syne';font-weight:700;letter-spacing:0.5px;padding:10px 28px;border-radius:6px;width:100%;transition:all 0.2s;}
-.stButton>button:hover{background:#a0f0b8;transform:translateY(-1px);}
-.raw-text{background:#1a1d26;border:1px solid #2a2d3a;border-radius:8px;padding:16px;font-family:'JetBrains Mono';font-size:11px;color:#b0b0a8;max-height:400px;overflow-y:auto;white-space:pre-wrap;}
-.table-container{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:12px;font-family:'JetBrains Mono';}
-th{background:#1e2130;color:#7ee8a2;padding:8px 12px;text-align:left;border-bottom:1px solid #2a2d3a;font-weight:600;}
-td{padding:7px 12px;border-bottom:1px solid #1e2130;color:#c8c8c2;vertical-align:top;}
-tr:hover td{background:#1a1d26;}
-.page-label{font-family:'Syne';font-size:12px;color:#555;text-transform:uppercase;letter-spacing:1px;margin:12px 0 4px 0;}
-.warn-box{background:#2a1f0a;border:1px solid #5a3a0a;border-radius:8px;padding:10px 16px;margin:8px 0;font-size:12px;color:#e8c87e;}
-.warn-box ul{margin:4px 0 0 16px;padding:0;}
-.pl-wrap{background:#0d0f17;border:1px solid #1e2130;border-radius:10px;padding:14px 16px;margin-bottom:12px;}
-.pl-title{font-family:'Syne';font-size:11px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;}
-.pl-step{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid #141720;}
-.pl-step:last-child{border-bottom:none;}
-.pl-icon{font-size:13px;flex-shrink:0;width:18px;text-align:center;margin-top:1px;}
-.pl-info{flex:1;min-width:0;}
-.pl-name{font-family:'Syne';font-size:12px;}
-.pl-detail{font-family:'JetBrains Mono';font-size:10px;color:#445;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.pl-time{font-family:'JetBrains Mono';font-size:10px;color:#445;flex-shrink:0;padding-left:8px;align-self:center;}
-.s-pending .pl-name{color:#383c50;}.s-running .pl-name{color:#7ee8a2;}
-.s-done .pl-name{color:#c8c8c2;}.s-skip .pl-name{color:#333849;font-style:italic;}
-.s-warn .pl-name{color:#e8c87e;}
-</style>
-""", unsafe_allow_html=True)
+if __name__ == '__main__':
+    # ═══════════════════════════════════════════════════════════════
+    # PAGE CONFIG
+    # ═══════════════════════════════════════════════════════════════
+    st.set_page_config(page_title="Invoice OCR Pipeline", page_icon="🔬",
+                       layout="wide", initial_sidebar_state="expanded")
+    st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700&display=swap');
+    html,body,[class*="css"]{font-family:'Syne',sans-serif;}
+    code,.stCode,pre{font-family:'JetBrains Mono',monospace!important;}
+    .stApp{background:#0f1117;color:#e8e8e2;}
+    h1{font-family:'Syne';font-weight:700;letter-spacing:-1px;color:#f0f0ea;}
+    h2,h3{font-family:'Syne';font-weight:600;color:#d4d4ce;}
+    .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+    .metric-card{background:#1a1d26;border:1px solid #2a2d3a;border-radius:8px;padding:14px 16px 12px;position:relative;min-height:72px;}
+    .addr-card{grid-column:1/-1;}
+    .metric-label{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+    .metric-value{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7ee8a2;word-break:break-word;}
+    .metric-value.addr-val{color:#7ec8e8;font-size:12px;}
+    .metric-value.warn-val{color:#e8c87e;}
+    .metric-value.empty-val{color:#333849;font-style:italic;}
+    .conf-badge{position:absolute;top:10px;right:10px;font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 6px;border-radius:6px;font-weight:600;}
+    .cb-high{background:#1a3a2a;color:#7ee8a2;border:1px solid #2a5a3a;}
+    .cb-medium{background:#3a3a1a;color:#e8e87e;border:1px solid #5a5a2a;}
+    .cb-low{background:#3a1a1a;color:#e87e7e;border:1px solid #5a2a2a;}
+    .conf-hint{font-size:11px;color:#445;margin-bottom:12px;font-family:'JetBrains Mono';}
+    .tag-bc{background:#1a3a2a;color:#7ee8a2;padding:2px 10px;border-radius:12px;font-size:11px;border:1px solid #2a5a3a;}
+    .tag-proforma{background:#1a2a3a;color:#7ec8e8;padding:2px 10px;border-radius:12px;font-size:11px;border:1px solid #2a4a5a;}
+    .tag-facture{background:#3a2a1a;color:#e8c87e;padding:2px 10px;border-radius:12px;font-size:11px;border:1px solid #5a4a2a;}
+    .tag-stat{background:#2a1a3a;color:#c87ee8;padding:2px 10px;border-radius:12px;font-size:11px;border:1px solid #4a2a5a;}
+    div[data-testid="stSidebar"]{background:#13151f;border-right:1px solid #1e2130;}
+    .stButton>button{background:#7ee8a2;color:#0f1117;border:none;font-family:'Syne';font-weight:700;letter-spacing:0.5px;padding:10px 28px;border-radius:6px;width:100%;transition:all 0.2s;}
+    .stButton>button:hover{background:#a0f0b8;transform:translateY(-1px);}
+    .raw-text{background:#1a1d26;border:1px solid #2a2d3a;border-radius:8px;padding:16px;font-family:'JetBrains Mono';font-size:11px;color:#b0b0a8;max-height:400px;overflow-y:auto;white-space:pre-wrap;}
+    .table-container{overflow-x:auto;}
+    table{width:100%;border-collapse:collapse;font-size:12px;font-family:'JetBrains Mono';}
+    th{background:#1e2130;color:#7ee8a2;padding:8px 12px;text-align:left;border-bottom:1px solid #2a2d3a;font-weight:600;}
+    td{padding:7px 12px;border-bottom:1px solid #1e2130;color:#c8c8c2;vertical-align:top;}
+    tr:hover td{background:#1a1d26;}
+    .page-label{font-family:'Syne';font-size:12px;color:#555;text-transform:uppercase;letter-spacing:1px;margin:12px 0 4px 0;}
+    .warn-box{background:#2a1f0a;border:1px solid #5a3a0a;border-radius:8px;padding:10px 16px;margin:8px 0;font-size:12px;color:#e8c87e;}
+    .warn-box ul{margin:4px 0 0 16px;padding:0;}
+    .pl-wrap{background:#0d0f17;border:1px solid #1e2130;border-radius:10px;padding:14px 16px;margin-bottom:12px;}
+    .pl-title{font-family:'Syne';font-size:11px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;}
+    .pl-step{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid #141720;}
+    .pl-step:last-child{border-bottom:none;}
+    .pl-icon{font-size:13px;flex-shrink:0;width:18px;text-align:center;margin-top:1px;}
+    .pl-info{flex:1;min-width:0;}
+    .pl-name{font-family:'Syne';font-size:12px;}
+    .pl-detail{font-family:'JetBrains Mono';font-size:10px;color:#445;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .pl-time{font-family:'JetBrains Mono';font-size:10px;color:#445;flex-shrink:0;padding-left:8px;align-self:center;}
+    .s-pending .pl-name{color:#383c50;}.s-running .pl-name{color:#7ee8a2;}
+    .s-done .pl-name{color:#c8c8c2;}.s-skip .pl-name{color:#333849;font-style:italic;}
+    .s-warn .pl-name{color:#e8c87e;}
+    </style>
+    """, unsafe_allow_html=True)
 
 # ═══════════════════════════════════════════════════════════════
 # PIPELINE LOG
@@ -1288,6 +1289,313 @@ def pdf_page_to_image(pdf_path,page_index,dpi=200):
     img=np.frombuffer(pix.samples,dtype=np.uint8).reshape(pix.height,pix.width,pix.n)
     return cv2.cvtColor(img,cv2.COLOR_RGB2BGR if pix.n==3 else cv2.COLOR_RGBA2BGR)
 
+def extract_invoice_from_file(
+    file_path,
+    *,
+    original_filename=None,
+    use_fix_rotation=True,
+    use_erase_color=True,
+    use_remove_lines=True,
+    use_keep_mask=True,
+    dpi_choice=200,
+    split_zones=True,
+    show_tables=True,
+    show_products=True,
+    use_nlp=True,
+    include_debug_images=False,
+):
+    """
+    Run the full OCR / extraction pipeline on a PDF or image path.
+    Safe to import from FastAPI (no Streamlit UI). Mirrors sidebar defaults.
+    """
+    path = Path(file_path)
+    display_name = original_filename or path.name
+    is_pdf = path.suffix.lower() == ".pdf"
+    nlp_model, nlp_model_name = load_nlp()
+    tmp_path = str(path.resolve())
+
+    if is_pdf:
+        is_native = detect_pdf_native(tmp_path)
+        doc_fitz = fitz.open(tmp_path)
+        total_pages = len(doc_fitz)
+        doc_fitz.close()
+    else:
+        is_native = False
+        total_pages = 1
+
+    all_header_texts = []
+    all_body_texts = []
+    all_full_texts = []
+    all_orig_imgs = []
+    all_clean_imgs = []
+    all_header_clean_imgs = []
+    all_header_layout_lines = []
+    all_product_lines = []
+    seen_line_keys = set()
+
+    with open(tmp_path, "rb") as _bf:
+        file_bytes = _bf.read()
+
+    for page_i in range(total_pages):
+        if is_pdf:
+            img_bgr = pdf_page_to_image(tmp_path, page_i, dpi=dpi_choice)
+        else:
+            fb = np.frombuffer(file_bytes, dtype=np.uint8)
+            img_bgr = cv2.imdecode(fb, 1)
+            if img_bgr is None:
+                raise ValueError(f"Could not decode image file: {display_name}")
+
+        if include_debug_images:
+            all_orig_imgs.append(cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB))
+
+        work = img_bgr.copy()
+        if use_fix_rotation:
+            work = fix_rotation(work)
+        if use_erase_color:
+            work = erase_colored_ink(work)
+        gray = cv2.cvtColor(work, cv2.COLOR_BGR2GRAY)
+        binary = binarize(gray)
+        header_binary = binary.copy()
+        header_clean = enhance_kept_text(header_binary, build_keep_mask(header_binary)) if use_keep_mask else header_binary
+        if use_remove_lines:
+            binary = remove_long_lines(binary)
+        clean = enhance_kept_text(binary, build_keep_mask(binary)) if use_keep_mask else binary
+
+        if include_debug_images:
+            all_clean_imgs.append(clean)
+            all_header_clean_imgs.append(header_clean)
+
+        if split_zones:
+            h_text_soft = clean_ocr_text(ocr_header_zone(header_clean))
+            h_text_std = clean_ocr_text(ocr_header_zone(clean))
+            h_text = clean_ocr_text((h_text_soft + "\n" + h_text_std).strip())
+            if page_i == 0:
+                all_header_layout_lines = ocr_header_layout_lines(header_clean)
+            b_text = clean_ocr_text(ocr_body_zone(clean))
+            f_text = clean_ocr_text((h_text + "\n" + b_text).strip())
+        else:
+            f_text = clean_ocr_text(ocr_full_page(clean))
+            h_text = b_text = f_text
+
+        all_header_texts.append(h_text)
+        all_body_texts.append(b_text)
+        all_full_texts.append(f_text)
+
+        if show_products:
+            page_doc_type = detect_doc_type((h_text or "") + "\n" + (b_text or ""))
+            page_profile_hints = get_profile_hints(
+                source_file=display_name,
+                doc_type=page_doc_type,
+                header_text=h_text,
+                full_text=b_text,
+            )
+            page_items, _ = extract_product_lines(b_text, doc_type=page_doc_type, profile_hints=page_profile_hints)
+            for item in page_items:
+                code = item.get("code", "")
+                probe = dict(item)
+                probe["_row_txt"] = f"p{page_i}|{code}|{str(item.get('designation', ''))[:100]}"
+                lk = legacy_line_merge_key(probe)
+                if code and lk not in seen_line_keys:
+                    seen_line_keys.add(lk)
+                    all_product_lines.append(item)
+                elif not code:
+                    all_product_lines.append(item)
+
+    combined_full = "\n\n".join(all_full_texts)
+    combined_header = "\n\n".join(all_header_texts)
+    predicted_doc_type = detect_doc_type(combined_full)
+    profile_hints = get_profile_hints(
+        source_file=display_name,
+        doc_type=predicted_doc_type,
+        header_text=combined_header,
+        full_text=combined_full,
+    )
+    plumber_tables = []
+    table_extraction_audit = {
+        "detected_headers": [],
+        "column_map": {},
+        "row_rejections": [],
+        "row_alignment": [],
+        "structured_item_count": 0,
+        "detected_schema": set(),
+        "strategy": "fallback_regex_only",
+        "profile_hint": profile_hints.get("profile_key", ""),
+    }
+    if is_pdf and is_native and show_tables:
+        plumber_tables = extract_tables_pdfplumber(tmp_path)
+    if plumber_tables:
+        structured_items, table_extraction_audit = extract_line_items_from_tables(
+            plumber_tables, doc_type=predicted_doc_type, profile_hints=profile_hints
+        )
+        if structured_items:
+            all_product_lines = merge_line_items(structured_items, all_product_lines)
+            table_extraction_audit["strategy"] = "structured_primary"
+
+    regex_info, extraction_trace = extract_info(combined_full, combined_header, all_header_layout_lines)
+    regex_info = _extract_totals(all_full_texts, regex_info, predicted_doc_type)
+    confidence = {}
+    warnings_nlp = []
+    extracted_info = regex_info
+    if use_nlp:
+        extracted_info, confidence, warnings_nlp = nlp_enrich(regex_info, combined_full, combined_header, nlp_model)
+    else:
+        pass
+
+    ambiguous_doc_fields = [k for k, v in confidence.items() if isinstance(v, (int, float)) and v < 0.55]
+    unresolved_line_items = []
+    for item in all_product_lines:
+        if not item.get("code"):
+            continue
+        if not item.get("quantite") and re.search(
+            r"\d{2,5}|[0-9OIlS]{2}[\/\-.][0-9OIlS]{2}[\/\-.][0-9OIlS]{4}",
+            str(item.get("designation", "")),
+        ):
+            unresolved_line_items.append(
+                {"code": item.get("code"), "designation": item.get("designation", ""), "missing": ["quantite", "date_peremption"]}
+            )
+
+    should_use_llm = bool(ask_structured_json and (ambiguous_doc_fields or unresolved_line_items))
+    if should_use_llm:
+        llm_validation = resolve_ambiguous_fields(
+            ask_json_fn=ask_structured_json,
+            source_text=combined_full,
+            candidate_payload={
+                "document_type": extracted_info.get("type", ""),
+                "known_fields": extracted_info,
+                "field_confidence": confidence,
+                "profile_hint": profile_hints,
+                "ambiguous_fields": ambiguous_doc_fields,
+                "unresolved_line_items": unresolved_line_items[:120],
+            },
+        )
+    else:
+        llm_validation = {"ok": False, "status": "skipped_no_low_confidence_targets", "resolved": {}, "accepted_line_item_hints": []}
+
+    if llm_validation.get("ok"):
+        for field, payload in llm_validation.get("resolved", {}).items():
+            val = str(payload.get("value", "")).strip()
+            if val:
+                extracted_info[field] = val
+                confidence[field] = max(float(confidence.get(field, 0.0)), float(payload.get("confidence", 0.0)))
+
+    detected_schema = table_extraction_audit.get("detected_schema", set())
+    all_product_lines = normalize_line_items_for_json(all_product_lines, detected_schema=detected_schema if detected_schema else None)
+
+    if llm_validation.get("accepted_line_item_hints"):
+        by_code = {str(i.get("code", "")).upper(): i for i in all_product_lines if i.get("code")}
+        for hint in llm_validation.get("accepted_line_item_hints", []):
+            code = str(hint.get("code", "")).upper()
+            field = str(hint.get("field", "")).strip()
+            if code not in by_code or not field:
+                continue
+            item = by_code[code]
+            if str(item.get(field, "")).strip():
+                continue
+            coerced = _coerce_line_item_value(field, hint.get("value", ""))
+            if coerced in ("", None):
+                continue
+            if field == "quantite" and not _is_qty_plausible(
+                coerced,
+                designation=item.get("designation", ""),
+                doc_type=predicted_doc_type,
+                profile_key=profile_hints.get("profile_key", ""),
+            ):
+                continue
+            item[field] = coerced
+            src = item.get("_field_source", {})
+            conf = item.get("_field_confidence", {})
+            src[field] = "ai_resolver"
+            conf[field] = float(hint.get("confidence", 0.0))
+            item["_field_source"] = src
+            item["_field_confidence"] = conf
+
+    document_payload = build_document_payload(extracted_info)
+    invoice_family = detect_invoice_family(display_name, combined_header, combined_full, doc_type=predicted_doc_type)
+    combined_body = "\n".join(all_body_texts) if all_body_texts else combined_full
+    v2_payload = build_v2_payload(document_payload, combined_body, invoice_family)
+    v2_gaps = collect_v2_gap_line_targets(invoice_family, v2_payload.get("line_items", []))
+    v2_llm_validation = {"ok": False, "status": "skipped_no_v2_gaps", "accepted_line_item_hints": []}
+    if ask_structured_json and v2_gaps:
+        v2_llm_validation = resolve_ambiguous_fields(
+            ask_json_fn=ask_structured_json,
+            source_text=combined_full,
+            candidate_payload={"task": "v2_gap_fill", "invoice_family": invoice_family, "v2_gap_lines": v2_gaps},
+        )
+    if v2_llm_validation.get("ok"):
+        v2_payload = merge_v2_resolver_hints(v2_payload, v2_llm_validation.get("accepted_line_item_hints", []), combined_full)
+
+    promotion_decisions = {
+        "fields": {},
+        "line_items": [],
+        "llm_status": llm_validation.get("status", "unknown"),
+        "invoice_family": invoice_family,
+    }
+
+    clean_payload = v2_payload
+    audit_payload = build_audit_json(
+        confidence,
+        warnings_nlp,
+        extraction_trace,
+        table_extraction_audit,
+        {},
+        llm_validation,
+        promotion_decisions,
+        nlp_model_name,
+        v2_llm_validation=v2_llm_validation,
+    )
+
+    db_result = {
+        "header": {
+            "doc_number": document_payload.get("numero") or document_payload.get("doc_number"),
+            "doc_date": document_payload.get("date") or document_payload.get("doc_date"),
+        },
+        "totals": {
+            "total_ht": document_payload.get("total_ht"),
+            "total_tva": document_payload.get("tva"),
+            "total_ttc": document_payload.get("total_ttc"),
+        },
+        "line_items": [
+            {
+                "designation": (li.get("designation") or li.get("raw_label") or ""),
+                "quantity": li.get("quantite"),
+                "unit_price_ht": (li.get("prix_unitaire") or li.get("prix_unitaire_ht") or li.get("unit_price_ht")),
+            }
+            for li in (all_product_lines or [])
+        ],
+    }
+
+    out = {
+        **db_result,
+        "v2_export": clean_payload,
+        "audit_payload": audit_payload,
+        "document_payload": document_payload,
+        "confidence": confidence,
+        "warnings_nlp": warnings_nlp,
+        "combined_full": combined_full,
+        "extraction_trace": extraction_trace,
+        "plumber_tables": plumber_tables,
+        "all_product_lines": all_product_lines,
+        "detected_schema": detected_schema,
+        "total_pages": total_pages,
+        "is_pdf": is_pdf,
+        "is_native": is_native,
+        "predicted_doc_type": predicted_doc_type,
+        "invoice_family": invoice_family,
+        "v2_payload": v2_payload,
+        "nlp_model_name": nlp_model_name,
+        "profile_hints": profile_hints,
+        "table_extraction_audit": table_extraction_audit,
+        "llm_validation": llm_validation,
+        "v2_llm_validation": v2_llm_validation,
+    }
+    if include_debug_images:
+        out["all_orig_imgs"] = all_orig_imgs
+        out["all_clean_imgs"] = all_clean_imgs
+        out["all_header_texts"] = all_header_texts
+        out["all_body_texts"] = all_body_texts
+        out["all_full_texts"] = all_full_texts
+    return out
+
 # ═══════════════════════════════════════════════════════════════
 # UI HELPERS
 # ═══════════════════════════════════════════════════════════════
@@ -1338,352 +1646,253 @@ def render_product_table(items,detected_schema=None,doc_type=""):
 # ═══════════════════════════════════════════════════════════════
 # SIDEBAR
 # ═══════════════════════════════════════════════════════════════
-with st.sidebar:
-    st.markdown("## ⚙️ Options"); st.markdown("---")
-    st.markdown("**Preprocessing**")
-    use_fix_rotation=st.checkbox("Fix Rotation",value=True)
-    use_erase_color=st.checkbox("Erase Colored Ink",value=True)
-    use_remove_lines=st.checkbox("Remove Borders",value=True)
-    use_keep_mask=st.checkbox("Blob Filter (CV)",value=True)
-    st.markdown("---"); st.markdown("**OCR**")
-    dpi_choice=st.radio("DPI",options=[150,200,300],index=1,help="200 ≈ 40% faster than 300")
-    split_zones=st.checkbox("Split Header / Body OCR",value=True)
-    show_raw=st.checkbox("Show Raw OCR Text",value=False)
-    st.markdown("---"); st.markdown("**NLP**")
-    use_nlp=st.checkbox("Enable NLP Enrichment",value=True)
-    show_conf=st.checkbox("Show Confidence Scores",value=False,help="🟢≥80% reliable · 🟡55-79% · 🔴<55% likely wrong")
-    show_warnings=st.checkbox("Show Validation Warnings",value=True)
-    show_trace=st.checkbox("Show Extraction Trace",value=False)
-    st.markdown("---"); st.markdown("**Output**")
-    show_tables=st.checkbox("Show pdfplumber Tables",value=True)
-    show_products=st.checkbox("Show Product Lines",value=True)
-    show_json=st.checkbox("Show Clean JSON Preview",value=False)
+if __name__ == '__main__':
+    with st.sidebar:
+        st.markdown("## ⚙️ Options"); st.markdown("---")
+        st.markdown("**Preprocessing**")
+        use_fix_rotation=st.checkbox("Fix Rotation",value=True)
+        use_erase_color=st.checkbox("Erase Colored Ink",value=True)
+        use_remove_lines=st.checkbox("Remove Borders",value=True)
+        use_keep_mask=st.checkbox("Blob Filter (CV)",value=True)
+        st.markdown("---"); st.markdown("**OCR**")
+        dpi_choice=st.radio("DPI",options=[150,200,300],index=1,help="200 ≈ 40% faster than 300")
+        split_zones=st.checkbox("Split Header / Body OCR",value=True)
+        show_raw=st.checkbox("Show Raw OCR Text",value=False)
+        st.markdown("---"); st.markdown("**NLP**")
+        use_nlp=st.checkbox("Enable NLP Enrichment",value=True)
+        show_conf=st.checkbox("Show Confidence Scores",value=False,help="🟢≥80% reliable · 🟡55-79% · 🔴<55% likely wrong")
+        show_warnings=st.checkbox("Show Validation Warnings",value=True)
+        show_trace=st.checkbox("Show Extraction Trace",value=False)
+        st.markdown("---"); st.markdown("**Output**")
+        show_tables=st.checkbox("Show pdfplumber Tables",value=True)
+        show_products=st.checkbox("Show Product Lines",value=True)
+        show_json=st.checkbox("Show Clean JSON Preview",value=False)
 
-# ═══════════════════════════════════════════════════════════════
-# MAIN
-# ═══════════════════════════════════════════════════════════════
-st.markdown("# 🔬 Invoice OCR Pipeline")
-st.markdown("*Preprocessing → OCR → Regex → 🧠 NLP → Structured output*")
-st.markdown("---")
-
-nlp_model,nlp_model_name=load_nlp()
-with st.sidebar:
-    st.markdown("---"); st.markdown("**NLP Model**")
-    mc="#7ee8a2" if nlp_model_name!="blank_fr" else "#e8c87e"
-    st.markdown(f"<span style='font-family:JetBrains Mono;font-size:11px;color:{mc}'>{'✓' if nlp_model_name!='blank_fr' else '⚠'} {nlp_model_name}</span>",unsafe_allow_html=True)
-    if nlp_model_name=="blank_fr": st.caption("Install: `python -m spacy download fr_core_news_sm`")
-
-uploaded=st.file_uploader("Drop a PDF or image file",type=["pdf","png","jpg","jpeg"],label_visibility="collapsed")
-run_btn=st.button("▶  Run Pipeline",use_container_width=True)
-
-# Persist last extraction across reruns (button clicks)
-if "clean_payload" not in st.session_state:
-    st.session_state["clean_payload"] = None
-if "audit_payload" not in st.session_state:
-    st.session_state["audit_payload"] = None
-
-if not uploaded:
-    st.markdown("""<div style='text-align:center;padding:60px 0;color:#444;'><div style='font-size:48px;margin-bottom:16px'>📄</div><div style='font-size:14px'>Upload a PDF or image to begin</div><div style='font-size:11px;color:#333;margin-top:8px'>Supports: Bon de Commande · Proforma · Facture · Statistiques</div></div>""",unsafe_allow_html=True)
-
-if uploaded and run_btn:
-    _log_init(); _log_ph=st.empty(); _log_render(_log_ph)
-    is_pdf=uploaded.type=="application/pdf"
-    suffix=".pdf" if is_pdf else Path(uploaded.name).suffix
-    with tempfile.NamedTemporaryFile(delete=False,suffix=suffix) as tmp:
-        tmp.write(uploaded.read()); tmp_path=tmp.name
-    file_kb=round(len(uploaded.getvalue())/1024,1)
-    _log_set("load","done",f"{uploaded.name}  ({file_kb} KB)"); _log_render(_log_ph)
-    if is_pdf:
-        _log_set("detect","running","reading PDF…"); _log_render(_log_ph)
-        is_native=detect_pdf_native(tmp_path); doc_fitz=fitz.open(tmp_path); total_pages=len(doc_fitz)
-        _log_set("detect","done",f"{'Native' if is_native else 'Scanned'} PDF — {total_pages} page(s)"); _log_render(_log_ph)
-    else:
-        is_native=False; total_pages=1; _log_set("detect","done","Image file — 1 page"); _log_render(_log_ph)
-    if is_pdf:
-        c1,c2=st.columns([2,1])
-        with c1:
-            col="#7ee8a2" if is_native else "#e8c87e"
-            st.markdown(f"<div class='metric-card'><div class='metric-label'>PDF type</div><div class='metric-value' style='color:{col}'>{'📄 Native (digital)' if is_native else '📷 Scanned'}</div></div>",unsafe_allow_html=True)
-        with c2:
-            st.markdown(f"<div class='metric-card'><div class='metric-label'>Pages</div><div class='metric-value'>{total_pages}</div></div>",unsafe_allow_html=True)
+    # ═══════════════════════════════════════════════════════════════
+    # MAIN
+    # ═══════════════════════════════════════════════════════════════
+    st.markdown("# 🔬 Invoice OCR Pipeline")
+    st.markdown("*Preprocessing → OCR → Regex → 🧠 NLP → Structured output*")
     st.markdown("---")
-    all_header_texts=[]; all_body_texts=[]; all_full_texts=[]; all_clean_imgs=[]; all_orig_imgs=[]; all_header_clean_imgs=[]; all_header_layout_lines=[]; all_product_lines=[]; seen_line_keys=set()
-    prog=st.progress(0,text="Processing pages…")
-    for page_i in range(total_pages):
-        _log_set("preprocess","running",f"page {page_i+1}/{total_pages}  DPI={dpi_choice}"); _log_render(_log_ph); _pp_t0=_time.time()
-        if is_pdf: img_bgr=pdf_page_to_image(tmp_path,page_i,dpi=dpi_choice)
+
+    nlp_model,nlp_model_name=load_nlp()
+    with st.sidebar:
+        st.markdown("---"); st.markdown("**NLP Model**")
+        mc="#7ee8a2" if nlp_model_name!="blank_fr" else "#e8c87e"
+        st.markdown(f"<span style='font-family:JetBrains Mono;font-size:11px;color:{mc}'>{'✓' if nlp_model_name!='blank_fr' else '⚠'} {nlp_model_name}</span>",unsafe_allow_html=True)
+        if nlp_model_name=="blank_fr": st.caption("Install: `python -m spacy download fr_core_news_sm`")
+
+    uploaded=st.file_uploader("Drop a PDF or image file",type=["pdf","png","jpg","jpeg"],label_visibility="collapsed")
+    run_btn=st.button("▶  Run Pipeline",use_container_width=True)
+
+    # Persist last extraction across reruns (button clicks)
+    if "clean_payload" not in st.session_state:
+        st.session_state["clean_payload"] = None
+    if "audit_payload" not in st.session_state:
+        st.session_state["audit_payload"] = None
+
+    if not uploaded:
+        st.markdown("""<div style='text-align:center;padding:60px 0;color:#444;'><div style='font-size:48px;margin-bottom:16px'>📄</div><div style='font-size:14px'>Upload a PDF or image to begin</div><div style='font-size:11px;color:#333;margin-top:8px'>Supports: Bon de Commande · Proforma · Facture · Statistiques</div></div>""",unsafe_allow_html=True)
+
+    if uploaded and run_btn:
+        _log_init(); _log_ph=st.empty(); _log_render(_log_ph)
+        is_pdf=uploaded.type=="application/pdf"
+        suffix=".pdf" if is_pdf else Path(uploaded.name).suffix
+        with tempfile.NamedTemporaryFile(delete=False,suffix=suffix) as tmp:
+            tmp.write(uploaded.read()); tmp_path=tmp.name
+        file_kb=round(len(uploaded.getvalue())/1024,1)
+        _log_set("load","done",f"{uploaded.name}  ({file_kb} KB)"); _log_render(_log_ph)
+        if is_pdf:
+            _log_set("detect","running","reading PDF…"); _log_render(_log_ph)
         else:
-            fb=np.frombuffer(uploaded.getvalue(),dtype=np.uint8); img_bgr=cv2.imdecode(fb,1)
-        all_orig_imgs.append(cv2.cvtColor(img_bgr,cv2.COLOR_BGR2RGB))
-        work=img_bgr.copy()
-        if use_fix_rotation: work=fix_rotation(work)
-        if use_erase_color: work=erase_colored_ink(work)
-        gray=cv2.cvtColor(work,cv2.COLOR_BGR2GRAY); binary=binarize(gray)
-        header_binary=binary.copy()
-        header_clean=enhance_kept_text(header_binary,build_keep_mask(header_binary)) if use_keep_mask else header_binary
-        if use_remove_lines: binary=remove_long_lines(binary)
-        clean=enhance_kept_text(binary,build_keep_mask(binary)) if use_keep_mask else binary
-        all_clean_imgs.append(clean); all_header_clean_imgs.append(header_clean)
-        _log_set("preprocess","done",f"{total_pages} page(s) cleaned",t0=_pp_t0); _log_render(_log_ph)
-        _log_set("ocr","running",f"page {page_i+1}/{total_pages}  split={split_zones}"); _log_render(_log_ph); _ocr_t0=_time.time()
-        if split_zones:
-            h_text_soft=clean_ocr_text(ocr_header_zone(header_clean)); h_text_std=clean_ocr_text(ocr_header_zone(clean))
-            h_text=clean_ocr_text((h_text_soft+"\n"+h_text_std).strip())
-            if page_i==0: all_header_layout_lines=ocr_header_layout_lines(header_clean)
-            b_text=clean_ocr_text(ocr_body_zone(clean)); f_text=clean_ocr_text((h_text+"\n"+b_text).strip())
-        else:
-            f_text=clean_ocr_text(ocr_full_page(clean)); h_text=b_text=f_text
-        all_header_texts.append(h_text); all_body_texts.append(b_text); all_full_texts.append(f_text)
-        _log_set("ocr","done",f"{total_pages} page(s)  {len(f_text.split())} words",t0=_ocr_t0); _log_render(_log_ph)
-        _log_set("products","running",f"page {page_i+1}/{total_pages}"); _log_render(_log_ph)
-        if show_products:
-            page_doc_type=detect_doc_type((h_text or "")+"\n"+(b_text or ""))
-            page_profile_hints=get_profile_hints(source_file=uploaded.name,doc_type=page_doc_type,header_text=h_text,full_text=b_text)
-            page_items,_=extract_product_lines(b_text,doc_type=page_doc_type,profile_hints=page_profile_hints)
-            for item in page_items:
-                code=item.get("code","")
-                probe=dict(item)
-                probe["_row_txt"]=f"p{page_i}|{code}|{str(item.get('designation',''))[:100]}"
-                lk=legacy_line_merge_key(probe)
-                if code and lk not in seen_line_keys:
-                    seen_line_keys.add(lk)
-                    all_product_lines.append(item)
-                elif not code:
-                    all_product_lines.append(item)
-        _log_set("products","done",f"{len(all_product_lines)} item(s)"); _log_render(_log_ph)
-        prog.progress((page_i+1)/total_pages,text=f"Page {page_i+1}/{total_pages}…")
-    prog.empty()
-    combined_full="\n\n".join(all_full_texts); combined_header="\n\n".join(all_header_texts)
-    predicted_doc_type=detect_doc_type(combined_full)
-    profile_hints=get_profile_hints(source_file=uploaded.name,doc_type=predicted_doc_type,header_text=combined_header,full_text=combined_full)
-    plumber_tables=[]; table_extraction_audit={"detected_headers":[],"column_map":{},"row_rejections":[],"row_alignment":[],"structured_item_count":0,"detected_schema":set(),"strategy":"fallback_regex_only","profile_hint":profile_hints.get("profile_key","")}
-    if is_pdf and is_native and show_tables:
-        _log_set("pdfplumber","running","reading vector tables…"); _log_render(_log_ph); _pl_t0=_time.time()
-        with st.spinner("Extracting tables…"): plumber_tables=extract_tables_pdfplumber(tmp_path)
-        _log_set("pdfplumber","done",f"{len(plumber_tables)} table(s)",t0=_pl_t0); _log_render(_log_ph)
-    else:
-        reason=("scanned PDF" if(is_pdf and not is_native) else "image file" if not is_pdf else "disabled")
-        _log_set("pdfplumber","skip",reason); _log_render(_log_ph)
-    if plumber_tables:
-        structured_items,table_extraction_audit=extract_line_items_from_tables(plumber_tables,doc_type=predicted_doc_type,profile_hints=profile_hints)
-        if structured_items:
-            all_product_lines=merge_line_items(structured_items,all_product_lines)
-            table_extraction_audit["strategy"]="structured_primary"
-    _log_set("regex","running",f"{len(combined_full.split())} words"); _log_render(_log_ph); _rx_t0=_time.time()
-    regex_info,extraction_trace=extract_info(combined_full,combined_header,all_header_layout_lines)
-    regex_info=_extract_totals(all_full_texts,regex_info,predicted_doc_type)
-    _log_set("regex","done",f"type={regex_info.get('type','?')}  date={regex_info.get('date','—')}  HT={regex_info.get('total_ht','—')}  TTC={regex_info.get('total_ttc','—')}",t0=_rx_t0); _log_render(_log_ph)
-    confidence={}; warnings_nlp=[]; extracted_info=regex_info
-    if use_nlp:
-        _log_set("nlp","running",f"model={nlp_model_name}  NER·fuzzy·date…"); _log_render(_log_ph); _nlp_t0=_time.time()
-        extracted_info,confidence,warnings_nlp=nlp_enrich(regex_info,combined_full,combined_header,nlp_model)
-        filled=sum(1 for k in extracted_info if k not in regex_info); fixed=len([w for w in warnings_nlp if "corrected" in w])
-        status="warn" if warnings_nlp else "done"
-        _log_set("nlp",status,f"+{filled} filled  {fixed} corrected  {len(warnings_nlp)} warn",t0=_nlp_t0); _log_render(_log_ph)
-    else: _log_set("nlp","skip","disabled"); _log_render(_log_ph)
-    ambiguous_doc_fields=[k for k,v in confidence.items() if isinstance(v,(int,float)) and v<0.55]
-    unresolved_line_items=[]
-    for item in all_product_lines:
-        if not item.get("code"):
-            continue
-        if not item.get("quantite") and re.search(r'\d{2,5}|[0-9OIlS]{2}[\/\-.][0-9OIlS]{2}[\/\-.][0-9OIlS]{4}',str(item.get("designation",""))):
-            unresolved_line_items.append({"code":item.get("code"),"designation":item.get("designation",""),"missing":["quantite","date_peremption"]})
-    should_use_llm=bool(ask_structured_json and (ambiguous_doc_fields or unresolved_line_items))
-    if should_use_llm:
-        llm_validation=resolve_ambiguous_fields(
-            ask_json_fn=ask_structured_json,
-            source_text=combined_full,
-            candidate_payload={
-                "document_type": extracted_info.get("type",""),
-                "known_fields": extracted_info,
-                "field_confidence": confidence,
-                "profile_hint": profile_hints,
-                "ambiguous_fields": ambiguous_doc_fields,
-                "unresolved_line_items": unresolved_line_items[:120],
-            },
-        )
-    else:
-        llm_validation={"ok":False,"status":"skipped_no_low_confidence_targets","resolved":{},"accepted_line_item_hints":[]}
-    if llm_validation.get("ok"):
-        for field,payload in llm_validation.get("resolved",{}).items():
-            val=str(payload.get("value","")).strip()
-            if val:
-                extracted_info[field]=val
-                confidence[field]=max(float(confidence.get(field,0.0)), float(payload.get("confidence",0.0)))
-    detected_schema=table_extraction_audit.get("detected_schema",set())
-    all_product_lines=normalize_line_items_for_json(all_product_lines,detected_schema=detected_schema if detected_schema else None)
-    if llm_validation.get("accepted_line_item_hints"):
-        by_code={str(i.get("code","")).upper():i for i in all_product_lines if i.get("code")}
-        for hint in llm_validation.get("accepted_line_item_hints",[]):
-            code=str(hint.get("code","")).upper()
-            field=str(hint.get("field","")).strip()
-            if code not in by_code or not field:
-                continue
-            item=by_code[code]
-            if str(item.get(field,"")).strip():
-                continue
-            coerced=_coerce_line_item_value(field,hint.get("value",""))
-            if coerced in ("",None):
-                continue
-            if field=="quantite" and not _is_qty_plausible(coerced,designation=item.get("designation",""),doc_type=predicted_doc_type,profile_key=profile_hints.get("profile_key","")):
-                continue
-            item[field]=coerced
-            src=item.get("_field_source",{}); conf=item.get("_field_confidence",{})
-            src[field]="ai_resolver"
-            conf[field]=float(hint.get("confidence",0.0))
-            item["_field_source"]=src; item["_field_confidence"]=conf
-    document_payload=build_document_payload(extracted_info)
-    invoice_family=detect_invoice_family(uploaded.name,combined_header,combined_full,doc_type=predicted_doc_type)
-    combined_body="\n".join(all_body_texts) if all_body_texts else combined_full
-    v2_payload=build_v2_payload(document_payload,combined_body,invoice_family)
-    v2_gaps=collect_v2_gap_line_targets(invoice_family,v2_payload.get("line_items",[]))
-    v2_llm_validation={"ok":False,"status":"skipped_no_v2_gaps","accepted_line_item_hints":[]}
-    if ask_structured_json and v2_gaps:
-        v2_llm_validation=resolve_ambiguous_fields(
-            ask_json_fn=ask_structured_json,
-            source_text=combined_full,
-            candidate_payload={
-                "task":"v2_gap_fill",
-                "invoice_family":invoice_family,
-                "v2_gap_lines":v2_gaps,
-            },
-        )
-    if v2_llm_validation.get("ok"):
-        v2_payload=merge_v2_resolver_hints(v2_payload,v2_llm_validation.get("accepted_line_item_hints",[]),combined_full)
-    promotion_decisions={"fields":{},"line_items":[],"llm_status":llm_validation.get("status","unknown"),"invoice_family":invoice_family}
-    _log_set("done","done",f"{total_pages} page(s) · {len(all_product_lines)} items · {len(plumber_tables)} tables · {len(warnings_nlp)} NLP warn"); _log_render(_log_ph)
-
-    st.markdown("## 🖼️ Pages — Original & Cleaned")
-    for page_i,(orig,clean) in enumerate(zip(all_orig_imgs,all_clean_imgs)):
-        label=f"Page {page_i+1}/{total_pages}" if total_pages>1 else "Document"
-        st.markdown(f"<div class='page-label'>{label}</div>",unsafe_allow_html=True)
-        c1,c2=st.columns(2)
-        with c1:
-            st.markdown("<div style='font-family:JetBrains Mono;font-size:11px;color:#888;text-align:center;margin-bottom:4px'>📷 Original</div>",unsafe_allow_html=True)
-            st.image(orig,use_container_width=True)
-        with c2:
-            st.markdown("<div style='font-family:JetBrains Mono;font-size:11px;color:#7ee8a2;text-align:center;margin-bottom:4px'>✨ After Cleaning</div>",unsafe_allow_html=True)
-            st.image(clean,use_container_width=True)
-        if page_i<len(all_clean_imgs)-1: st.markdown("<hr style='border-color:#1e2130;margin:12px 0;'>",unsafe_allow_html=True)
-    st.markdown("---")
-
-    dtype=document_payload.get("type","Document")
-    tag_class={"Bon de Commande":"tag-bc","Proforma":"tag-proforma","Facture":"tag-facture"}.get(dtype,"tag-stat")
-    st.markdown(
-        f"<span class='{tag_class}'>{dtype}</span> <span style='color:#8ab4f8;font-size:12px'>v2 · {invoice_family}</span>",
-        unsafe_allow_html=True,
-    )
-    st.markdown("## 📋 Extracted Information")
-    if show_conf:
-        st.markdown("<div class='conf-hint'>🟢 ≥80% reliable &nbsp;·&nbsp; 🟡 55–79% double-check &nbsp;·&nbsp; 🔴 &lt;55% likely wrong</div>",unsafe_allow_html=True)
-    if show_warnings and warnings_nlp:
-        ih="".join(f"<li>{w}</li>" for w in warnings_nlp)
-        st.markdown(f"<div class='warn-box'>⚠ <strong>Validation warnings</strong><ul>{ih}</ul></div>",unsafe_allow_html=True)
-
-    fields_to_show=[("Type de document","type",document_payload.get("type","—")),("Document N°","numero",document_payload.get("numero","—")),("Date","date",document_payload.get("date","—")),("Fournisseur","fournisseur_nom",document_payload.get("fournisseur_nom","—")),("Supplier MF","supplier_mf",document_payload.get("supplier_mf","—")),("Client MF","client_mf",document_payload.get("client_mf","—")),("Téléphone","tel",document_payload.get("tel","—")),("Fax","fax",document_payload.get("fax","—")),("Email","email",document_payload.get("email","—")),("RC","rc",document_payload.get("rc","—")),("Total Brut HT","total_brut_ht",document_payload.get("total_brut_ht","—")),("Remise %","remise_pct",document_payload.get("remise_pct","—")),("Total Net HT","total_ht",document_payload.get("total_ht","—")),("TVA","tva",document_payload.get("tva","—")),("Transport","transport",document_payload.get("transport","—")),("Timbre Fiscal","timbre_fiscal",document_payload.get("timbre_fiscal","—")),("Total TTC","total_ttc",document_payload.get("total_ttc","—"))]
-    render_info_grid(fields_to_show,confidence,show_conf)
-
-    if document_payload.get("adresse"):
-        conf_a=confidence.get("adresse"); badge_a=_conf_badge_html(conf_a) if(show_conf and conf_a is not None) else ""
-        st.markdown(f"<div class='metric-card addr-card'>{badge_a}<div class='metric-label'>Adresse</div><div class='metric-value addr-val'>{document_payload['adresse']}</div></div>",unsafe_allow_html=True)
-
-    if show_products and all_product_lines:
-        st.markdown(f"## 📦 Product Lines ({len(all_product_lines)} items)")
-        render_product_table(all_product_lines,detected_schema=detected_schema,doc_type=dtype)
-    elif show_products: st.info("No product lines detected. Enable 'Show Raw OCR Text' to debug.")
-
-    if show_products and v2_payload.get("line_items"):
-        st.markdown(f"## 📤 v2 export — `{v2_payload.get('invoice_family')}` ({len(v2_payload['line_items'])} rows)")
-        st.dataframe(v2_payload["line_items"],use_container_width=True,height=min(420,120+28*len(v2_payload["line_items"])))
-
-    if plumber_tables:
-        st.markdown(f"## 🗃️ pdfplumber Tables ({len(plumber_tables)} found)")
-        for t_idx,table in enumerate(plumber_tables):
-            if not table: continue
-            st.markdown(f"**Table {t_idx+1}**")
-            tbl="<div class='table-container'><table><thead><tr>"
-            for h in table[0]: tbl+=f"<th>{str(h).replace('&','&amp;').replace('<','&lt;')}</th>"
-            tbl+="</tr></thead><tbody>"
-            for row in table[1:]:
-                if any(str(c).strip() for c in row):
-                    tbl+="<tr>"
-                    for cell in row: tbl+=f"<td>{str(cell).replace('&','&amp;').replace('<','&lt;')}</td>"
-                    tbl+="</tr>"
-            tbl+="</tbody></table></div>"
-            st.markdown(tbl,unsafe_allow_html=True)
-
-    if show_raw:
-        st.markdown("## 📝 Raw OCR Text")
-        for page_i in range(total_pages):
-            label=f"Page {page_i+1}" if total_pages>1 else "Full text"
-            with st.expander(label,expanded=(page_i==0)):
-                if split_zones:
-                    c1,c2=st.columns(2)
-                    with c1:
-                        st.markdown("**Header zone**"); st.markdown(f"<div class='raw-text'>{all_header_texts[page_i]}</div>",unsafe_allow_html=True)
-                    with c2:
-                        st.markdown("**Body zone**"); st.markdown(f"<div class='raw-text'>{all_body_texts[page_i]}</div>",unsafe_allow_html=True)
-                else:
-                    st.markdown(f"<div class='raw-text'>{all_full_texts[page_i]}</div>",unsafe_allow_html=True)
-
-    clean_payload=v2_payload
-    audit_payload=build_audit_json(confidence,warnings_nlp,extraction_trace,table_extraction_audit,{},llm_validation,promotion_decisions,nlp_model_name,v2_llm_validation=v2_llm_validation)
-
-    # Build the STRICT result structure expected by database_integration.py
-    db_result = {
-        "header": {
-            "doc_number": document_payload.get("numero") or document_payload.get("doc_number"),
-            "doc_date": document_payload.get("date") or document_payload.get("doc_date"),
-        },
-        "totals": {
-            "total_ht": document_payload.get("total_ht"),
-            "total_tva": document_payload.get("tva"),
-            "total_ttc": document_payload.get("total_ttc"),
-        },
-        "line_items": [
-            {
-                "designation": (li.get("designation") or li.get("raw_label") or ""),
-                "quantity": li.get("quantite"),
-                "unit_price_ht": (li.get("prix_unitaire") or li.get("prix_unitaire_ht") or li.get("unit_price_ht")),
-            }
-            for li in (all_product_lines or [])
-        ],
-    }
-
-    # Store in session_state so the page doesn't "forget" after button clicks.
-    st.session_state["saved_invoice_data"] = db_result
-    st.session_state["clean_payload"] = clean_payload
-    st.session_state["audit_payload"] = audit_payload
-    st.success("Extraction complete! Scroll down to save.")
-
-    if show_json and st.session_state.get("clean_payload") is not None:
-        st.markdown("## 🗂️ Clean JSON Preview")
-        st.json(st.session_state["clean_payload"])
-    if show_trace: st.markdown("## 🧭 Extraction Trace"); st.json(extraction_trace)
-
-    st.markdown("---")
-    c1,c2,c3=st.columns(3)
-    with c1:
-        st.download_button("⬇ Download Clean JSON",data=json.dumps(clean_payload,ensure_ascii=False,indent=2),file_name=f"{Path(uploaded.name).stem}_data.json",mime="application/json",use_container_width=True,help="Canonical v2: schema_version 2 + invoice_family + document_metadata + line_items")
-    with c2:
-        st.download_button("⬇ Download Audit JSON",data=json.dumps(audit_payload,ensure_ascii=False,indent=2,default=str),file_name=f"{Path(uploaded.name).stem}_audit.json",mime="application/json",use_container_width=True,help="Confidence, trace, rejected candidates")
-    with c3:
-        st.download_button("⬇ Download OCR Text",data=combined_full,file_name=f"{Path(uploaded.name).stem}_ocr.txt",mime="text/plain",use_container_width=True)
-
-    try: os.unlink(tmp_path)
-    except: pass
-
-# Save to DB: must live OUTSIDE `if run_btn` so the click reruns with run_btn=False.
-if uploaded and "saved_invoice_data" in st.session_state:
-    st.markdown("---")
-    if st.button("Extract and Save to Database", use_container_width=True):
+            _log_set("detect","running","reading image…"); _log_render(_log_ph)
         try:
-            payload = st.session_state["saved_invoice_data"]
-            invoice_id = save_result_to_db(payload)
-            n_items = len(payload.get("line_items", []))
-            st.success(
-                f"🎉 Success! Saved {n_items} line item(s) to the database. Invoice ID: {invoice_id}"
-            )
-            del st.session_state["saved_invoice_data"]
-        except Exception as e:
-            st.error(f"Database Error: {e}")
+            with st.spinner("Running OCR pipeline…"):
+                result = extract_invoice_from_file(
+                    tmp_path,
+                    original_filename=uploaded.name,
+                    use_fix_rotation=use_fix_rotation,
+                    use_erase_color=use_erase_color,
+                    use_remove_lines=use_remove_lines,
+                    use_keep_mask=use_keep_mask,
+                    dpi_choice=dpi_choice,
+                    split_zones=split_zones,
+                    show_tables=show_tables,
+                    show_products=show_products,
+                    use_nlp=use_nlp,
+                    include_debug_images=True,
+                )
+        finally:
+            try:
+                os.unlink(tmp_path)
+            except Exception:
+                pass
+
+        is_native = result["is_native"]
+        total_pages = result["total_pages"]
+        if is_pdf:
+            _log_set("detect","done",f"{'Native' if is_native else 'Scanned'} PDF — {total_pages} page(s)"); _log_render(_log_ph)
+        else:
+            _log_set("detect","done","Image file — 1 page"); _log_render(_log_ph)
+        if is_pdf:
+            c1,c2=st.columns([2,1])
+            with c1:
+                col="#7ee8a2" if is_native else "#e8c87e"
+                st.markdown(f"<div class='metric-card'><div class='metric-label'>PDF type</div><div class='metric-value' style='color:{col}'>{'📄 Native (digital)' if is_native else '📷 Scanned'}</div></div>",unsafe_allow_html=True)
+            with c2:
+                st.markdown(f"<div class='metric-card'><div class='metric-label'>Pages</div><div class='metric-value'>{total_pages}</div></div>",unsafe_allow_html=True)
+        st.markdown("---")
+
+        all_orig_imgs = result["all_orig_imgs"]
+        all_clean_imgs = result["all_clean_imgs"]
+        all_header_texts = result["all_header_texts"]
+        all_body_texts = result["all_body_texts"]
+        all_full_texts = result["all_full_texts"]
+        combined_full = result["combined_full"]
+        extraction_trace = result["extraction_trace"]
+        document_payload = result["document_payload"]
+        confidence = result["confidence"]
+        warnings_nlp = result["warnings_nlp"]
+        plumber_tables = result["plumber_tables"]
+        all_product_lines = result["all_product_lines"]
+        detected_schema = result["detected_schema"]
+        predicted_doc_type = result["predicted_doc_type"]
+        profile_hints = result["profile_hints"]
+        invoice_family = result["invoice_family"]
+        v2_payload = result["v2_payload"]
+        llm_validation = result["llm_validation"]
+        v2_llm_validation = result["v2_llm_validation"]
+
+        wc = len(combined_full.split())
+        _log_set("preprocess","done",f"{total_pages} page(s) cleaned"); _log_render(_log_ph)
+        _log_set("ocr","done",f"{total_pages} page(s)  {wc} words"); _log_render(_log_ph)
+        _log_set("products","done",f"{len(all_product_lines)} item(s)"); _log_render(_log_ph)
+        if plumber_tables:
+            _log_set("pdfplumber","done",f"{len(plumber_tables)} table(s)")
+        else:
+            reason=("scanned PDF" if(is_pdf and not is_native) else "image file" if not is_pdf else "disabled")
+            _log_set("pdfplumber","skip",reason)
+        _log_render(_log_ph)
+        _log_set("regex","done",f"type={document_payload.get('type','?')}  date={document_payload.get('date','—')}  HT={document_payload.get('total_ht','—')}  TTC={document_payload.get('total_ttc','—')}"); _log_render(_log_ph)
+        if use_nlp:
+            status="warn" if warnings_nlp else "done"
+            _log_set("nlp",status,f"model={result['nlp_model_name']}  {len(warnings_nlp)} warn"); _log_render(_log_ph)
+        else:
+            _log_set("nlp","skip","disabled"); _log_render(_log_ph)
+        _log_set("done","done",f"{total_pages} page(s) · {len(all_product_lines)} items · {len(plumber_tables)} tables · {len(warnings_nlp)} NLP warn"); _log_render(_log_ph)
+
+        st.markdown("## 🖼️ Pages — Original & Cleaned")
+        for page_i,(orig,clean) in enumerate(zip(all_orig_imgs,all_clean_imgs)):
+            label=f"Page {page_i+1}/{total_pages}" if total_pages>1 else "Document"
+            st.markdown(f"<div class='page-label'>{label}</div>",unsafe_allow_html=True)
+            c1,c2=st.columns(2)
+            with c1:
+                st.markdown("<div style='font-family:JetBrains Mono;font-size:11px;color:#888;text-align:center;margin-bottom:4px'>📷 Original</div>",unsafe_allow_html=True)
+                st.image(orig,use_container_width=True)
+            with c2:
+                st.markdown("<div style='font-family:JetBrains Mono;font-size:11px;color:#7ee8a2;text-align:center;margin-bottom:4px'>✨ After Cleaning</div>",unsafe_allow_html=True)
+                st.image(clean,use_container_width=True)
+            if page_i<len(all_clean_imgs)-1: st.markdown("<hr style='border-color:#1e2130;margin:12px 0;'>",unsafe_allow_html=True)
+        st.markdown("---")
+
+        dtype=document_payload.get("type","Document")
+        tag_class={"Bon de Commande":"tag-bc","Proforma":"tag-proforma","Facture":"tag-facture"}.get(dtype,"tag-stat")
+        st.markdown(
+            f"<span class='{tag_class}'>{dtype}</span> <span style='color:#8ab4f8;font-size:12px'>v2 · {invoice_family}</span>",
+            unsafe_allow_html=True,
+        )
+        st.markdown("## 📋 Extracted Information")
+        if show_conf:
+            st.markdown("<div class='conf-hint'>🟢 ≥80% reliable &nbsp;·&nbsp; 🟡 55–79% double-check &nbsp;·&nbsp; 🔴 &lt;55% likely wrong</div>",unsafe_allow_html=True)
+        if show_warnings and warnings_nlp:
+            ih="".join(f"<li>{w}</li>" for w in warnings_nlp)
+            st.markdown(f"<div class='warn-box'>⚠ <strong>Validation warnings</strong><ul>{ih}</ul></div>",unsafe_allow_html=True)
+
+        fields_to_show=[("Type de document","type",document_payload.get("type","—")),("Document N°","numero",document_payload.get("numero","—")),("Date","date",document_payload.get("date","—")),("Fournisseur","fournisseur_nom",document_payload.get("fournisseur_nom","—")),("Supplier MF","supplier_mf",document_payload.get("supplier_mf","—")),("Client MF","client_mf",document_payload.get("client_mf","—")),("Téléphone","tel",document_payload.get("tel","—")),("Fax","fax",document_payload.get("fax","—")),("Email","email",document_payload.get("email","—")),("RC","rc",document_payload.get("rc","—")),("Total Brut HT","total_brut_ht",document_payload.get("total_brut_ht","—")),("Remise %","remise_pct",document_payload.get("remise_pct","—")),("Total Net HT","total_ht",document_payload.get("total_ht","—")),("TVA","tva",document_payload.get("tva","—")),("Transport","transport",document_payload.get("transport","—")),("Timbre Fiscal","timbre_fiscal",document_payload.get("timbre_fiscal","—")),("Total TTC","total_ttc",document_payload.get("total_ttc","—"))]
+        render_info_grid(fields_to_show,confidence,show_conf)
+
+        if document_payload.get("adresse"):
+            conf_a=confidence.get("adresse"); badge_a=_conf_badge_html(conf_a) if(show_conf and conf_a is not None) else ""
+            st.markdown(f"<div class='metric-card addr-card'>{badge_a}<div class='metric-label'>Adresse</div><div class='metric-value addr-val'>{document_payload['adresse']}</div></div>",unsafe_allow_html=True)
+
+        if show_products and all_product_lines:
+            st.markdown(f"## 📦 Product Lines ({len(all_product_lines)} items)")
+            render_product_table(all_product_lines,detected_schema=detected_schema,doc_type=dtype)
+        elif show_products: st.info("No product lines detected. Enable 'Show Raw OCR Text' to debug.")
+
+        if show_products and v2_payload.get("line_items"):
+            st.markdown(f"## 📤 v2 export — `{v2_payload.get('invoice_family')}` ({len(v2_payload['line_items'])} rows)")
+            st.dataframe(v2_payload["line_items"],use_container_width=True,height=min(420,120+28*len(v2_payload["line_items"])))
+
+        if plumber_tables:
+            st.markdown(f"## 🗃️ pdfplumber Tables ({len(plumber_tables)} found)")
+            for t_idx,table in enumerate(plumber_tables):
+                if not table: continue
+                st.markdown(f"**Table {t_idx+1}**")
+                tbl="<div class='table-container'><table><thead><tr>"
+                for h in table[0]: tbl+=f"<th>{str(h).replace('&','&amp;').replace('<','&lt;')}</th>"
+                tbl+="</tr></thead><tbody>"
+                for row in table[1:]:
+                    if any(str(c).strip() for c in row):
+                        tbl+="<tr>"
+                        for cell in row: tbl+=f"<td>{str(cell).replace('&','&amp;').replace('<','&lt;')}</td>"
+                        tbl+="</tr>"
+                tbl+="</tbody></table></div>"
+                st.markdown(tbl,unsafe_allow_html=True)
+
+        if show_raw:
+            st.markdown("## 📝 Raw OCR Text")
+            for page_i in range(total_pages):
+                label=f"Page {page_i+1}" if total_pages>1 else "Full text"
+                with st.expander(label,expanded=(page_i==0)):
+                    if split_zones:
+                        c1,c2=st.columns(2)
+                        with c1:
+                            st.markdown("**Header zone**"); st.markdown(f"<div class='raw-text'>{all_header_texts[page_i]}</div>",unsafe_allow_html=True)
+                        with c2:
+                            st.markdown("**Body zone**"); st.markdown(f"<div class='raw-text'>{all_body_texts[page_i]}</div>",unsafe_allow_html=True)
+                    else:
+                        st.markdown(f"<div class='raw-text'>{all_full_texts[page_i]}</div>",unsafe_allow_html=True)
+
+        clean_payload = result["v2_export"]
+        audit_payload = result["audit_payload"]
+        db_result = {
+            "header": result["header"],
+            "totals": result["totals"],
+            "line_items": result["line_items"],
+        }
+
+        # Store in session_state so the page doesn't "forget" after button clicks.
+        st.session_state["saved_invoice_data"] = db_result
+        st.session_state["clean_payload"] = clean_payload
+        st.session_state["audit_payload"] = audit_payload
+        st.success("Extraction complete! Scroll down to save.")
+
+        if show_json and st.session_state.get("clean_payload") is not None:
+            st.markdown("## 🗂️ Clean JSON Preview")
+            st.json(st.session_state["clean_payload"])
+        if show_trace: st.markdown("## 🧭 Extraction Trace"); st.json(extraction_trace)
+
+        st.markdown("---")
+        c1,c2,c3=st.columns(3)
+        with c1:
+            st.download_button("⬇ Download Clean JSON",data=json.dumps(clean_payload,ensure_ascii=False,indent=2),file_name=f"{Path(uploaded.name).stem}_data.json",mime="application/json",use_container_width=True,help="Canonical v2: schema_version 2 + invoice_family + document_metadata + line_items")
+        with c2:
+            st.download_button("⬇ Download Audit JSON",data=json.dumps(audit_payload,ensure_ascii=False,indent=2,default=str),file_name=f"{Path(uploaded.name).stem}_audit.json",mime="application/json",use_container_width=True,help="Confidence, trace, rejected candidates")
+        with c3:
+            st.download_button("⬇ Download OCR Text",data=combined_full,file_name=f"{Path(uploaded.name).stem}_ocr.txt",mime="text/plain",use_container_width=True)
+
+    # Save to DB: must live OUTSIDE `if run_btn` so the click reruns with run_btn=False.
+    if uploaded and "saved_invoice_data" in st.session_state:
+        st.markdown("---")
+        if st.button("Extract and Save to Database", use_container_width=True):
+            try:
+                payload = st.session_state["saved_invoice_data"]
+                invoice_id = save_result_to_db(payload)
+                n_items = len(payload.get("line_items", []))
+                st.success(
+                    f"🎉 Success! Saved {n_items} line item(s) to the database. Invoice ID: {invoice_id}"
+                )
+                del st.session_state["saved_invoice_data"]
+            except Exception as e:
+                st.error(f"Database Error: {e}")
