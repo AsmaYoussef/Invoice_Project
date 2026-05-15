@@ -10,9 +10,12 @@ import {
   Loader2,
   Settings2,
   Upload,
+  AlertCircle,
 } from "lucide-react";
 
 const API_BASE_URL = "http://127.0.0.1:8000";
+
+// --- UI COMPONENTS ---
 
 const TabButton = ({ active, icon: Icon, label, onClick }) => (
   <button
@@ -38,11 +41,27 @@ const InfoField = ({ label, value }) => (
   </div>
 );
 
+const ValidationBadge = ({ status }) => {
+  switch (status) {
+    case "MATCH":
+      return <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700">✅ MATCH</span>;
+    case "MISMATCH":
+      return <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">❌ MISMATCH</span>;
+    case "NOT_IN_ERP":
+      return <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">⚠️ NEW ITEM</span>;
+    default:
+      return <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">UNCHECKED</span>;
+  }
+};
+
+// --- MAIN DASHBOARD ---
+
 const AccountantDashboard = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [syncLoading, setSyncLoading] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
   const [apiError, setApiError] = useState("");
 
@@ -55,6 +74,7 @@ const AccountantDashboard = () => {
     use_keep_mask: true,
   });
 
+  // Data Selectors
   const generalInfo = result?.dashboard?.general_info || {};
   const financialTotals = result?.dashboard?.financial_totals || {};
   const productLines = result?.dashboard?.product_lines || [];
@@ -62,19 +82,20 @@ const AccountantDashboard = () => {
   const technical = result?.technical || {};
   const trace = result?.system_trace || [];
 
+  // Confidence Calculation
   const topConfidence = useMemo(() => {
-    const values = Object.values(technical.field_confidence_scores || {}).filter(
-      (v) => typeof v === "number"
-    );
-    if (!values.length) return "N/A";
-    const avg = (values.reduce((acc, value) => acc + value, 0) / values.length) * 100;
-    return `${avg.toFixed(1)}%`;
+    const scores = technical.field_confidence_scores || {};
+    const values = Object.values(scores).filter((v) => typeof v === "number");
+    if (!values.length) return "0%";
+    const avg = (values.reduce((acc, v) => acc + v, 0) / values.length) * 100;
+    return `${avg.toFixed(0)}%`;
   }, [technical.field_confidence_scores]);
 
   const handleUpload = async () => {
     if (!selectedFile) return;
     setLoading(true);
     setApiError("");
+    setSyncSuccess(false);
 
     const formData = new FormData();
     formData.append("file", selectedFile);
@@ -85,227 +106,192 @@ const AccountantDashboard = () => {
     try {
       const response = await axios.post(`${API_BASE_URL}/upload-invoice`, formData);
       setResult(response.data);
-      setSyncSuccess(false);
     } catch (error) {
-      setApiError(error?.response?.data?.detail || "Upload failed. Check backend logs.");
+      setApiError(error?.response?.data?.detail || "Connection failed. Is the API running?");
     } finally {
       setLoading(false);
     }
   };
 
   const handleSync = async () => {
-    if (!result?.raw_pipeline) return;
+    if (!result) return;
+    setSyncLoading(true);
     try {
-      await axios.post(`${API_BASE_URL}/save-invoice`, result.raw_pipeline);
+      // Send the entire dashboard payload to be saved in MySQL
+      await axios.post(`${API_BASE_URL}/save-invoice`, result.dashboard);
       setSyncSuccess(true);
-    } catch (_error) {
-      setApiError("Sync failed while saving to database.");
+    } catch (error) {
+      setApiError("Database Sync failed. Check if MySQL container is active.");
+    } finally {
+      setSyncLoading(false);
     }
   };
 
-  const updateSetting = (key, value) => {
-    setSettings((prev) => ({ ...prev, [key]: value }));
-  };
-
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-800">
+    <div className="min-h-screen bg-slate-100 text-slate-800 font-sans">
       <div className="grid min-h-screen grid-cols-12">
+        {/* SIDEBAR */}
         <aside className="col-span-12 border-r border-slate-200 bg-white p-5 lg:col-span-3">
-          <div className="mb-5 flex items-center gap-3">
-            <div className="rounded-lg bg-slate-900 p-2 text-white">
-              <Bot size={16} />
+          <div className="mb-8 flex items-center gap-3">
+            <div className="rounded-lg bg-indigo-600 p-2 text-white">
+              <Bot size={20} />
             </div>
             <div>
-              <h1 className="font-bold">Accountant Console</h1>
-              <p className="text-xs text-slate-500">OCR + NLP invoice extraction</p>
+              <h1 className="text-lg font-bold tracking-tight">Diva Software</h1>
+              <p className="text-xs text-slate-500 font-medium">Smart OCR Engine v2.0</p>
             </div>
           </div>
 
           <div className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-600">
-              <Settings2 size={14} /> Pipeline Settings
+            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-600">
+              <Settings2 size={14} /> Pipeline Config
             </p>
-
-            <label className="flex items-center justify-between text-sm">
-              NLP Enrichment
-              <input
-                type="checkbox"
-                checked={settings.use_nlp}
-                onChange={(e) => updateSetting("use_nlp", e.target.checked)}
-              />
-            </label>
-            <label className="flex items-center justify-between text-sm">
-              DPI Scaling
-              <select
-                value={settings.dpi_choice}
-                onChange={(e) => updateSetting("dpi_choice", Number(e.target.value))}
-                className="rounded border border-slate-300 bg-white px-2 py-1 text-sm"
-              >
-                <option value={150}>150</option>
-                <option value={200}>200</option>
-                <option value={300}>300</option>
-              </select>
-            </label>
-            <label className="flex items-center justify-between text-sm">
-              Fix Rotation
-              <input
-                type="checkbox"
-                checked={settings.use_fix_rotation}
-                onChange={(e) => updateSetting("use_fix_rotation", e.target.checked)}
-              />
-            </label>
-            <label className="flex items-center justify-between text-sm">
-              Remove Borders
-              <input
-                type="checkbox"
-                checked={settings.use_remove_lines}
-                onChange={(e) => updateSetting("use_remove_lines", e.target.checked)}
-              />
-            </label>
+            {Object.keys(settings).map((key) => (
+              <label key={key} className="flex items-center justify-between text-sm cursor-pointer capitalize">
+                {key.replace(/_/g, " ")}
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                  checked={settings[key]}
+                  onChange={(e) => setSettings({ ...settings, [key]: e.target.checked })}
+                />
+              </label>
+            ))}
           </div>
 
-          <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-600">
-              <Activity size={14} /> System Trace
+          <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <p className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-600">
+              <Activity size={14} /> Extraction Logs
             </p>
-            <div className="max-h-64 space-y-2 overflow-auto pr-1 text-xs">
-              {trace.length === 0 && <p className="text-slate-500">No trace yet.</p>}
-              {trace.map((step) => (
-                <div key={step.step} className="rounded-md border border-slate-200 bg-white p-2">
-                  <p className="font-semibold text-slate-700">{step.step}</p>
-                  <p className="text-slate-500">{step.detail}</p>
+            <div className="max-h-64 space-y-2 overflow-auto pr-1">
+              {trace.map((step, i) => (
+                <div key={i} className="rounded-md border border-slate-200 bg-white p-2 text-[11px]">
+                  <p className="font-bold text-slate-700">{step.step}</p>
+                  <p className="text-slate-500 truncate">{step.detail}</p>
                 </div>
               ))}
+              {!trace.length && <p className="text-xs text-slate-400 italic">No activity yet...</p>}
             </div>
           </div>
         </aside>
 
-        <main className="col-span-12 p-6 lg:col-span-9">
-          <div className="mb-6 flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 lg:flex-row lg:items-center lg:justify-between">
+        {/* MAIN CONTENT */}
+        <main className="col-span-12 p-8 lg:col-span-9">
+          <header className="mb-8 flex flex-col gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <h2 className="text-xl font-bold">Invoice Processing Workspace</h2>
-              <p className="text-sm text-slate-500">Split-view validation for accounting operations.</p>
+              <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Invoice Reconciliation</h2>
+              <p className="text-slate-500">Extract, validate against ERP, and sync to database.</p>
             </div>
+
             <div className="flex flex-wrap items-center gap-3">
-              <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
-                <Upload size={14} />
-                <span>{selectedFile?.name || "Choose invoice PDF/image"}</span>
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                />
+              <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold transition hover:bg-slate-50">
+                <Upload size={16} />
+                <span>{selectedFile?.name || "Select Document"}</span>
+                <input type="file" className="hidden" onChange={(e) => setSelectedFile(e.target.files?.[0] || null)} />
               </label>
+
               <button
-                type="button"
                 onClick={handleUpload}
                 disabled={!selectedFile || loading}
-                className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-400"
+                className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg transition hover:bg-indigo-700 disabled:opacity-50"
               >
-                {loading ? <Loader2 size={14} className="animate-spin" /> : <FileText size={14} />}
-                {loading ? "Processing..." : "Run Extraction"}
+                {loading ? <Loader2 size={18} className="animate-spin" /> : <FileText size={18} />}
+                {loading ? "Analyzing..." : "Analyze"}
               </button>
+
               <button
-                type="button"
                 onClick={handleSync}
-                disabled={!result}
-                className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-400"
+                disabled={!result || syncLoading}
+                className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg transition hover:bg-emerald-700 disabled:opacity-50"
               >
-                <Database size={14} />
-                {syncSuccess ? "Saved ✓" : "Confirm & Sync"}
+                {syncLoading ? <Loader2 size={18} className="animate-spin" /> : <Database size={18} />}
+                {syncSuccess ? "Synced to DB ✓" : "Confirm & Sync"}
               </button>
             </div>
-          </div>
+          </header>
 
           {apiError && (
-            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{apiError}</div>
+            <div className="mb-6 flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 shadow-sm">
+              <AlertCircle size={18} />
+              <p className="font-semibold">{apiError}</p>
+            </div>
           )}
 
-          <div className="mb-5 flex flex-wrap gap-2">
-            <TabButton
-              active={activeTab === "dashboard"}
-              icon={CheckCircle2}
-              label={`Dashboard (${topConfidence})`}
-              onClick={() => setActiveTab("dashboard")}
-            />
-            <TabButton
-              active={activeTab === "visualizer"}
-              icon={Eye}
-              label="Visualizer"
-              onClick={() => setActiveTab("visualizer")}
-            />
-            <TabButton
-              active={activeTab === "technical"}
-              icon={Activity}
-              label="Technical"
-              onClick={() => setActiveTab("technical")}
-            />
+          <div className="mb-6 flex gap-2">
+            <TabButton active={activeTab === "dashboard"} icon={CheckCircle2} label={`Review (${topConfidence})`} onClick={() => setActiveTab("dashboard")} />
+            <TabButton active={activeTab === "visualizer"} icon={Eye} label="PDF Visualizer" onClick={() => setActiveTab("visualizer")} />
+            <TabButton active={activeTab === "technical"} icon={Activity} label="Raw Data" onClick={() => setActiveTab("technical")} />
           </div>
 
-          {!result ? (
-            <div className="rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center text-slate-500">
-              Upload a file and run extraction to populate the dashboard.
+          {!result && !loading && (
+            <div className="flex min-h-[400px] flex-col items-center justify-center rounded-3xl border-2 border-dashed border-slate-300 bg-white p-12 text-center shadow-inner">
+              <div className="mb-4 rounded-full bg-slate-100 p-4 text-slate-400">
+                <Upload size={48} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-800">Ready to start</h3>
+              <p className="max-w-xs text-slate-500">Upload a supplier invoice to see the AI and ERP reconciliation in action.</p>
             </div>
-          ) : null}
+          )}
 
+          {/* DASHBOARD TAB */}
           {result && activeTab === "dashboard" && (
-            <div className="space-y-5">
-              <div className="grid grid-cols-12 gap-4">
-                <section className="col-span-12 rounded-xl border border-slate-200 bg-white p-4 xl:col-span-7">
-                  <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">General Info</h3>
-                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                    <InfoField label="Type" value={generalInfo.type} />
-                    <InfoField label="Invoice Number" value={generalInfo.invoice_number} />
-                    <InfoField label="Invoice Date" value={generalInfo.invoice_date} />
-                    <InfoField label="Supplier" value={generalInfo.supplier_name} />
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
+              <div className="grid grid-cols-12 gap-6">
+                <section className="col-span-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm xl:col-span-8">
+                  <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-slate-400">Header Information</h3>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <InfoField label="Invoice #" value={generalInfo.invoice_number} />
+                    <InfoField label="Date" value={generalInfo.invoice_date} />
+                    <InfoField label="Supplier Name" value={generalInfo.supplier_name} />
                     <InfoField label="Supplier MF" value={generalInfo.supplier_mf} />
-                    <InfoField label="Client MF" value={generalInfo.client_mf} />
-                    <InfoField label="Phone" value={generalInfo.telephone} />
-                    <InfoField label="Fax" value={generalInfo.fax} />
-                    <InfoField label="Email" value={generalInfo.email} />
-                    <InfoField label="RC" value={generalInfo.rc} />
                     <div className="md:col-span-2">
-                      <InfoField label="Address" value={generalInfo.address} />
+                      <InfoField label="Physical Address" value={generalInfo.address} />
                     </div>
                   </div>
                 </section>
 
-                <section className="col-span-12 rounded-xl border border-slate-200 bg-white p-4 xl:col-span-5">
-                  <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Money Section</h3>
-                  <div className="space-y-3">
-                    <InfoField label="Total Brut HT" value={financialTotals.total_brut_ht} />
-                    <InfoField label="Remise (%)" value={financialTotals.remise_pct} />
-                    <InfoField label="Total HT" value={financialTotals.total_ht} />
-                    <InfoField label="TVA" value={financialTotals.tva} />
-                    <InfoField label="Transport" value={financialTotals.transport} />
-                    <InfoField label="Timbre Fiscal" value={financialTotals.timbre_fiscal} />
-                    <InfoField label="Total TTC" value={financialTotals.total_ttc} />
+                <section className="col-span-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm xl:col-span-4">
+                  <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-slate-400">Financial Summary</h3>
+                  <div className="space-y-4">
+                    <div className="flex justify-between border-b border-slate-100 pb-2">
+                      <span className="text-sm text-slate-500">Total HT</span>
+                      <span className="font-bold text-slate-900">{financialTotals.total_ht} TND</span>
+                    </div>
+                    <div className="flex justify-between border-b border-slate-100 pb-2">
+                      <span className="text-sm text-slate-500">TVA Amount</span>
+                      <span className="font-bold text-slate-900">{financialTotals.tva} TND</span>
+                    </div>
+                    <div className="flex justify-between pt-2">
+                      <span className="text-base font-bold text-slate-900">Total TTC</span>
+                      <span className="text-xl font-black text-indigo-600">{financialTotals.total_ttc} TND</span>
+                    </div>
                   </div>
                 </section>
               </div>
 
-              <section className="rounded-xl border border-slate-200 bg-white p-4">
-                <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">
-                  Product Lines ({productLines.length})
-                </h3>
-                <div className="overflow-auto">
-                  <table className="min-w-full text-sm">
+              <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-slate-400">Line Item Validation</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-slate-200 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
-                        {["Code", "Designation", "Quantite", "Prix Unitaire", "Montant", "Date Peremption"].map((header) => (
-                          <th key={header} className="px-3 py-2">{header}</th>
-                        ))}
+                      <tr className="border-b-2 border-slate-100 text-left text-xs font-black uppercase tracking-widest text-slate-400">
+                        <th className="pb-4">Status</th>
+                        <th className="pb-4">Product Code</th>
+                        <th className="pb-4">Designation</th>
+                        <th className="pb-4">Qty</th>
+                        <th className="pb-4">OCR Price</th>
+                        <th className="pb-4">ERP Truth</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-slate-100">
                       {productLines.map((line, idx) => (
-                        <tr key={`${line.code || "code"}-${idx}`} className="border-b border-slate-100">
-                          <td className="px-3 py-2">{line.code || line.code_pct || line.code_article || "—"}</td>
-                          <td className="px-3 py-2">{line.designation || "—"}</td>
-                          <td className="px-3 py-2">{line.quantite ?? "—"}</td>
-                          <td className="px-3 py-2">{line.prix_unitaire ?? "—"}</td>
-                          <td className="px-3 py-2">{line.montant ?? "—"}</td>
-                          <td className="px-3 py-2">{line.date_peremption || "—"}</td>
+                        <tr key={idx} className="group hover:bg-slate-50">
+                          <td className="py-4"><ValidationBadge status={line.validation_status} /></td>
+                          <td className="py-4 font-mono font-bold text-slate-900">{line.code || "—"}</td>
+                          <td className="py-4 font-medium text-slate-700">{line.designation || line.erp_name || "—"}</td>
+                          <td className="py-4 text-slate-500">{line.quantite || "0"}</td>
+                          <td className="py-4 font-bold text-slate-900">{line.price_unit || "0.00"}</td>
+                          <td className="py-4 font-black text-indigo-600">{line.erp_price ? `${line.erp_price}` : "—"}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -315,76 +301,55 @@ const AccountantDashboard = () => {
             </div>
           )}
 
+          {/* VISUALIZER TAB */}
           {result && activeTab === "visualizer" && (
-            <section className="rounded-xl border border-slate-200 bg-white p-4">
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">
-                Original PDF vs Cleaned OCR Page
-              </h3>
-              <div className="space-y-5">
-                {pages.map((page) => (
-                  <div key={page.page_number} className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                        Original - Page {page.page_number}
-                      </p>
-                      {page.original_image_b64 ? (
-                        <img src={page.original_image_b64} alt={`Original page ${page.page_number}`} className="w-full rounded border border-slate-200" />
-                      ) : (
-                        <p className="text-sm text-slate-500">No image available.</p>
-                      )}
-                    </div>
-                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                        Cleaned - Page {page.page_number}
-                      </p>
-                      {page.cleaned_image_b64 ? (
-                        <img src={page.cleaned_image_b64} alt={`Cleaned page ${page.page_number}`} className="w-full rounded border border-slate-200" />
-                      ) : (
-                        <p className="text-sm text-slate-500">No cleaned image available.</p>
-                      )}
-                    </div>
+            <div className="space-y-6">
+              {pages.map((page, idx) => (
+                <div key={idx} className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                  <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                    <p className="mb-4 text-xs font-black uppercase tracking-widest text-slate-400">Original Scan</p>
+                    <img src={page.original_image_b64} alt="Original" className="w-full rounded-xl shadow-md" />
                   </div>
-                ))}
-              </div>
-            </section>
+                  <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                    <p className="mb-4 text-xs font-black uppercase tracking-widest text-slate-400">Computer Vision (Cleaned)</p>
+                    {page.cleaned_image_b64 ? (
+                      <img src={page.cleaned_image_b64} alt="Cleaned" className="w-full rounded-xl shadow-md border-2 border-indigo-100" />
+                    ) : (
+                      <div className="flex h-64 items-center justify-center rounded-xl bg-slate-50 text-slate-400 italic">Preprocessing skipped for this page.</div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
 
+          {/* TECHNICAL TAB */}
           {result && activeTab === "technical" && (
-            <div className="grid grid-cols-12 gap-4">
-              <section className="col-span-12 rounded-xl border border-slate-200 bg-white p-4 xl:col-span-7">
-                <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Raw OCR String</h3>
-                <pre className="max-h-[500px] overflow-auto rounded-lg bg-slate-950 p-4 text-xs text-slate-100 whitespace-pre-wrap">
-                  {technical.raw_ocr_text || "No OCR text."}
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+              <div className="lg:col-span-8 rounded-2xl border border-slate-200 bg-slate-900 p-6 shadow-2xl">
+                <h3 className="mb-4 text-xs font-black uppercase tracking-widest text-slate-500">Raw OCR Output</h3>
+                <pre className="max-h-[600px] overflow-auto text-xs text-indigo-300 leading-relaxed whitespace-pre-wrap font-mono">
+                  {technical.raw_ocr_text || "No raw text extracted."}
                 </pre>
-              </section>
-
-              <section className="col-span-12 space-y-4 xl:col-span-5">
-                <div className="rounded-xl border border-slate-200 bg-white p-4">
-                  <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
-                    Confidence Scores
-                  </h3>
-                  <div className="max-h-64 space-y-2 overflow-auto text-sm">
-                    {Object.entries(technical.field_confidence_scores || {}).map(([key, value]) => (
-                      <div key={key} className="flex items-center justify-between rounded-md border border-slate-200 px-3 py-2">
-                        <span className="text-slate-600">{key}</span>
-                        <span className="font-semibold text-slate-800">{(value * 100).toFixed(1)}%</span>
+              </div>
+              <div className="lg:col-span-4 space-y-6">
+                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                  <h3 className="mb-4 text-xs font-black uppercase tracking-widest text-slate-400">AI Confidence Scores</h3>
+                  <div className="space-y-3">
+                    {Object.entries(technical.field_confidence_scores || {}).map(([key, val]) => (
+                      <div key={key}>
+                        <div className="flex justify-between text-xs font-bold text-slate-600 mb-1 capitalize">
+                          <span>{key}</span>
+                          <span>{(val * 100).toFixed(1)}%</span>
+                        </div>
+                        <div className="h-1.5 w-full rounded-full bg-slate-100">
+                          <div className="h-full rounded-full bg-indigo-500 transition-all duration-1000" style={{ width: `${val * 100}%` }}></div>
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
-
-                <div className="rounded-xl border border-slate-200 bg-white p-4">
-                  <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">NLP Trace Console</h3>
-                  <div className="max-h-64 overflow-auto rounded-lg bg-slate-950 p-3 font-mono text-xs text-emerald-300">
-                    {trace.map((step, idx) => (
-                      <p key={`${step.step}-${idx}`}>
-                        [{String(idx + 1).padStart(2, "0")}] {step.step} :: {step.detail}
-                      </p>
-                    ))}
-                    {trace.length === 0 && <p>[00] Waiting for extraction trace...</p>}
-                  </div>
-                </div>
-              </section>
+              </div>
             </div>
           )}
         </main>

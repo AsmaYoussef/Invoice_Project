@@ -1,16 +1,15 @@
 services:
-  db:
-    image: postgres:15
-    container_name: diva_invoice_db
-    restart: unless-stopped
+  mysql_db:
+    image: mysql:8.0
+    container_name: diva_mysql_container
+    restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: diva
-      POSTGRES_DB: invoice_intelligence
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: diva_demo
     ports:
-      - "5432:5432"
+      - "3307:3306"
     volumes:
-      - diva_pg_data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
 
 volumes:
-  diva_pg_data:
+  mysql_data:
