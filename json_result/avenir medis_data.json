@@ -1,0 +1,279 @@
+{
+  "schema_version": 2,
+  "invoice_family": "bc_avenir",
+  "document_metadata": {
+    "type": "Bon de Commande",
+    "numero": "1890/2023",
+    "date": "21/06/2023",
+    "fournisseur_nom": "AVENIR PHARMA Code FRS: 4010MQ09",
+    "supplier_mf": "01232662F/P/M/000",
+    "client_mf": "",
+    "tel": "",
+    "fax": "72235016",
+    "email": "",
+    "rc": "",
+    "adresse": "ROUTE MANZEL CHAKER KM 2 SFAX",
+    "total_ht": 102515.849
+  },
+  "line_items": [
+    {
+      "code": "302970",
+      "quantite": "24",
+      "designation": "7 AMLODIPINE MEDIS 10 MG B/30 COMP >.",
+      "line_confidence": 0.72,
+      "raw_line": "302970 24 7 AMLODIPINE MEDIS 10 MG B/30 COMP >."
+    },
+    {
+      "code": "302968",
+      "quantite": "244",
+      "designation": "AMLODIPINE MEDIS 5 MG B/30 COMP “7 — —",
+      "line_confidence": 0.72,
+      "raw_line": "302968 244 AMLODIPINE MEDIS 5 MG B/30 COMP “7 — —"
+    },
+    {
+      "code": "302464",
+      "quantite": "10",
+      "designation": "MG B/90 COMP | ,7¢ ~ ~ a",
+      "line_confidence": 0.72,
+      "raw_line": "302464 ae ATOR 10 MG B/90 COMP | ,7¢ ~ ~ a"
+    },
+    {
+      "code": "302465",
+      "quantite": "40",
+      "designation": ".MG B/30 cot v ~ ~ 7",
+      "line_confidence": 0.72,
+      "raw_line": "302465 “90077 ATOR 40.MG B/30 cot v ~ ~ 7 ~"
+    },
+    {
+      "code": "PF003900003",
+      "quantite": "10",
+      "designation": "4” CALCITRUS PLUS 400 MG B/30 SACHETS",
+      "line_confidence": 0.72,
+      "raw_line": "PFO03900003 10 4” CALCITRUS PLUS 400 MG B/30 SACHETS"
+    },
+    {
+      "code": "300546",
+      "quantite": "100",
+      "designation": "Y CIPROO.3K COLLYRE FL/B ML ~",
+      "line_confidence": 0.72,
+      "raw_line": "300546 =, 100 Y CIPROO.3K COLLYRE FL/B ML ~ ~"
+    },
+    {
+      "code": "300646",
+      "quantite": "240",
+      "designation": "/ ~ “CIPROSODMGB/14 COMP ~",
+      "line_confidence": 0.72,
+      "raw_line": "300646 240 / ~ “CIPROSODMGB/14 COMP ~ ~"
+    },
+    {
+      "code": "300647",
+      "quantite": "2",
+      "designation": "7 — CIPROTSOMGB/14COMP 7 = —",
+      "line_confidence": 0.72,
+      "raw_line": "300647 2 7 — CIPROTSOMGB/14COMP 7 = —"
+    },
+    {
+      "code": "302097",
+      "quantite": "24",
+      "designation": ".2 CO-LOSAR FORT 100 MG/25 MG B/30 COMP",
+      "line_confidence": 0.72,
+      "raw_line": "302097 24.2 CO-LOSAR FORT 100 MG/25 MG B/30 COMP"
+    },
+    {
+      "code": "302961",
+      "quantite": "20",
+      "designation": "gS CDOMINAR SOOMG.B/14COMP op ~ 7",
+      "line_confidence": 0.72,
+      "raw_line": "302961 = 20 gS CDOMINAR SOOMG.B/14COMP op _ ~ 7"
+    },
+    {
+      "code": "PF006700001",
+      "quantite": "144",
+      "designation": "/£ — DORMIEU1MGB/6OCOMP ~",
+      "line_confidence": 0.72,
+      "raw_line": "PF006700001 144 /£ — DORMIEU1MGB/6OCOMP ~ ~"
+    },
+    {
+      "code": "300913",
+      "quantite": "153",
+      "designation": ",\" ENOXA2000 UI ANTI Xa 2) MG SOL INJ B/2 SERINGUES/0.2 ML 2",
+      "line_confidence": 0.72,
+      "raw_line": "300913 153,\" ENOXA2000 UI ANTI Xa 2) MG SOL INJ B/2 SERINGUES/0.2 ML 2 ~"
+    },
+    {
+      "code": "300914",
+      "quantite": "459",
+      "designation": "ENOXA4000 UI ANTI Xa 40 MG SOL INJ B/2 SERINGUES/0.4 ML”",
+      "line_confidence": 0.72,
+      "raw_line": "300914 459 _ ENOXA4000 UI ANTI Xa 40 MG SOL INJ B/2 SERINGUES/0.4 ML”"
+    },
+    {
+      "code": "350748",
+      "quantite": "100",
+      "designation": "MG SOL INJ FL/50 ML” 7",
+      "line_confidence": 0.72,
+      "raw_line": "350748 BO FLUKAS 100 MG SOL INJ FL/50 ML” 7 _"
+    },
+    {
+      "code": "3008304",
+      "quantite": "150",
+      "designation": "MG GELULES B/4 «= - -",
+      "line_confidence": 0.72,
+      "raw_line": "3008304 FLUKAS 150 MG GELULES[B/4 «= -_ -"
+    },
+    {
+      "code": "300141",
+      "quantite": "30",
+      "designation": "2 GENTA.40 MG SOL!INJ B/3 AMP/2ML 2",
+      "line_confidence": 0.72,
+      "raw_line": "300141 30 2 GENTA.40 MG SOL!INJ B/3 AMP/2ML 2 ~"
+    },
+    {
+      "code": "300535",
+      "quantite": "1",
+      "designation": ".960,» —IPPROTON40.MG PDRE.PPRERINJB/1 FL 7% 7",
+      "line_confidence": 0.72,
+      "raw_line": "300535 «1.960,» —IPPROTON40.MG PDRE.PPRERINJB/1 FL 7% _ 7"
+    },
+    {
+      "code": "301690",
+      "quantite": "1",
+      "designation": "MGB/90 COMP | a a a",
+      "line_confidence": 0.72,
+      "raw_line": "301690 12a IRYS 1 MGB/90 COMP | a a a"
+    },
+    {
+      "code": "300827",
+      "quantite": "3",
+      "designation": "MG B/30 COMP 4 - —",
+      "line_confidence": 0.72,
+      "raw_line": "300827 hw IRYS 3 MG B/30 COMP 4 - —"
+    },
+    {
+      "code": "301692",
+      "quantite": "3",
+      "designation": "MG B/90 COMP <7| ~ 7 a",
+      "line_confidence": 0.72,
+      "raw_line": "301692 a4 IRYS 3 MG B/90 COMP <7|_ ~ 7 a"
+    },
+    {
+      "code": "300805",
+      "quantite": "108",
+      "designation": ".7 — LOSARSOMGB/30 COMP <",
+      "line_confidence": 0.72,
+      "raw_line": "300805 108.7 — LOSARSOMGB/30 COMP] <~"
+    },
+    {
+      "code": "302096",
+      "quantite": "48",
+      "designation": "/ 7 LOSAR FORT 100 MG B/3q COMP *",
+      "line_confidence": 0.72,
+      "raw_line": "302096 © 48 / 7 _LOSAR FORT 100 MG B/3q COMP * ~"
+    },
+    {
+      "code": "302124",
+      "quantite": "48",
+      "designation": "” LOSARFORT 100 MG B/S COMP“ 7",
+      "line_confidence": 0.72,
+      "raw_line": "302124 48” LOSARFORT 100 MG B/S COMP“ 7"
+    },
+    {
+      "code": "301475",
+      "quantite": "30",
+      "designation": "X MEDISIUM 75 ML SOL INJ B/5 AMP/3 ML",
+      "line_confidence": 0.72,
+      "raw_line": "301475 30 X MEDISIUM 75 ML SOL INJ B/5 AMP/3 ML"
+    },
+    {
+      "code": "350834",
+      "quantite": "240",
+      "designation": "7” ONDANSETRON 8 MG B/{0 COMP",
+      "line_confidence": 0.72,
+      "raw_line": "350834 «(240 7” ONDANSETRON 8 MG B/{0 COMP"
+    },
+    {
+      "code": "301832",
+      "quantite": "40",
+      "designation": "1c PAMISCAN 300 MG SOLINJ FL/100ML 7",
+      "line_confidence": 0.72,
+      "raw_line": "301832 «| 40 1c PAMISCAN 300 MG SOLINJ FL/100ML_ 7 ~"
+    },
+    {
+      "code": "302972",
+      "quantite": "30",
+      "designation": "2 RETA80MGB/30 CONP | > ~ i",
+      "line_confidence": 0.72,
+      "raw_line": "302972 30 2 RETA80MGB/30 CONP | > ~ i ~"
+    },
+    {
+      "code": "300596",
+      "quantite": "30",
+      "designation": "4B CROSAL20 MG GELULES BY30 A a",
+      "line_confidence": 0.42,
+      "raw_line": "300596 4B CROSAL20 MG GELULES BY30 A _ _ a"
+    },
+    {
+      "code": "301397",
+      "quantite": "60",
+      "designation": "/7 SERVAL25MGGELULES 8/30 7",
+      "line_confidence": 0.72,
+      "raw_line": "301397 60/7 SERVAL25MGGELULES 8/30 7"
+    },
+    {
+      "code": "301972",
+      "quantite": "432",
+      "designation": "/ STOPALGIC S00MG.B/20coMP 27",
+      "line_confidence": 0.72,
+      "raw_line": "301972 432 / STOPALGIC S00MG.B/20coMP 27 _ ~"
+    },
+    {
+      "code": "302002",
+      "quantite": "288",
+      "designation": "@ —SYNALVIC 37.5 MG/325MGB/20COMP",
+      "line_confidence": 0.72,
+      "raw_line": "302002 | 288] @ —SYNALVIC 37.5 MG/325MGB/20COMP _ ~"
+    },
+    {
+      "code": "30173",
+      "quantite": "50",
+      "designation": "MG B/30CONP",
+      "line_confidence": 0.72,
+      "raw_line": "30173 CitiO TEDEMA 50 MG B/30CONP ~"
+    },
+    {
+      "code": "351347",
+      "quantite": "392",
+      "designation": "7 TEICO. 400. MG PDRE.RPREPINJ B/1 FL+SOLV/3 2ML 7 Se",
+      "line_confidence": 0.72,
+      "raw_line": "351347, (392 7 TEICO. 400. MG PDRE.RPREPINJ B/1 FL+SOLV/3 2ML 7 Se"
+    },
+    {
+      "code": "30004",
+      "quantite": "50",
+      "designation": "MG,GELULES B/10",
+      "line_confidence": 0.72,
+      "raw_line": "30004 TRAMADIS 50 MG,GELULES B/10 _"
+    },
+    {
+      "code": "300871",
+      "quantite": "36",
+      "designation": "VAINCOR 5 MG B/28 COMP",
+      "line_confidence": 0.72,
+      "raw_line": "300871 ( 36 VAINCOR 5 MG B/28 COMP"
+    },
+    {
+      "code": "350301",
+      "quantite": "392",
+      "designation": "¢ VANCO.500 MG PDRE.PPREP.INJ B/1 FL",
+      "line_confidence": 0.72,
+      "raw_line": "350301 392 ¢ VANCO.500 MG PDRE.PPREP.INJ B/1 FL #"
+    },
+    {
+      "code": "302095",
+      "quantite": "240",
+      "designation": "7” —VIADIS100MGB/ACOMH",
+      "line_confidence": 0.72,
+      "raw_line": "302095 240 7” —VIADIS100MGB/ACOMH _"
+    }
+  ]
+}

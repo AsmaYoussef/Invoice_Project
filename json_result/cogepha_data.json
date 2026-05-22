@@ -1,0 +1,814 @@
+{
+  "schema_version": 2,
+  "invoice_family": "unknown",
+  "document_metadata": {
+    "type": "Statistiques",
+    "numero": "",
+    "date": "03/03/2023",
+    "fournisseur_nom": "Cer ‘ ‘ page 8",
+    "supplier_mf": "",
+    "client_mf": "",
+    "tel": "",
+    "fax": "",
+    "email": "",
+    "rc": "",
+    "adresse": ""
+  },
+  "line_items": [
+    {
+      "code": "300933",
+      "raw_line": "300933 ACICLOVIR COMP 200 MG BT 30 38 4 =6| 30 26 21 26 2 «|| (16 i 20 ~»o | 1 nN",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300122",
+      "raw_line": "300122 ACICLOVIR CREME 5 GR 391 414 | 437 538 576 411 351 | 582 627 784 564 | 51 1369",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PF090",
+      "raw_line": "PF090 ACICLOVIR SUSP BUV 8% FL 125 ML 34 | 31 | 32 27 23 21 40 | 31 | 19 24 | 2» | 2 60",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PF149",
+      "raw_line": "PF149 ACIDE FUSIDIQUE COMP 250MG BT10 35 6 | 65 54 165 367 355 | 219 80 101 12 | 9 617",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PF186",
+      "raw_line": "PF186 ACIDE FUSIDIQUE COMP 250MG BT20 107 13606 | «117 136 253 575 551 | 446 256 233 201 | 2 409",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300350",
+      "raw_line": "300350 ACIDE FUSIDIQUE OPALIA 2% CREME 465 317 | 472 436 721 924 734 =| «| (673 543 586 460 | 4 1223",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFI33",
+      "raw_line": "PFI33- ACIDEFUSIDIQUE FLUE OPALIA 2% CREME 186 9 | 314 194 293 397 384 | (362 264 331 = | 2B 510",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302932",
+      "raw_line": "302932 ACIRYL 150 MG GELL BT 30 2 3 | 4 2 1 1 o | o 0 0 o | o 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302488",
+      "raw_line": "302488 ACIRYL 150 MG GELL BT 60 41 32 | 32 49 19 16 2 | Bb 7 8 1 | oO 7",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302487",
+      "raw_line": "302487 ACIRYL 75 MG GELL BT 15 16 2 | 9 27 37 22 3 | 7 18 “ | o 19",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302831",
+      "raw_line": "302831 ACIRYL 75 MG GELL BT 60 1 3 | 97783 | 2 2 4 4 | 0 8",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300419",
+      "raw_line": "300419 AFUSIDIQUE 2% PDE DERM 527 636 «|| «689 THB 962 1529 1432 | 1034 736 166 72 | 8&8 2014",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "303089",
+      "raw_line": "303089 ALERGOSONE2MG COMP DISPERSECBT/20 253 228 «|| 216 294 213 264 m5 | 333 461 659 444 6«(| O78 1013",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300014",
+      "raw_line": "300014 ALERGOSONE FL 30 ML 895 1028 | 9832 456 614 938 1294 | 1620 2059 1470 1255 | 136 3061",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301983",
+      "raw_line": "301983 ALEZINE 5MG COMP ORODISP BT/18 60 | a | 22 25 35 32 «| «56 | 54 7 | 5 | 0 u",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302892",
+      "raw_line": "302892 ALEZINE 5MG COMP ORODISP BT/30 118 109 «6| |=(59 53 50 78 63 | 79 95 19 3 | o 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302889",
+      "raw_line": "302889 ALEZINE 5MG COMP ORODISP BT/6 i) © | o 0 0 0 o | o i) i) © | oa 12",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307507",
+      "raw_line": "307507 AMUCHINA FL 250 ML 1472 2265 | 2804 1561 1530 1601 3415 | 1252 968 878 1884 | 1056 1833",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "308432",
+      "raw_line": "308432 AMUSTIL CREME 30 GR 0 o | o 0 0 0 o | o 0 0 o | 0 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301951",
+      "raw_line": "301951 AMUSTIL CREME 70 GR 397 353 | = 254 20 498 506 337 | 293 237 348 24 0«| 34 509",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300896",
+      "raw_line": "300896 APYROSIS SUSP BUV FL 250 ML 335 369 | 221 233 253 294 287 | «(272 268 347 300 | 68 440",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301309",
+      "raw_line": "301309 APYROSIS SUSP BUV SACHETS BT/24 1264 1415 | 738 861 902 985 1232 | 1905 2095 2515 1056 | 861 4282",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302851",
+      "raw_line": "302851 ASTAIR 10MG COMP PELL BT/30 16 13 «6| 73 38 47 68 93 =| 85 116 16 i rn 134",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302867",
+      "raw_line": "302867 ASTAIR SMG COMP A CROQUER BT/30 40 re 23 19 22 40 | 44 60 46 a | 4 82",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFC0009",
+      "raw_line": "PFC0009 ASTERANE SOIN INTIME FL/300 ML 98 30 ||) C8 53 83 60 63 | 6 52 39 eo | 2 106",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFCO07",
+      "raw_line": "PFCO07 ASTERANE GEL INTIME STICK BT/20 38 32 | 30 34 28 44 3 «| «39 33 38 23 | (3 65",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "308391",
+      "raw_line": "308391 AURIPAX GOUTTES o | o | 0 0 0 0 o | oO ') 0 | o | 0 )",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301001",
+      "raw_line": "301001 AXEN 2.5% GEL DERM 1/50G (FLEXEN) 88 37 | 8 ir) 120 106 92 |) 89 63 154 7 | 4s 297",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300855",
+      "raw_line": "300855 AXEN SUPPO 100 MG BT 10 1166 lis9 | 1271 1293 1455 1415 1193 | 1090 1036 1080 1029 | 188 1591",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "303969",
+      "raw_line": "303969 BISTERYL FL 250 ML( ASEPSIL FL250) i) | © | o 0 0 0 o | o i) i) | © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300082",
+      "raw_line": "300082 BROMISOL 0 2% SOL BUV FL 60ML 205 298 «| 230 237 191 238 263 «| «(444 580 523 4m | 106 177",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300614",
+      "raw_line": "300614 CLENS PLUS 329 362 | = 402 327 362 316 227,—«| (216 189 197 176 06-| (0 277",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFOO30",
+      "raw_line": "PFOO30 CALCIDOS PLUS COMP BT/30 28 ss | 40 40 35 41 “4 | 14 63 o | 7 125",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302835",
+      "raw_line": "302835 CALPEROS 500 MG COMP BT 30 OPALIA 912 996 | 977 839 915 1100 985 | 832 846 941 933 | 167 1398",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301471",
+      "raw_line": "301471 CINKASA 500MG SUPPO BT/15 31 47 | 38 18 37 40 32 | 29 30 42 4a | 1 118",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "306058",
+      "raw_line": "306058 COLLUXID 253 326 | «(324 266 301 247 328 «=| 320 317 472 4099 | 81 636",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301023",
+      "raw_line": "301023 CORTINASE SAGE SUSP NAS FL/120 224 199 | 214 B 150 184 234 | 222 191 191 149 | 18 379",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307772",
+      "raw_line": "307772 DERMOSALIC LOTION 751 751 | 556 496 516 602 13 | 729 643 646 639 6| = (108 897",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307770",
+      "raw_line": "307770 DERMOSALIC POMMADE 2407 | 2122 | 2532 1906 1768 2025 2010 | 2184 1520 2322 | 1375 | 408 2826",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "306859",
+      "raw_line": "306859 DERMOSONE CREME 15G 1161 1324 | 1161 1140 1361 1154 1128 | 908 695 1031 s00 || )|(159 1135",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "308486",
+      "raw_line": "308486 DERMOSONE LOTION 437 4 | 381 216 31L 494 aso | 443 377 488 a9 | 59 614",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "306906",
+      "raw_line": "306906 DERMOSONE NEO CREME 39 | 6 | 33 49 68 17 6 | 3 i) i) | © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "306905",
+      "raw_line": "306905 DERMOSONE NEO POMMADE 0 o | o 0 0 0 o | o 0 0 o | 0 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "306858",
+      "raw_line": "306858 DERMOSONE POMMADE 1804 2059 | 2241 1854 1903 1916 1733 | 1631 1640 1867 1254 | 361 2665",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "303198",
+      "raw_line": "303198 ee EAB u v | 22110 | 0 0 0 0 | 0 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301865",
+      "raw_line": "301865 DIAMEZID 60MG COMP PELL BT/30 206 200 «| 184 169 263 314 232 | (63 278 252 237 «| «(27 524",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300074",
+      "raw_line": "300074 DICLOPAL 100 MG SUP BOITE 10 426 384 | (460 367 342 4ll 386 «| «470 296 432 382 | = 96 664",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300025",
+      "raw_line": "300025 DICLOPAL GEL DERMIQUE 284 251 | 299 258 273 322 369 =| 324 338 432 487. | 106 755",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301158",
+      "raw_line": "301158 DOMPER 10MG COMP B/40 247 22 =| 366 354 424 216 237, «| (24 288 254 137 | 30 371",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301106",
+      "raw_line": "301106 DOMPER IMG/ML SUSP BUV FL/200 ML 145 173 | 2 226 245 170 6 6| #147 100 107 13 «| 7 270",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307540",
+      "raw_line": "307540 ECOREX CREME 797 919 | 1039 803 871 1014 964 =| | (964 19 762 740 =| 106 1220",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "306957",
+      "raw_line": "306957 ECOREX LAIT 30 CC 625 433 | 526 401 4719 481 633 | «| 546 454 532 44 0=«d(|C7 799",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301468",
+      "raw_line": "301468 ECOREX LP 150MG OVULE BT/1 241 | 254 | 223 194 208 210 257 «| 290 | 208 200 | 232 «| (2 339",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307823",
+      "raw_line": "307823 ECOREX OVULE BOITE 3 368 286 «=| = 305 285 299 342 319 |= 424 306 319 24 =|) (58 408",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307706",
+      "raw_line": "307706 ECOREX SPRAY FL 30 GR 94 165 0 | (173 96 91 108 73 | 84 103 99 n | 12 109",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "303280",
+      "raw_line": "303280 ELIXTRA 2 SMG COMP PELL BT 60 28 9 =| 30 28 31 25 38C«| 54 41 58 so | u 91",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "303260",
+      "raw_line": "303260 ELIXTRA 2 SMG COMP PELL BT20 38 2» | 39 52 39 41 63 | 2 35 355 31 | 4 98",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "303281",
+      "raw_line": "303281 ELIXTRA SMG COMP PELL BT 60 49 63 | 7 64 10 89 82 | 103 112 93 103 «|| (14 164",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "303261",
+      "raw_line": "303261 ELIXTRA SMG COMP PELL BT20 49 3 6©| | (60 ir) 38 56 7m | 6 53 64 63 | 9 90",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302441",
+      "raw_line": "302441 EOLIDE EASY FLOW 200uG B/60 GEL+INH 210 137 | 190 197 105 116 169) =| 217 456 486 34 | 55 722",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302442",
+      "raw_line": "302442 + EOLIDE EASY FLOW 400uG B/ 60GEL+INHAL 208 278 «| (2A8 269 191 180 197 | 252 410 425 37— || oR 1017",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFCO17",
+      "raw_line": "PFCO17 FER MAX GELULES BT/30 2 | 2 | 9 21 14 22 2 6|:) 8 2 38 | 7 | 3 67",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301648",
+      "raw_line": "301648 FER PLUS SOL BUV 7 ML SACH BT/32 7 1 | = 126 86 131 97 107) | 3 58 80 31 | 66 91",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301014",
+      "raw_line": "301014 FER PLUS SOL BUV FL/250 ML+MESURET 355 49 | 471 395 439 502 40 | 415 413 415 375 | 64 618",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300879",
+      "raw_line": "300879 FER PLUS SOL BUV FL/60 ML+MESURETTE i) | © | o 0 0 0 o | o i) i) | © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301024",
+      "raw_line": "301024 FLUDERM 0 005% PDE DERM T/30G 70 124 | = 108 11 118 80 7 =| 128 107 61 4 | 2 131",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "306860",
+      "raw_line": "306860 FLUSKIN GEL 133 90 | 153 130 122 118 12 | 76 55 119 % = 6| «98 175",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301143",
+      "raw_line": "301143 GABA 300MG GELU B/90 NEURONTIN 31 44 | 33 14 29 42 2» | 36 36 35 23 | 6 46",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PRCO29",
+      "raw_line": "prco29 GEL-ANTIBACTERIEN STERIDINE GELFLI25 o | 0 0 0 0 o | 0 ') ') o | 0 10",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307774",
+      "raw_line": "307774 GLYSS ADULTE SUPPOB 10 642 506 | 723 536 700 690 79 =| «(624 585 620 499 | 54 1927",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307785",
+      "raw_line": "307785 GLYSS NOURISSON SUPPO B 10 622 566 | | (693 448 578 TA 66 8=6| | (755 512 636 sao | 62 806",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFOO31",
+      "raw_line": "PFOO31 GOLDIX JUNIOR CREME 50 GR 6 4 | 30382 | 13 33 15 2 | 5 22",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300269",
+      "raw_line": "300269 GOLDIX POMMADE 668 41g | 306 428 261 561 735 =| (1343 2097 1887 1333 | 165 3859",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302280",
+      "raw_line": "302280 GOLDIX SIROP DUO SACHETS 15 ML BT/12 23 si |) 32 48 4 39 58 | s116 167 151 % =| 10 251",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302278",
+      "raw_line": "302278 GOLDIX SIROP JOUR SACHETS BT/12 i) o | o 0 0 0 o | o i) i) © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301838",
+      "raw_line": "301838 GOLDIX SIROP JOURS 150 ML i) | © | o 0 0 0 o | o | i) i) | © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302279",
+      "raw_line": "302279 GOLDIX SIROP NUIT SACHETS BT/12 0 o | o 0 0 0 o | o 0 0 o | 0 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFOO32",
+      "raw_line": "PFOO32 HEDELIX SIROP CONTRE LA TOUX 120 ML 13 6 | 16 17 9 30 55 | 102 391 137 35 | 8 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFCO14",
+      "raw_line": "PFCO14 HOSPER HOMME GELULES BT/120 i) o | 1 0 0 0 o | o i) 0 © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PECO08",
+      "raw_line": "PECO08 IALUFRESH GEL BUCCAL 20 GR 12 is | 12 10 22 17 i |) (16 8 13 8 | 1 25",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFCO10",
+      "raw_line": "PFCO10 IALUFRESH SPRAY BUCCAL 30 ML 28 “ | 30 25 20 17 3 06|:) 8 15 8 is | 5 27",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PF150",
+      "raw_line": "PF150 IALUGYN OVULES SUPPO BT/10 89 74 =| 107 37 96 131 31 | 10 86 104 6 | 10 150",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFCO12",
+      "raw_line": "PFCO12 IALULENS SOL EXTERNE 250 ML i) o | o 0 0 0 o | o 0 0 © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PECO22",
+      "raw_line": "PECO22 IALUPROCT SUPPO BT/10 407 447 | «403 269 299 249 268 =| = (293 241 232 21 | 50 369",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFC009",
+      "raw_line": "PFC009 IALUSKIN CREME CICATRISANTE 70 GR 3 9 | 43822 | 3 4 3 o | o 3",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "55623",
+      "raw_line": "55623 IALUSOPH SACHETS BT 20 /10ML 117 | 130 «| (125 90 114 106 7m | (108 | 128 165 | we | ol 243",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307790",
+      "raw_line": "307790 INDOPAL 100 MG SUP 0 o | o 0 0 0 o | o 0 0 o | 0 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301326",
+      "raw_line": "301326 IPPSIUM 20MG GEL GASTRO RESIS FL/14 65 ea | 72 58 62 95 1 =| 100 68 %4 zs | u 138",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301404",
+      "raw_line": "301404 IPPSIUM 20MG GEL GASTRO RESIS FL/7 108 96 | (138 91 119 160 im | 17 142 160 14g | 14 234",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301328",
+      "raw_line": "301328 IPPSIUM 40MG GEL GASTRO RESIS FL/14 88 36 | (102 81 106 101 9 6 | (131 106 17 123 | 20 190",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301329",
+      "raw_line": "301329 IPPSIUM 40MG GEL GASTRO RESIS FL/28 92 9 | 12 59 91 115 37 =| s(10 112 149 105 | 8 283",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301318",
+      "raw_line": "301318 ITRAGYN 100 MG GELU BT/4 41 6 | 52 14 54 68 33 «| «(106 37 41 a | 2 108",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300123",
+      "raw_line": "300123 KETIN SOL BUV 150 ML 0 o | o 0 0 0 o | o 0 0 © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300499",
+      "raw_line": "300499 KETOGEL 2% GEL DERMIQUE 28 | lig | 86 25 1 1 sy | 40 22 4 | 4. 6 | (2 144",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300298",
+      "raw_line": "300298 METRONIDAZOLE 4% SB F120ML 34 2 =| 30 20 24 21 37—«| 8s 10 13 1 | oO 45",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301330",
+      "raw_line": "301330 MG2 PLUS 122MG/10ML STICK BT/20 154 172 «| 216 165 176 219 133 | (197 166 173 i | 19 285",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300406",
+      "raw_line": "300406 MOMENT 20MG/ML GTTE BUV 125 429 | 402 | 435 487 351 405 40 =| 475 411 388 | 303 | 49 487",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302151",
+      "raw_line": "302151 MONO TIAZEM LP 200MG GELULES BT/30 0 o | o 0 0 0 o | o 0 0 o | o 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301985",
+      "raw_line": "301985 MONO TIAZEM LP 300MG GELULES BT/30 0 o | o 0 0 0 o | o 0 0 o | 0 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307311",
+      "raw_line": "307311 MUCOSOL ADULTE SIROP 408 542 | 369 472 305 477 527, | 795 1528 1047 1024 | 205 1105",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307312",
+      "raw_line": "307312 MUCOSOL ENFANT SIROP 208 328 «| (164 152 93 179 293 | 436 600 Bi 42 | © 2",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301670",
+      "raw_line": "301670 MUCOSOL SACHETS AD 5% SIROP BT/12 27 2 =| #2 23 14 16 24 6| (4 39 35 2 | 1 52",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300134",
+      "raw_line": "300134 MYCOREX CREME 1% 30 GR 114 105 | = (123 116 117 166 107 (| 74 1 190 6 6| 1s 222",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302855",
+      "raw_line": "302855 Beater 83 w | 7 63 67 92 uo =| 150 139 182 ws | 15 485",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302816",
+      "raw_line": "302816 NOTOS COMBI weOsOGE) PINH BT 149 i | 138 123 126 163 208 | 223 281 317 a1 | 3 794",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302440",
+      "raw_line": "302440 NOTOS EASY FLOW 12yG B/ 30 GELHINH 105 103 | 78 63 62 59 36 | 86 157 102 49 | (21 147",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302437",
+      "raw_line": "302437 PON a Oe S60 52 n | 8 6 58 81 12 | 106 126 160 ws | 9 258",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PF235",
+      "raw_line": "PF235 ORTOTON 750 MG BT/20 237 324 | 288 244 320 349 442 | 285 334 385 3009 | 78 533",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PF234",
+      "raw_line": "PF234 ORTOTON 750 MG BT/S0 65 | 3 | CC74 56 107 104 7 | 143 | 115 129 | 4 | 17 | 206",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PF216",
+      "raw_line": "PF216 PAINOFEN ENFANT NOUR 120 ML 64 6 | 97 100 67 90 9 =| 117 203 113 17 | 0s 342",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300097",
+      "raw_line": "300097 PRADIS FORT GTT 30 ML= MEPRAMIDE 49 sg | 109 122 155 70 1s )6 Cll ats 72 55 6 | 2 112",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300080",
+      "raw_line": "300080 PRADIS SIROP FL 200 ML=MEPRAMIDE 172 142 | 208 268 21 172 139 «=| 236 190 160 u3 | 16 272",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300159",
+      "raw_line": "300159 PRADIS SUPPO 10MG BT 10 94 so ||) (7 83 131 127 133° | = 128 65 65 4 | 6 287",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301264",
+      "raw_line": "301264 PRILIA 5% CREME DERMIQUE T/30GR 414 480 | 477 532 552 423 322 | 325 306 307 236 «| | (44 449",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PF152",
+      "raw_line": "PF152 PRILIA CREME DERMIQUE T/5 GR 410 349 | «| (344 346 309 277 228 «| ~(o22 240 230 22 | 27 279",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFCO13",
+      "raw_line": "PFCO13 PROVOC FEMME GELULES BT/60 0 o | o 0 0 0 o | o i) i) © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFCO25",
+      "raw_line": "PFCO25 PROVOC PLUS GELULES o | o | 01471 | 0 ') 0 | o | 0 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307866",
+      "raw_line": "307866 PRUREX CREME DERMIQUE 519 504 | 580 525 472 521 414 | (442 288 386 62 =| 107 92",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "303318",
+      "raw_line": "303318 PSORIASONE SOMCGID SMIG/GR PDEDERMBT = 4 «6 | u 8 12 6 5 | 8 2 8 i | 1 18",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302116",
+      "raw_line": "302116 eR OER oR PDE 19 | 3 | 2» 25 7 18 um | 18 | 25 23 | vw | 1 28",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302817",
+      "raw_line": "302817 PYRIMAG SO eneieNa SACHETS 41 93 | 118 108 1 118 129 | 106 41 126 10 | 1 150",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PECO35",
+      "raw_line": "PECO35 QUERCETINE PLUS GELULE B/30 5 2 | 9 12 7 0 1 | 2 6 2 1 | 0 170",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301370",
+      "raw_line": "301370 RELAXIL 4MG/2ML SOL INI BT/5 i) o | o 0 0 0 o | o i) 0 © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300917",
+      "raw_line": "300917 RELAXIL GELU 4 MG BT 14 36 4 | 38 46 74 52 o | 6 30 16 32 «| #1 120",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301127",
+      "raw_line": "301127 RINOSAL 50 pG FL/120 DOSE 546 541 | (348 262 239 373 43 «| «472 583 531 4 | (84 1079",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300673",
+      "raw_line": "300673 RUSCOLOG CREME RECT T/20G i) o | o 0 0 0 o | o i) i) © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300277",
+      "raw_line": "300277 RUSCOLOG SUPPO BT/10 i) o | o 0 0 0 o | o i) i) © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300902",
+      "raw_line": "300902 SAVEROL GEL DERMQ TB 70 GR 90 83 | 88 69 100 99 7 | 99 69 109 n | 9 138",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300500",
+      "raw_line": "300500 SAVEROL SOL BUCAL FL 400 ML 228 277 «| «(297 233 245 256 336 «| «282 268 294 305 | 50 446",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PECO24",
+      "raw_line": "PECO24 SILISKIN GEL FLCON 15G 3 1 | 54144 | 3 3 i) © | oa 12",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "306904",
+      "raw_line": "306904 SPORALIM LOTION i) o | o 0 0 0 o | o i) i) © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300023",
+      "raw_line": "300023 SULPIRIL SOL BUV 0 5% FL 200 ML 0 | o | o 0 0 0 o | o | i) i) | o | o | 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301385",
+      "raw_line": "301385 TALLIS 250MG COMP BT/42 0 1 | o 0 0 0 o | o 0 0 o | o 2",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300672",
+      "raw_line": "300672 TALLIS CREME DERMO 1% TB 15 94 39 | oF 59 89 98 79 | 88 37 69 as | 5 164",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300924",
+      "raw_line": "300924 TALLIS SPRAY 1% SOL FL 15ML 32 32 «| (54 25 4 26 35 | 30 23 28 ~»o | 2 61",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "308433",
+      "raw_line": "308433 TILL 03% SOL EXT FL/200ML TB 358 | (961 687 869 841 si4. | 840 728 745 687 | = (122 1200",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302916",
+      "raw_line": "302916 | TONICALCIUM ENF AMPBUV 5ML OPALIA 0 o | o 0 0 0 o | o 0 0 o | 0 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302843",
+      "raw_line": "302843. TONICALCIUM AD AMP BUV BTE 20 OPALIA i) o | o 0 0 0 o | o i) i) © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300079",
+      "raw_line": "300079 TUSSIPAX AD SIROP 125 ML 274 268 «| =(253 293 165 238 380 «| 506 919 934 772 | = (104 1322",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300240",
+      "raw_line": "300240 TUSSIPAX ENF SIROP 125 ML 153 | 12606 | 99 69 38 88 194 | 199 358 308 | 300 | 86 356",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307824",
+      "raw_line": "307824 VAGILEN OVULE GYN S00MGB1O 0 o | o 0 0 0 o | o 0 0 o | 0 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302871",
+      "raw_line": "302871 VALCYVIR 500MG COMP PELL BT/10 i) o | o 0 0 0 o | o i) 0 © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302872",
+      "raw_line": "302872 VALCYVIR 500MG COMP PELL BT/42 i) | © | o 0 0 0 o | o i) i) | o | o 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301490",
+      "raw_line": "301490 VALOXINE 57 64MG/ML SIROP FL/150 ML 0 o | o 0 0 0 o | o 0 0 o | o 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307413",
+      "raw_line": "307413 VERAX BLEU SOL 120 ML 1430 137% | 12U 1105 1101 900 1146 | 1189 904 1292 1319 | 372 1809",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300963",
+      "raw_line": "300963 VERAX BLU COLLUTOIRE FL 30 ML 748 s61 | 632 648 468 589 79 =| | (924 1093 1132 1033 | 46 32",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301150",
+      "raw_line": "301150 VERAX GEL DERM 5% T/70G 1 3 | 30311 | 2 2 6 3 | 1 6",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "307552",
+      "raw_line": "307552 VERAX GEL DERMQ 50MG/ TB 30G i) © | o 0 0 0 o | o i) i) o | o 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300878",
+      "raw_line": "300878 VERAX SUPPO AD 100MG BT 10 0 o | o 0 0 0 o | o 0 0 o | 0 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "308216",
+      "raw_line": "308216 VIT A CREME DERMIQ OPALIA 728 700 =| «(536 401 309 338 361 | 595 523 1132 647 =| 12 1824",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PECO036",
+      "raw_line": "PECO036 VITA PLUS BT/60 1 o | 48902 | 2 3 3 1 | 0 29",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PFC037",
+      "raw_line": "PFC037 VITAMINE C PLUS OPALIA 0 | o | o 0 0 0 o | o | 0 0 | o | 0 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "303316",
+      "raw_line": "303316 XICALM 15MG COMP ORODI BT 18 0 o | o 0 0 0 o | o 0 0 o | 0 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "303315",
+      "raw_line": "303315 XICALM 7 5MG COMP ORODISP BT 18 i) o | o 0 0 0 o | o i) i) © | oa 0",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300854",
+      "raw_line": "300854 ZZOLE COMP 400 MG BT 1 1175 1066 | 997 965 927 1147 1450 | 1544 1417 1482 1234 | 248 1759",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "300164",
+      "raw_line": "300164 Z ZOLE SUSP FL 10ML 1619 1357 | 1292 1344 1420 2043 2387 | 2256 1943 1404 1476 | 356 3413",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "302873",
+      "raw_line": "302873 ZANIDIP 20MG COMP PELL BT/30 262 225 | 251 263 233 299 29s | 205 312 333 206 «6| 40 491",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "301388",
+      "raw_line": "301388 ZENEXOR LP37 5 MG GEL BT/30 24 3 «| a} 2B 20 23 23 | 27 21 20 30 «|: 3 35",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "PECO34",
+      "raw_line": "PECO34 ZINC PLUS 25MG GELLULE B/30 iL 1 «| (38 125 7 22 1 |) 25 25 3 | 5 433",
+      "line_confidence": 0.35
+    }
+  ]
+}

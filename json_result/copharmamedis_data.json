@@ -1,0 +1,257 @@
+{
+  "schema_version": 2,
+  "invoice_family": "bc_avenir",
+  "document_metadata": {
+    "type": "Bon de Commande",
+    "numero": "",
+    "date": "18/04/2023",
+    "fournisseur_nom": "- COPHARMA —",
+    "supplier_mf": "",
+    "client_mf": "0548128F/P/M/000",
+    "tel": "73674588",
+    "fax": "73874826",
+    "email": "",
+    "rc": "",
+    "adresse": "PH AQ AV ALI BELHOUANE - - MAHDIA * ad"
+  },
+  "line_items": [
+    {
+      "code": "300916",
+      "quantite": "30",
+      "designation": "ENOXA8q00UI SOLINJ B/2 IN 7",
+      "line_confidence": 0.72,
+      "raw_line": "300916 | 30 |ENOXA8q00UI SOLINJ B/2 IN 7"
+    },
+    {
+      "code": "301189",
+      "quantite": "64",
+      "designation": "ESORAL 40MG GELU B/28",
+      "line_confidence": 0.72,
+      "raw_line": "301189 64 |ESORAL 40MG GELU B/28 _"
+    },
+    {
+      "code": "301550",
+      "quantite": "40",
+      "designation": "PIDOGREL75MG CP B90",
+      "line_confidence": 0.72,
+      "raw_line": "301550 40 PIDOGREL75MG CP B90 |"
+    },
+    {
+      "code": "301691",
+      "quantite": "20",
+      "designation": "IRYS2MG CP B/s0 |cP",
+      "line_confidence": 0.72,
+      "raw_line": "301691 20 | IRYS2MG CP B/s0 |cP"
+    },
+    {
+      "code": "301602",
+      "quantite": "10",
+      "designation": "IRYS3MGcPB/s0",
+      "line_confidence": 0.72,
+      "raw_line": "301602 | 10 IRYS3MGcPB/s0 _"
+    },
+    {
+      "code": "301693",
+      "quantite": "30",
+      "designation": "IRYS4MG CP B/90",
+      "line_confidence": 0.72,
+      "raw_line": "301693 30 IRYS4MG CP B/90"
+    },
+    {
+      "code": "301997",
+      "quantite": "4800",
+      "designation": "STOPALGIC 1G SOL INJ F/100ML",
+      "line_confidence": 0.72,
+      "raw_line": "301997 4800 STOPALGIC 1G SOL INJ F/100ML"
+    },
+    {
+      "code": "18111",
+      "quantite": "10",
+      "designation": ".‘ | BIGFER FLUS GELU B/30 -",
+      "line_confidence": 0.72,
+      "raw_line": "18111 10.‘ | BIGFER FLUS GELU B/30 - |"
+    },
+    {
+      "code": "18113",
+      "quantite": "3",
+      "designation": "FERTILIS HOMME B/120",
+      "line_confidence": 0.72,
+      "raw_line": "18113 3 _ | FERTILIS]HOMME B/120"
+    },
+    {
+      "code": "302123",
+      "quantite": "40",
+      "designation": "GO-LOSAR PLUS 100/12.5MG CP B/90",
+      "line_confidence": 0.72,
+      "raw_line": "302123 ~ 40 GO-LOSAR PLUS 100/12.5MG CP B/90 |"
+    },
+    {
+      "code": "302124",
+      "quantite": "10",
+      "designation": "LOSAR FPRT 100MG CP B/90 a —",
+      "line_confidence": 0.72,
+      "raw_line": "302124 |\" 10 LOSAR FPRT 100MG CP B/90 a —"
+    },
+    {
+      "code": "19014",
+      "quantite": "20",
+      "designation": "BIGMAG PLUS GELU B/20",
+      "line_confidence": 0.72,
+      "raw_line": "19014 | 20 _ BIGMAG PLUS GELU B/20 _"
+    },
+    {
+      "code": "302465",
+      "quantite": "40",
+      "designation": "ATOR 40MG CP B/30",
+      "line_confidence": 0.72,
+      "raw_line": "302465 | 40 - ATOR 40MG CP B/30"
+    },
+    {
+      "code": "302467",
+      "quantite": "40",
+      "designation": "ATOR 40\\1G CP B/90",
+      "line_confidence": 0.72,
+      "raw_line": "302467 40 ATOR 40\\1G CP B/90 | _"
+    },
+    {
+      "code": "302512",
+      "quantite": "40",
+      "designation": "\\uevoRe GA su CP BI5",
+      "line_confidence": 0.72,
+      "raw_line": "302512 40 \\uevoRe GA su CP BI5"
+    },
+    {
+      "code": "302513",
+      "quantite": "20",
+      "designation": "LEVORGICASMG CP B/30 PELL",
+      "line_confidence": 0.72,
+      "raw_line": "302513 _-20- LEVORGICASMG CP B/30 PELL"
+    },
+    {
+      "code": "302577",
+      "quantite": "48",
+      "designation": "DIABIPHAGE 850MG CP B/60",
+      "line_confidence": 0.72,
+      "raw_line": "302577 48 DIABIPHAGE 850MG CP B/60 |"
+    },
+    {
+      "code": "302745",
+      "quantite": "5",
+      "designation": "— )NEURONED 150MG GELULES B/30 : -",
+      "line_confidence": 0.72,
+      "raw_line": "302745 | 5 — )NEURONED 150MG GELULES B/30 : -"
+    },
+    {
+      "code": "302761",
+      "quantite": "10",
+      "designation": "IRYS6MG CP B/90",
+      "line_confidence": 0.72,
+      "raw_line": "302761 10 _ |IRYS6MG CP B/90"
+    },
+    {
+      "code": "302752",
+      "quantite": "96",
+      "designation": "DIABIPHAGE 1000MG CP BTI6O",
+      "line_confidence": 0.72,
+      "raw_line": "302752 (96 |DIABIPHAGE 1000MG CP BTI6O _"
+    },
+    {
+      "code": "302973",
+      "quantite": "10",
+      "designation": "RETA160MG CP B/30",
+      "line_confidence": 0.72,
+      "raw_line": "302973 10 RETA160MG CP B/30 |"
+    },
+    {
+      "code": "302974",
+      "quantite": "10",
+      "designation": "RETAZIqj 160MG/25MG CP B/30 Z Z",
+      "line_confidence": 0.72,
+      "raw_line": "302974 \"10 [RETAZIqj 160MG/25MG CP B/30 Z Z"
+    },
+    {
+      "code": "28351",
+      "quantite": "4",
+      "designation": "20 4 JOINTABS CPB300 |=STRUCTUM",
+      "line_confidence": 0.72,
+      "raw_line": "28351 4 20 4 JOINTABS CPB300 |=STRUCTUM"
+    },
+    {
+      "code": "300290",
+      "quantite": "50",
+      "designation": "VISIODIS 0.01% COLLYRE F/10ML a a",
+      "line_confidence": 0.72,
+      "raw_line": "300290 | 50 VISIODIS 0.01% COLLYRE F/10ML a a"
+    },
+    {
+      "code": "300510",
+      "quantite": "460",
+      "designation": "TRAMADIS 100MG INJ B/S",
+      "line_confidence": 0.72,
+      "raw_line": "300510 | 460 TRAMADIS 100MG INJ B/S |"
+    },
+    {
+      "code": "300546",
+      "quantite": "50",
+      "designation": "CIPRO 013% COLLYRE F/SML",
+      "line_confidence": 0.72,
+      "raw_line": "300546 50 CIPRO 013% COLLYRE F/SML"
+    },
+    {
+      "code": "300598",
+      "quantite": "50",
+      "designation": "ROSALZOMGGELUB/30 |",
+      "line_confidence": 0.72,
+      "raw_line": "300598 | 50 |ROSALZOMGGELUB/30 | |"
+    },
+    {
+      "code": "300646",
+      "quantite": "50",
+      "designation": "CIPRO 500MG CP B/14",
+      "line_confidence": 0.72,
+      "raw_line": "300646 | 50 CIPRO 500MG CP B/14 | _"
+    },
+    {
+      "code": "300649",
+      "quantite": "10",
+      "designation": "IPPROTON 10MG GELU B/8",
+      "line_confidence": 0.72,
+      "raw_line": "300649 | 10 |IPPROTON 10MG GELU B/8 |"
+    },
+    {
+      "code": "300766",
+      "quantite": "100",
+      "designation": "DESLOR §MG CP B15",
+      "line_confidence": 0.72,
+      "raw_line": "300766 | 100 ° _ DESLOR §MG CP B15 _ _"
+    },
+    {
+      "code": "300825",
+      "quantite": "10",
+      "designation": "IRYS 1MG CP B/30",
+      "line_confidence": 0.72,
+      "raw_line": "300825 10 IRYS 1MG CP B/30 |"
+    },
+    {
+      "code": "300826",
+      "quantite": "20",
+      "designation": "‘ IRYS 2MG{CP B/30",
+      "line_confidence": 0.72,
+      "raw_line": "300826 20‘ IRYS 2MG{CP B/30 |"
+    },
+    {
+      "code": "300830",
+      "quantite": "20",
+      "designation": "FLUKAS 150MG GELU B/4 ~ |",
+      "line_confidence": 0.72,
+      "raw_line": "300830 20 |FLUKAS 150MG GELU B/4 ~ | |"
+    },
+    {
+      "code": "300871",
+      "quantite": "140",
+      "designation": "VAINCORMG CP B/28=ZYPREXAS",
+      "line_confidence": 0.72,
+      "raw_line": "300871 140 | VAINCORMG CP B/28=ZYPREXAS _ |"
+    }
+  ]
+}

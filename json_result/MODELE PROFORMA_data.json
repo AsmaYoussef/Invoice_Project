@@ -1,0 +1,900 @@
+{
+  "schema_version": 2,
+  "invoice_family": "proforma_modele",
+  "document_metadata": {
+    "type": "Proforma",
+    "numero": "MDN-PRE-2308139",
+    "date": "30/08/2023",
+    "fournisseur_nom": "PROFORMA N°:MDN-PRE-2308139",
+    "supplier_mf": "",
+    "client_mf": "",
+    "tel": "",
+    "fax": "",
+    "email": "",
+    "rc": "",
+    "adresse": "oo, Adresse, 4 RUE ELAGHALIBA — LE BARDO-TUNIS"
+  },
+  "line_items": [
+    {
+      "code_pct": "303543",
+      "code_article": "PF000400001",
+      "designation_article": "— -DMAX U nase INJ B01 5 896 800",
+      "quantite": "200000",
+      "prix_unitaire": "2.80000",
+      "montant": "896 800",
+      "line_confidence": 0.28,
+      "raw_line": "303543 PF000400001 — -DMAX 200000 U nase INJ B01 2.80000 2,106 5 896 800"
+    },
+    {
+      "code_pct": "302968",
+      "code_article": "PF00G700001",
+      "designation_article": "nommtnnt 5473 656 760",
+      "quantite": "120,00",
+      "prix_unitaire": "",
+      "montant": "656 760",
+      "line_confidence": 0.28,
+      "raw_line": "302968 FFO0G700001 nommtnnt 120,00 5473 656 760"
+    },
+    {
+      "code_pct": "302970",
+      "code_article": "PF000700004",
+      "designation_article": "AMLODIPINE 10 MG CP 8258 495 480",
+      "quantite": "60,00",
+      "prix_unitaire": "",
+      "montant": "495 480",
+      "line_confidence": 0.28,
+      "raw_line": "302970 PF000700004 -AMLODIPINE 10 MG CP 60,00 8258 495 480"
+    },
+    {
+      "code_pct": "302463",
+      "code_article": "PF001500003",
+      "designation_article": "“ATOR 10 MG CP B30",
+      "quantite": "480,00",
+      "prix_unitaire": "11,290",
+      "montant": "5419200",
+      "line_confidence": 0.28,
+      "raw_line": "302463 PFO01S00003 “ATOR 10 MG CP B30 480,00 11,290 5419200"
+    },
+    {
+      "code_pct": "352464",
+      "code_article": "PF001500008",
+      "designation_article": "ATOR 10 MG CP B90 23 676",
+      "quantite": "72,00",
+      "prix_unitaire": "",
+      "montant": "2 136,872",
+      "line_confidence": 0.28,
+      "raw_line": "352464 PFOO1500008, ATOR 10 MG CP B90 72,00 23 676 2 136,872"
+    },
+    {
+      "code_pct": "902459",
+      "code_article": "PF001500013",
+      "designation_article": "ATOR 20 MG CP B30 680",
+      "quantite": "320.00",
+      "prix_unitaire": "13849",
+      "montant": "4.431 680",
+      "line_confidence": 0.28,
+      "raw_line": "902459 PF001S00013 -ATOR 20 MG CP B30 320.00 13849 4.431 680"
+    },
+    {
+      "code_pct": "302460",
+      "code_article": "PF00L500016",
+      "designation_article": "“ATOR 20 MG CP B90",
+      "quantite": "120,00",
+      "prix_unitaire": "38,910",
+      "montant": "4.669",
+      "line_confidence": 1.0,
+      "raw_line": "302460 PFOOLSO0016 “ATOR 20 MG CP B90 120,00 38,910 4.669 200"
+    },
+    {
+      "code_pct": "302465",
+      "code_article": "PF001500D19",
+      "designation_article": "ATOR 40 MG CP B30",
+      "quantite": "42000",
+      "prix_unitaire": "22,966",
+      "montant": "8603,720",
+      "line_confidence": 1.0,
+      "raw_line": "302465 FFOOISOODI9 ATOR 40 MG CP B30 42000 22,966 8 603,720"
+    },
+    {
+      "code_pct": "302464",
+      "code_article": "PF001500029",
+      "designation_article": "ATOR 80 MG CP A30",
+      "quantite": "90,00",
+      "prix_unitaire": "29,400",
+      "montant": "2.646",
+      "line_confidence": 0.7,
+      "raw_line": "302464 PFO01S00029 -ATOR 80 MG CP A30 90,00 29,400 2.646,000"
+    },
+    {
+      "code_pct": "",
+      "code_article": "PF002700010",
+      "designation_article": "BIG FER 120 MG GEL B30 4800",
+      "quantite": "4800",
+      "prix_unitaire": "7,850",
+      "montant": "376,800",
+      "line_confidence": 0.38,
+      "raw_line": "PF002700010 -BIG FER 120 MG GEL B30 4800 7,850 376,800"
+    },
+    {
+      "code_pct": "",
+      "code_article": "PF003900003",
+      "designation_article": "CALCITRUS PLUS SAC PDR B30 8500",
+      "quantite": "20,00",
+      "prix_unitaire": "8500",
+      "montant": "170,000",
+      "line_confidence": 0.28,
+      "raw_line": "PF003900003 _-CALCITRUS PLUS SAC PDR B30 20,00 8500 170,000"
+    },
+    {
+      "code_pct": "300173",
+      "code_article": "PF005700001",
+      "designation_article": "-MEXINE 200 MG AMP INJ i)",
+      "quantite": "9000",
+      "prix_unitaire": "3,850",
+      "montant": "246,500",
+      "line_confidence": 1.0,
+      "raw_line": "300173 PFOOS700001 - -MEXINE 200 MG AMP INJ i) 9000 3,850 246,500"
+    },
+    {
+      "code_pct": "350475",
+      "code_article": "PF00490004",
+      "designation_article": "CIPRO200 MG FLG INJ B01",
+      "quantite": "180,00",
+      "prix_unitaire": "4,180",
+      "montant": "752,400",
+      "line_confidence": 1.0,
+      "raw_line": "350475 FFO0490004 -CIPRO200 MG FLG INJ B01 180,00 4,180 752,400"
+    },
+    {
+      "code_pct": "302961",
+      "code_article": "PF005300003",
+      "designation_article": "DOMINAR 500 MG CP B14",
+      "quantite": "12000",
+      "prix_unitaire": "14,771",
+      "montant": "1772520",
+      "line_confidence": 0.28,
+      "raw_line": "302961 PF00S300003 -DOMINAR 500 MG CP B14 12000 14,771 1772520"
+    },
+    {
+      "code_pct": "301647",
+      "code_article": "PF005900001",
+      "designation_article": "DESLOR 5MG CP Bo7",
+      "quantite": "1",
+      "prix_unitaire": "360.00",
+      "montant": "728,280",
+      "line_confidence": 0.7,
+      "raw_line": "301647 FFO05900001 -DESLOR 5MG CP Bo7 | 360.00 | zonl 728,280"
+    },
+    {
+      "code_pct": "300766",
+      "code_article": "PF005900003",
+      "designation_article": "DESLOR 5MG CP 815 288",
+      "quantite": "00",
+      "prix_unitaire": "4,249",
+      "montant": "1223,712",
+      "line_confidence": 1.0,
+      "raw_line": "300766 PF00S900003 -DESLOR 5MG CP 815 288 00 4,249 1223,712"
+    },
+    {
+      "code_pct": "300767",
+      "code_article": "PF005900006",
+      "designation_article": "DESLOR 5MG CP B30 8044",
+      "quantite": "864,00",
+      "prix_unitaire": "8044",
+      "montant": "8 950,016",
+      "line_confidence": 0.28,
+      "raw_line": "300767 PFO05900006 -DESLOR 5MG CP B30 864,00 8044 8 950,016"
+    },
+    {
+      "code_pct": "301475",
+      "code_article": "PF006300001",
+      "designation_article": "MEDISIUM 75 MG AMP a BOS",
+      "quantite": "12800",
+      "prix_unitaire": "2.291",
+      "montant": "293,248",
+      "line_confidence": 1.0,
+      "raw_line": "301475 PF006300001 -MEDISIUM 75 MG AMP a BOS 12800 2.291 293,248"
+    },
+    {
+      "code_pct": "301005",
+      "code_article": "PF006500003",
+      "designation_article": "DOPEZIL10MGCPB30 - 3000 700",
+      "quantite": "50,00",
+      "prix_unitaire": "",
+      "montant": "3000 700",
+      "line_confidence": 0.28,
+      "raw_line": "301005 PF006500003. -DOPEZIL10MGCPB30 - 50,00 60014 3000 700"
+    },
+    {
+      "code_pct": "21600",
+      "code_article": "PF006700001",
+      "designation_article": "DORMIEU GEL B60",
+      "quantite": "21600",
+      "prix_unitaire": "12,500",
+      "montant": "2.700",
+      "line_confidence": 0.38,
+      "raw_line": "PFO06700001 -DORMIEU GEL B60 21600 12,500 2.700.000"
+    },
+    {
+      "code_pct": "350914",
+      "code_article": "PF006900007",
+      "designation_article": "ENOXA 4000 0 4ML SER B02 17 907 120",
+      "quantite": "1530,00",
+      "prix_unitaire": "11,704",
+      "montant": "17 907 120",
+      "line_confidence": 0.28,
+      "raw_line": "350914 PF006900007 -ENOXA 4000 0 4ML SER B02 1530,00 11,704 17 907 120"
+    },
+    {
+      "code_pct": "300915",
+      "code_article": "PF006900013",
+      "designation_article": "ENOXA 6000 0 6ML SER ob 306 00",
+      "quantite": "306 00",
+      "prix_unitaire": "13,956",
+      "montant": "4270536",
+      "line_confidence": 0.28,
+      "raw_line": "300915 PF006900013 ~ENOXA 6000 0 6ML SER ob 306 00 13,956 4270536"
+    },
+    {
+      "code_pct": "350916",
+      "code_article": "PF006900019",
+      "designation_article": "ENOXA 8000 0 &ML SER aly",
+      "quantite": "153,00",
+      "prix_unitaire": "16,473",
+      "montant": "220,369",
+      "line_confidence": 1.0,
+      "raw_line": "350916 PFO06900019 -ENOXA 8000 0 &ML SER aly 153,00 16,473 220,369"
+    },
+    {
+      "code_pct": "351982",
+      "code_article": "PF007L00002",
+      "designation_article": "EPOMAX 2000UUML FLO i B10 ND 0000",
+      "quantite": "",
+      "prix_unitaire": "",
+      "montant": "",
+      "line_confidence": 0.28,
+      "raw_line": "351982 PFOO7LO0002 -EPOMAX 2000UUML FLO i B10 ND 44,000 0000"
+    },
+    {
+      "code_pct": "302551",
+      "code_article": "PF007500003",
+      "designation_article": "MEDIPREX 10 MG GP B30",
+      "quantite": "21600",
+      "prix_unitaire": "16,434",
+      "montant": "349,744",
+      "line_confidence": 1.0,
+      "raw_line": "302551 PF007500003 -MEDIPREX 10 MG GP B30 21600 16,434 349,744"
+    },
+    {
+      "code_pct": "301186",
+      "code_article": "PF007700002",
+      "designation_article": "© -ESORAL 20 MG GEL B18 96",
+      "quantite": "00",
+      "prix_unitaire": "13,031",
+      "montant": "1250,976",
+      "line_confidence": 1.0,
+      "raw_line": "301186 PF007700002, © -ESORAL 20 MG GEL B18 96 00 13,031 1250,976"
+    },
+    {
+      "code_pct": "301188",
+      "code_article": "PF007700010",
+      "designation_article": "ESORAL 40 MG GEL B16 -3 656 832",
+      "quantite": "192,00",
+      "prix_unitaire": "19.046",
+      "montant": "3 656 832",
+      "line_confidence": 0.28,
+      "raw_line": "301188 PFOO7700010 -ESORAL 40 MG GEL B16 192,00 19.046 -3 656 832"
+    },
+    {
+      "code_pct": "301189",
+      "code_article": "PF007700012",
+      "designation_article": "ESORAL 40 MG GEL B28 40 532 480",
+      "quantite": "1280,00",
+      "prix_unitaire": "31,666",
+      "montant": "40 532 480",
+      "line_confidence": 0.28,
+      "raw_line": "301189 PF007700012 -ESORAL 40 MG GEL B28 1280,00 31,666 40 532 480"
+    },
+    {
+      "code_pct": "301365",
+      "code_article": "PF007700015",
+      "designation_article": "ESORAL 20 MG GEL B8 6359 1831 392",
+      "quantite": "288,00",
+      "prix_unitaire": "",
+      "montant": "1831 392",
+      "line_confidence": 0.28,
+      "raw_line": "301365 PFO07700015 -ESORAL 20 MG GEL B8 288,00 6359 1831 392"
+    },
+    {
+      "code_pct": "301366",
+      "code_article": "PF007700017",
+      "designation_article": "ESORAL 40 MG GEL B8 288 00 5694",
+      "quantite": "288 00",
+      "prix_unitaire": "",
+      "montant": "2791872",
+      "line_confidence": 0.28,
+      "raw_line": "301366 PFO07700017 ESORAL 40 MG GEL B8 288 00 5694 2791872"
+    },
+    {
+      "code_pct": "",
+      "code_article": "PF007700018",
+      "designation_article": "ESORAL 20 MG GEL B28",
+      "quantite": "28128,00",
+      "prix_unitaire": "19,386",
+      "montant": "2481,408",
+      "line_confidence": 0.38,
+      "raw_line": "PF007700018 -ESORAL 20 MG GEL B28 128,00 19,386 2 481,408"
+    },
+    {
+      "code_pct": "351350",
+      "code_article": "PF008100001",
+      "designation_article": "1V FER 100 MGAMP INJ al",
+      "quantite": "384,00",
+      "prix_unitaire": "15.000",
+      "montant": "5760000",
+      "line_confidence": 0.28,
+      "raw_line": "351350 PFO08100001 -1V FER 100 MGAMP INJ al 384,00 15.000 5760000"
+    },
+    {
+      "code_pct": "300829",
+      "code_article": "PF008700006",
+      "designation_article": "FLUKAS 150MG GEL B01 3289",
+      "quantite": "120,00",
+      "prix_unitaire": "",
+      "montant": "394,680",
+      "line_confidence": 0.28,
+      "raw_line": "300829 PFOO8700006 FLUKAS 150MG GEL B01 120,00 3289 394,680"
+    },
+    {
+      "code_pct": "300937",
+      "code_article": "PF008700008",
+      "designation_article": "FLUKAS 150MG GEL B2",
+      "quantite": "180,00",
+      "prix_unitaire": "5,923",
+      "montant": "1066,140",
+      "line_confidence": 1.0,
+      "raw_line": "300937 FFOO8700008 -FLUKAS 150MG GEL B2 180,00 5,923 1066,140"
+    },
+    {
+      "code_pct": "300830",
+      "code_article": "PF008700010",
+      "designation_article": "-FLUKAS 150MG GEL B04 1386 600",
+      "quantite": "12000",
+      "prix_unitaire": "11.859",
+      "montant": "1386 600",
+      "line_confidence": 0.28,
+      "raw_line": "300830 PF008700010 = -FLUKAS 150MG GEL B04 12000 11.859 1386 600"
+    },
+    {
+      "code_pct": "353493",
+      "code_article": "PF005150002",
+      "designation_article": "PROTEKTOR 50 MG FLG \"y B10",
+      "quantite": "100,00",
+      "prix_unitaire": "71,600",
+      "montant": "7150,000",
+      "line_confidence": 1.0,
+      "raw_line": "353493 PFO0S150002 -PROTEKTOR 50 MG FLG \"y B10 100,00 71,600 7 150,000"
+    },
+    {
+      "code_pct": "",
+      "code_article": "PF009150003",
+      "designation_article": "PROTEKTOR 200 MG FLC PDR B01 100 00 000",
+      "quantite": "00",
+      "prix_unitaire": "30,000",
+      "montant": "3.000",
+      "line_confidence": 0.38,
+      "raw_line": "FF009150003 -PROTEKTOR 200 MG FLC PDR B01 100 00 30,000 3.000 000"
+    },
+    {
+      "code_pct": "300141",
+      "code_article": "PF009900007",
+      "designation_article": "| ~GENTA 40 MG AMP INJ obs | | ND | seul",
+      "quantite": "",
+      "prix_unitaire": "",
+      "montant": "",
+      "line_confidence": 0.28,
+      "raw_line": "300141 | PF009900007 | ~GENTA 40 MG AMP INJ obs | | ND | seul 0,000 |"
+    },
+    {
+      "code_pct": "300142",
+      "code_article": "PF009900014",
+      "designation_article": "GENTA 80 MGAMPINJ al 160 00 932 480",
+      "quantite": "160 00",
+      "prix_unitaire": "5,828",
+      "montant": "932 480",
+      "line_confidence": 0.28,
+      "raw_line": "300142 PFo09900014 -GENTA 80 MGAMPINJ al 160 00 5,828 932 480"
+    },
+    {
+      "code_pct": "300801",
+      "code_article": "PF009900019",
+      "designation_article": "GENTA 160 MG AMP INJ Li",
+      "quantite": "84000",
+      "prix_unitaire": "2,408",
+      "montant": "2.023",
+      "line_confidence": 0.7,
+      "raw_line": "300801 PFO09900019 -GENTA 160 MG AMP INJ Li 84000 2,408 2.023.560"
+    },
+    {
+      "code_pct": "",
+      "code_article": "PF010100003",
+      "designation_article": "-GINOBA GEL B60 1080 000",
+      "quantite": "",
+      "prix_unitaire": "",
+      "montant": "",
+      "line_confidence": 0.28,
+      "raw_line": "FFO10100003 = -GINOBA GEL B60 144,00 7,500 1080 000"
+    },
+    {
+      "code_pct": "351691",
+      "code_article": "PF010300013",
+      "designation_article": "IRYS 2MG CP B90 8600 15 arg",
+      "quantite": "8600",
+      "prix_unitaire": "",
+      "montant": "1 476,384",
+      "line_confidence": 0.28,
+      "raw_line": "351691 PFO10300013 -IRYS 2MG CP B90 8600 15 arg 1 476,384"
+    },
+    {
+      "code_pct": "301692",
+      "code_article": "PF010900020",
+      "designation_article": "«= 4RYS 3 MG CP 890 ND",
+      "quantite": "",
+      "prix_unitaire": "",
+      "montant": "",
+      "line_confidence": 0.28,
+      "raw_line": "301692 PF010900020 «= 4RYS 3 MG CP 890 ND 17,754 0,000"
+    },
+    {
+      "code_pct": "300828",
+      "code_article": "PF010300029",
+      "designation_article": "«= -IRYS 6 MG CP B30 ND 0000",
+      "quantite": "",
+      "prix_unitaire": "",
+      "montant": "",
+      "line_confidence": 0.28,
+      "raw_line": "300828 PF010300029 «= -IRYS 6 MG CP B30 ND 9,231 0000"
+    },
+    {
+      "code_pct": "300828",
+      "code_article": "PF010300031",
+      "designation_article": "— -IRYS 6 MG CP ASO ND @,c00",
+      "quantite": "",
+      "prix_unitaire": "",
+      "montant": "",
+      "line_confidence": 0.28,
+      "raw_line": "300828 PFO10300031 — -IRYS 6 MG CP ASO ND 23049 @,c00"
+    },
+    {
+      "code_pct": "300390",
+      "code_article": "PF011700004",
+      "designation_article": "-ADEX 25 MG CP B30 120",
+      "quantite": "00",
+      "prix_unitaire": "3,708",
+      "montant": "445,080",
+      "line_confidence": 1.0,
+      "raw_line": "300390 PFO11700004 = -ADEX 25 MG CP B30 120 00 3,708 445,080"
+    },
+    {
+      "code_pct": "302513",
+      "code_article": "PF012900008",
+      "designation_article": "-LEVORGICA5 MG CP B30 6970",
+      "quantite": "12000",
+      "prix_unitaire": "6970",
+      "montant": "636,400",
+      "line_confidence": 0.28,
+      "raw_line": "302513 PF012900008 = -LEVORGICA5 MG CP B30 12000 6970 636,400"
+    },
+    {
+      "code_pct": "300836",
+      "code_article": "PF013100014",
+      "designation_article": "-LEVOFLOX 500 MG CP Bos 120 00 15 498",
+      "quantite": "120 00",
+      "prix_unitaire": "15 498",
+      "montant": "1859,760",
+      "line_confidence": 0.28,
+      "raw_line": "300836 PFOI3100014 = -LEVOFLOX 500 MG CP Bos 120 00 15 498 1859,760"
+    },
+    {
+      "code_pct": "301068",
+      "code_article": "PF013100016",
+      "designation_article": "LEVOFLOX 500 MG CP B10 120",
+      "quantite": "00",
+      "prix_unitaire": "25,707",
+      "montant": "3.084",
+      "line_confidence": 0.7,
+      "raw_line": "301068 PFOI3100016 -LEVOFLOX 500 MG CP B10 120 00 25,707 3.084.840"
+    },
+    {
+      "code_pct": "302098",
+      "code_article": "PF013500010",
+      "designation_article": "COLOSAR PLUS 100/12 “ CP B30",
+      "quantite": "14400",
+      "prix_unitaire": "18,488",
+      "montant": "2662,272",
+      "line_confidence": 1.0,
+      "raw_line": "302098 PFOI3500010 COLOSAR PLUS 100/12 “ CP B30 14400 18,488 2 662,272"
+    },
+    {
+      "code_pct": "302123",
+      "code_article": "PF013500015",
+      "designation_article": "— -COLOSAR PLUS100/12,6MG'CP B90",
+      "quantite": "24,00",
+      "prix_unitaire": "48,208",
+      "montant": "4156,892",
+      "line_confidence": 1.0,
+      "raw_line": "302123 PFO13500015. — -COLOSAR PLUS100/12,6MG'CP B90 24,00 48,208 4 156,892"
+    },
+    {
+      "code_pct": "302097",
+      "code_article": "PF013500019",
+      "designation_article": "COLOSAR FORT 125 MG al",
+      "quantite": "144,00",
+      "prix_unitaire": "19,560",
+      "montant": "2.816",
+      "line_confidence": 0.7,
+      "raw_line": "302097 FFO13500019 -COLOSAR FORT 125 MG al 144,00 19,560 2.816,640"
+    },
+    {
+      "code_pct": "302122",
+      "code_article": "PF013500026",
+      "designation_article": "-COLOSAR FORT 125 MG ob 2345/5608",
+      "quantite": "48,00",
+      "prix_unitaire": "48,066",
+      "montant": "2345/5608",
+      "line_confidence": 0.28,
+      "raw_line": "302122 PF013500026 = -COLOSAR FORT 125 MG ob 48,00 48,066 2345/5608"
+    },
+    {
+      "code_pct": "300300",
+      "code_article": "PF03700001",
+      "designation_article": "LRJ 10 ML COL B01 | 100 00 | asl",
+      "quantite": "100 00",
+      "prix_unitaire": "",
+      "montant": "450,700",
+      "line_confidence": 0.28,
+      "raw_line": "300300 PFO3700001 -LRJ 10 ML COL B01 | 100 00 | asl 450,700 |"
+    },
+    {
+      "code_pct": "302752",
+      "code_article": "PF014100001",
+      "designation_article": "-DIABIPHAGE 1000 MG CP B60 ND 376",
+      "quantite": "",
+      "prix_unitaire": "",
+      "montant": "",
+      "line_confidence": 0.28,
+      "raw_line": "302752 PFO14100001 = -DIABIPHAGE 1000 MG CP B60 ND 376 0.000"
+    },
+    {
+      "code_pct": "302577",
+      "code_article": "PF014100003",
+      "designation_article": "«= -DIABIPHAGE 850 MG CP B60 268 392",
+      "quantite": "96,00",
+      "prix_unitaire": "2,702",
+      "montant": "268 392",
+      "line_confidence": 0.28,
+      "raw_line": "302577 FF014100003 «= -DIABIPHAGE 850 MG CP B60 96,00 2,702 268 392"
+    },
+    {
+      "code_pct": "350393",
+      "code_article": "PF01430000",
+      "designation_article": "-MP 20 MG FLC PDR aol 445 200",
+      "quantite": "400,00",
+      "prix_unitaire": "4,113",
+      "montant": "445 200",
+      "line_confidence": 0.28,
+      "raw_line": "350393 PFOI430000: = -MP 20 MG FLC PDR aol 400,00 4,113 445 200"
+    },
+    {
+      "code_pct": "300392",
+      "code_article": "PF014300003",
+      "designation_article": "«= -MP 40 MG FLG PDR BO1",
+      "quantite": "1600,00",
+      "prix_unitaire": "4,793",
+      "montant": "2.868",
+      "line_confidence": 1.0,
+      "raw_line": "300392 FFOI4300003 «= -MP 40 MG FLG PDR BO1 1600,00 4,793 2.868 B00"
+    },
+    {
+      "code_pct": "350476",
+      "code_article": "PF014500002",
+      "designation_article": "-IPNODIS SMG/1ML AMP INJ B10 4500 225 000",
+      "quantite": "50,00",
+      "prix_unitaire": "4500",
+      "montant": "225 000",
+      "line_confidence": 0.28,
+      "raw_line": "350476 PFO14500002 = -IPNODIS SMG/1ML AMP INJ B10 50,00 4500 225 000"
+    },
+    {
+      "code_pct": "350912",
+      "code_article": "PF014700003",
+      "designation_article": "«= - MMF 500 MG CP B56 ND 9000",
+      "quantite": "",
+      "prix_unitaire": "",
+      "montant": "",
+      "line_confidence": 0.28,
+      "raw_line": "350912 PFO14700003 «= - MMF 500 MG CP B56 ND 34.000 9000"
+    },
+    {
+      "code_pct": "300337",
+      "code_article": "PF015100001",
+      "designation_article": "NEOPRED 5 ML COL B04",
+      "quantite": "28000",
+      "prix_unitaire": "1,483",
+      "montant": "415,240",
+      "line_confidence": 1.0,
+      "raw_line": "300337 PFO1S100001 -NEOPRED 5 ML COL B04 28000 1,483 415,240"
+    },
+    {
+      "code_pct": "300872",
+      "code_article": "PF016100004",
+      "designation_article": "-VAINCOR 10 MG CP B28",
+      "quantite": "48,00",
+      "prix_unitaire": "71,866",
+      "montant": "3.449",
+      "line_confidence": 0.7,
+      "raw_line": "300872 PFO16100004 = -VAINCOR 10 MG CP B28 48,00 71,866 3.449,568"
+    },
+    {
+      "code_pct": "302922",
+      "code_article": "PF016100008",
+      "designation_article": "-VAINCOR SMG CP 691",
+      "quantite": "2000",
+      "prix_unitaire": "88,85",
+      "montant": "1773,120",
+      "line_confidence": 0.7,
+      "raw_line": "302922 PFOI6100008 += -VAINCOR SMG CP 691 2000 88,85¢ 1773,120"
+    },
+    {
+      "code_pct": "302923",
+      "code_article": "PF016100009",
+      "designation_article": "«= -VAINCOR 10 MG CP B91",
+      "quantite": "20,00",
+      "prix_unitaire": "218,211",
+      "montant": "4364,220",
+      "line_confidence": 1.0,
+      "raw_line": "302923 PF016100009 «= -VAINCOR 10 MG CP B91 20,00 218,211 4 364,220"
+    },
+    {
+      "code_pct": "300533",
+      "code_article": "PF016300010",
+      "designation_article": "-IPPROTON 20 MG GELB ND 0000",
+      "quantite": "",
+      "prix_unitaire": "",
+      "montant": "",
+      "line_confidence": 0.28,
+      "raw_line": "300533 FFO16300010 = -IPPROTON 20 MG GELB ND 7,034 0000"
+    },
+    {
+      "code_pct": "300532",
+      "code_article": "PF016300015",
+      "designation_article": "§ -IPPROTON 20 MG GEL a",
+      "quantite": "96,00",
+      "prix_unitaire": "12.058",
+      "montant": "1253,568",
+      "line_confidence": 1.0,
+      "raw_line": "300532 PFOI6300015. § -IPPROTON 20 MG GEL a 96,00 12.058 1253,568"
+    },
+    {
+      "code_pct": "300535",
+      "code_article": "PF016300018",
+      "designation_article": "IPPROTON 40 MG FLC PDR B01 10 589 6 226 932",
+      "quantite": "588.00",
+      "prix_unitaire": "10 589",
+      "montant": "6 226 932",
+      "line_confidence": 0.28,
+      "raw_line": "300535 PFO16300018 IPPROTON 40 MG FLC PDR B01 588.00 10 589 6 226 932"
+    },
+    {
+      "code_pct": "350834",
+      "code_article": "PF016500005",
+      "designation_article": "-ONDANSETRON 6 MG CP do 249",
+      "quantite": "00",
+      "prix_unitaire": "12,490",
+      "montant": "983,200",
+      "line_confidence": 0.7,
+      "raw_line": "350834 PF016500005 = -ONDANSETRON 6 MG CP do 249 00 12,490 2:983,200"
+    },
+    {
+      "code_pct": "13440",
+      "code_article": "PF016800001",
+      "designation_article": "-TEGADIS 50MG BT 000",
+      "quantite": "280,00",
+      "prix_unitaire": "48,000",
+      "montant": "13440 000",
+      "line_confidence": 0.28,
+      "raw_line": "PFO16800001 = -TEGADIS 50MG BT 01 280,00 48,000 13440 000"
+    },
+    {
+      "code_pct": "302748",
+      "code_article": "PF016900010",
+      "designation_article": "-STOPALGIC 1000 MG CP B03",
+      "quantite": "4.800",
+      "prix_unitaire": "4,318",
+      "montant": "8926,400",
+      "line_confidence": 0.7,
+      "raw_line": "302748 PF016900010 = -STOPALGIC 1000 MG CP B03 4.800,00 4,318 8 926,400"
+    },
+    {
+      "code_pct": "301972",
+      "code_article": "PF016900014",
+      "designation_article": "-STOPALGIC 500 MG CP awd",
+      "quantite": "144000",
+      "prix_unitaire": "0,921",
+      "montant": "1:326,240",
+      "line_confidence": 0.28,
+      "raw_line": "301972 PFO16900014 = -STOPALGIC 500 MG CP awd 144000 0,921 1:326,240"
+    },
+    {
+      "code_pct": "302749",
+      "code_article": "PF016900017",
+      "designation_article": "— -STOPALGIC EXTRACP B14 840 240",
+      "quantite": "720,00",
+      "prix_unitaire": "4,167",
+      "montant": "840 240",
+      "line_confidence": 0.28,
+      "raw_line": "302749 PFOI6900017 — -STOPALGIC EXTRACP B14 720,00 4,167 840 240"
+    },
+    {
+      "code_pct": "302002",
+      "code_article": "PF016900020",
+      "designation_article": "SYNALVIC 325MG/",
+      "quantite": "37,5",
+      "prix_unitaire": "2,897",
+      "montant": "0.000",
+      "line_confidence": 0.7,
+      "raw_line": "302002 PFO16900020 SYNALVIC 325MG/37,5MG t 520 ND 2,897 0.000"
+    },
+    {
+      "code_pct": "300163",
+      "code_article": "PF017500002",
+      "designation_article": "«= -PIROXEN 20 MG AMP INJ B02 2rd 1130 640",
+      "quantite": "660.00",
+      "prix_unitaire": "",
+      "montant": "1130 640",
+      "line_confidence": 0.28,
+      "raw_line": "300163 PFOI7S00002, «= -PIROXEN 20 MG AMP INJ B02 660.00 2rd 1130 640"
+    },
+    {
+      "code_pct": "300405",
+      "code_article": "PF017500006",
+      "designation_article": "PIROXEN DISPERSIBLE 20 r B12",
+      "quantite": "240,00",
+      "prix_unitaire": "4,479",
+      "montant": "1002,960",
+      "line_confidence": 1.0,
+      "raw_line": "300405 PFOI7S00006 PIROXEN DISPERSIBLE 20 r B12 240,00 4,479 1002,960"
+    },
+    {
+      "code_pct": "302743",
+      "code_article": "PF0L7900001",
+      "designation_article": "-NEUROMED 75 MG GEL 815 3600 toerd",
+      "quantite": "3600",
+      "prix_unitaire": "",
+      "montant": "382,264",
+      "line_confidence": 0.28,
+      "raw_line": "302743 PFOL7900001 = -NEUROMED 75 MG GEL 815 3600 toerd 382,264"
+    },
+    {
+      "code_pct": "302745",
+      "code_article": "PF017900005",
+      "designation_article": "~NEUROMED 150 MG “c",
+      "quantite": "1",
+      "prix_unitaire": "30,00",
+      "montant": "771,600",
+      "line_confidence": 0.7,
+      "raw_line": "! 302745 PFO17900005 | ~NEUROMED 150 MG “c | | 30,00 | zr 771,600"
+    },
+    {
+      "code_pct": "302746",
+      "code_article": "PF017900007",
+      "designation_article": "NEUROMED 150 MG GEL. 65 502",
+      "quantite": "14400",
+      "prix_unitaire": "65 502",
+      "montant": "9 432,288",
+      "line_confidence": 0.28,
+      "raw_line": "302746 PFO17900007 -NEUROMED 150 MG GEL. 14400 65 502 9 432,288"
+    },
+    {
+      "code_pct": "301397",
+      "code_article": "PF018700001",
+      "designation_article": "SERVAL 25 MG GEL B30 7118",
+      "quantite": "420,00",
+      "prix_unitaire": "7118",
+      "montant": "854,160",
+      "line_confidence": 0.28,
+      "raw_line": "301397 ‘PFO18700001 -SERVAL 25 MG GEL B30 420,00 7118 854,160"
+    },
+    {
+      "code_pct": "301398",
+      "code_article": "PF018700003",
+      "designation_article": "SERVAL 50 MG GEL B30 ND",
+      "quantite": "",
+      "prix_unitaire": "",
+      "montant": "",
+      "line_confidence": 0.28,
+      "raw_line": "301398 PF018700003 SERVAL 50 MG GEL B30 ND 13,124 0,000"
+    },
+    {
+      "code_pct": "301602",
+      "code_article": "PF018900004",
+      "designation_article": "VIADIS 50 MG CP B04 8 sail",
+      "quantite": "36000",
+      "prix_unitaire": "",
+      "montant": "3 067,560",
+      "line_confidence": 0.28,
+      "raw_line": "301602 PFO18900004 -VIADIS 50 MG CP B04 36000 8 sail 3 067,560"
+    },
+    {
+      "code_pct": "351347",
+      "code_article": "PF019700006",
+      "designation_article": "TEICO 400 MG FLC PDR BO1+4 ND 18 000",
+      "quantite": "",
+      "prix_unitaire": "",
+      "montant": "",
+      "line_confidence": 0.28,
+      "raw_line": "351347 PFO19700006 -TEICO 400 MG FLC PDR BO1+4 ND 18 000 0,000"
+    },
+    {
+      "code_pct": "300510",
+      "code_article": "PF020100006",
+      "designation_article": "TRAMADIS 100 MG AMP IN. BOS NOD",
+      "quantite": "",
+      "prix_unitaire": "",
+      "montant": "",
+      "line_confidence": 0.28,
+      "raw_line": "300510 PF020100006. -TRAMADIS 100 MG AMP IN. BOS NOD 6,016 0,000"
+    },
+    {
+      "code_pct": "302972",
+      "code_article": "PF020300001",
+      "designation_article": "RETA 80 MG CP B30",
+      "quantite": "50,00",
+      "prix_unitaire": "12,675",
+      "montant": "633,750",
+      "line_confidence": 1.0,
+      "raw_line": "302972 PFO20300001 -RETA 80 MG CP B30 50,00 12,675 633,750"
+    },
+    {
+      "code_pct": "302976",
+      "code_article": "PF020300007",
+      "designation_article": "RETAZID 60MG/12,5MG CP B30",
+      "quantite": "50,00",
+      "prix_unitaire": "13,720",
+      "montant": "686,000",
+      "line_confidence": 1.0,
+      "raw_line": "302976 PF020300007 -RETAZID 60MG/12,5MG CP B30 50,00 13,720 686,000"
+    },
+    {
+      "code_pct": "301172",
+      "code_article": "PF020700003",
+      "designation_article": "TEDEMA 37 5 MG GEL",
+      "unite_mesure": "B",
+      "quantite": "30240,00",
+      "prix_unitaire": "9,998",
+      "montant": "399,520",
+      "line_confidence": 0.7,
+      "raw_line": "301172 PFO20700003 -TEDEMA 37 5 MG GEL B30 240,00 9,998 2:399,520"
+    },
+    {
+      "code_pct": "301173",
+      "code_article": "PF020700006",
+      "designation_article": "TEDEMA 50 MG CP B30",
+      "quantite": "120,00",
+      "prix_unitaire": "9,348",
+      "montant": "1121,760",
+      "line_confidence": 1.0,
+      "raw_line": "301173 PFO20700006 -TEDEMA 50 MG CP B30 120,00 9,348 1121,760"
+    },
+    {
+      "code_pct": "351814",
+      "code_article": "PF021300002",
+      "designation_article": "ZOLEDRA 4 MG FLC PDR BO1",
+      "quantite": "50,00",
+      "prix_unitaire": "22,330",
+      "montant": "1116,500",
+      "line_confidence": 1.0,
+      "raw_line": "351814 PFO21300002 -ZOLEDRA 4 MG FLC PDR BO1 50,00 22,330 1 116,500"
+    }
+  ]
+}

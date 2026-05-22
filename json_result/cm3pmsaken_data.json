@@ -1,0 +1,467 @@
+{
+  "schema_version": 2,
+  "invoice_family": "bc_avenir",
+  "document_metadata": {
+    "type": "Bon de Commande",
+    "numero": "172",
+    "date": "08/02/2023",
+    "fournisseur_nom": "CMe\") + TEN : wy Ube Tae",
+    "supplier_mf": "",
+    "client_mf": "",
+    "tel": "73267001",
+    "fax": "",
+    "email": "",
+    "rc": "",
+    "adresse": "Rue de baghdad M'saken"
+  },
+  "line_items": [
+    {
+      "code": "302968",
+      "quantite": "36",
+      "designation": "AMLODIPINE MEDIS SMG B/S0CP",
+      "line_confidence": 0.72,
+      "raw_line": "302968 36 | AMLODIPINE MEDIS SMG B/S0CP"
+    },
+    {
+      "code": "302463",
+      "quantite": "60",
+      "designation": "'ATOR 10MG 8/30 CP",
+      "line_confidence": 0.72,
+      "raw_line": "302463 ' 60 'ATOR 10MG 8/30 CP |"
+    },
+    {
+      "code": "302464",
+      "quantite": "24",
+      "designation": "ATOR 40MG 8/90 CP :",
+      "line_confidence": 0.72,
+      "raw_line": "302464 | 24 | ATOR 40MG 8/90 CP :"
+    },
+    {
+      "code": "302459",
+      "quantite": "70",
+      "designation": "aToR 20Me B/30 Ge",
+      "line_confidence": 0.72,
+      "raw_line": "302459 70 | aToR 20Me B/30 Ge"
+    },
+    {
+      "code": "302460",
+      "quantite": "24",
+      "designation": "Tor 20MG B80 CP",
+      "line_confidence": 0.72,
+      "raw_line": "302460 24 | Tor 20MG B80 CP"
+    },
+    {
+      "code": "302465",
+      "quantite": "30",
+      "designation": "Gp Y",
+      "line_confidence": 0.72,
+      "raw_line": "302465 | 0; ATOR 40MG B/30 Gp Y"
+    },
+    {
+      "code": "302467",
+      "quantite": "60",
+      "designation": "'ATOR 40MG B/90 CP",
+      "line_confidence": 0.72,
+      "raw_line": "302467 | 60 'ATOR 40MG B/90 CP |"
+    },
+    {
+      "code": "1302461",
+      "quantite": "30",
+      "designation": "ATOR 80MG B/30",
+      "line_confidence": 0.72,
+      "raw_line": "1302461 | 30 ATOR 80MG B/30"
+    },
+    {
+      "code": "135653",
+      "quantite": "10",
+      "designation": "BIGMAGB/30",
+      "line_confidence": 0.72,
+      "raw_line": "135653 10 BIGMAGB/30"
+    },
+    {
+      "code": "144444",
+      "quantite": "10",
+      "designation": "/BIGMAG PLUS B/a0 CP",
+      "line_confidence": 0.72,
+      "raw_line": "144444 | 10 /BIGMAG PLUS B/a0 CP |"
+    },
+    {
+      "code": "302778",
+      "quantite": "20",
+      "designation": ",CABERGOLO SMG B/2 cp",
+      "line_confidence": 0.72,
+      "raw_line": "302778 20 ,CABERGOLO SMG B/2 cp"
+    },
+    {
+      "code": "302779",
+      "quantite": "10",
+      "designation": "GABERGOL 0 5MG,B/8 CP",
+      "line_confidence": 0.72,
+      "raw_line": "302779 | 10 GABERGOL 0 5MG,B/8 CP"
+    },
+    {
+      "code": "300806",
+      "quantite": "38",
+      "designation": "'COLOSAR 50MG H2 5MG'B/30 CP",
+      "line_confidence": 0.72,
+      "raw_line": "300806 | 38 'COLOSAR 50MG H2 5MG'B/30 CP |"
+    },
+    {
+      "code": "302097",
+      "quantite": "48",
+      "designation": "COLOSAR FORT B/30 CP",
+      "line_confidence": 0.72,
+      "raw_line": "302097 | 48 | COLOSAR FORT B/30 CP"
+    },
+    {
+      "code": "302122",
+      "quantite": "10",
+      "designation": "COLOSAR FORT 8/90 CP",
+      "line_confidence": 0.72,
+      "raw_line": "302122 10 |COLOSAR FORT 8/90 CP"
+    },
+    {
+      "code": "302123",
+      "quantite": "10",
+      "designation": "1COLOSAR PLUS 100 MG/12 5MG B/90 CP",
+      "line_confidence": 0.72,
+      "raw_line": "302123 ' 10 1COLOSAR PLUS 100 MG/12 5MG B/90 CP"
+    },
+    {
+      "code": "300209",
+      "quantite": "2700",
+      "designation": "DEXAMEDIS 4MG AMP INJ 4ML I",
+      "line_confidence": 0.72,
+      "raw_line": "300209 | 2700 | DEXAMEDIS 4MG AMP INJ 4ML I"
+    },
+    {
+      "code": "302752",
+      "quantite": "96",
+      "designation": ", . | DIABIPHAGE ro00K cP Et SEC BTI60",
+      "line_confidence": 0.72,
+      "raw_line": "302752 (96, . | DIABIPHAGE ro00K cP Et SEC BTI60"
+    },
+    {
+      "code": "302577",
+      "quantite": "96",
+      "designation": "DIABIPHAGE 850MG CP",
+      "line_confidence": 0.72,
+      "raw_line": "302577 | 96 | DIABIPHAGE 850MG CP"
+    },
+    {
+      "code": "302960",
+      "quantite": "48",
+      "designation": "{DOMINAR 250MG B14 CP",
+      "line_confidence": 0.72,
+      "raw_line": "302960 , 48 {DOMINAR 250MG B14 CP |"
+    },
+    {
+      "code": "302961",
+      "quantite": "12",
+      "designation": "DomanaR SOOMG 8/14 CP",
+      "line_confidence": 0.72,
+      "raw_line": "302961 12 |DomanaR SOOMG 8/14 CP"
+    },
+    {
+      "code": "301005",
+      "quantite": "24",
+      "designation": "'DOPEZIL10MG B/30 CP",
+      "line_confidence": 0.72,
+      "raw_line": "301005 24 'DOPEZIL10MG B/30 CP"
+    },
+    {
+      "code": "301004",
+      "quantite": "12",
+      "designation": ",DOPEZIL5MG B/30 CP ,;",
+      "line_confidence": 0.72,
+      "raw_line": "301004 12 ,DOPEZIL5MG B/30 CP ,;"
+    },
+    {
+      "code": "300914",
+      "quantite": "304",
+      "designation": "ENOXA 4000U! B/2 NJ '",
+      "line_confidence": 0.72,
+      "raw_line": "300914 304 | ENOXA 4000U! B/2 [NJ '"
+    },
+    {
+      "code": "301186",
+      "quantite": "48",
+      "designation": "ESORAL20MG BMG GELU",
+      "line_confidence": 0.72,
+      "raw_line": "301186 ' 48 | ESORAL20MG BMG GELU"
+    },
+    {
+      "code": "301365",
+      "quantite": "72",
+      "designation": "ESORAL20MG B/8 GELU",
+      "line_confidence": 0.72,
+      "raw_line": "301365 | 72 | ESORAL20MG B/8 GELU"
+    },
+    {
+      "code": "301188",
+      "quantite": "72",
+      "designation": "ESORAL40MG B/16 GELU",
+      "line_confidence": 0.72,
+      "raw_line": "301188 72 |ESORAL40MG B/16 GELU"
+    },
+    {
+      "code": "301189",
+      "quantite": "84",
+      "designation": ". ESORAL40MG Bes GELU a",
+      "line_confidence": 0.72,
+      "raw_line": "301189 | 84. ESORAL40MG Bes GELU a"
+    },
+    {
+      "code": "300829",
+      "quantite": "20",
+      "designation": "FLUKAS 150 MG Bi ih",
+      "line_confidence": 0.72,
+      "raw_line": "300829 20 |FLUKAS 150 MG Bi] ih"
+    },
+    {
+      "code": "300837",
+      "quantite": "10",
+      "designation": "FLUKAS 150 MG BZ GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "300837 10 FLUKAS 150 MG BZ GELULES |"
+    },
+    {
+      "code": "303422",
+      "quantite": "30",
+      "designation": "'GLARGEN 100U/ML SOL JNJ BT1FL3ML",
+      "line_confidence": 0.72,
+      "raw_line": "303422 | 30 'GLARGEN 100U/ML SOL JNJ BT1FL3ML"
+    },
+    {
+      "code": "300650",
+      "quantite": "12",
+      "designation": "IPPROTON 10MG B16 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "300650 12 _|IPPROTON 10MG B16 GELULES"
+    },
+    {
+      "code": "300649",
+      "quantite": "12",
+      "designation": "IPPROTON 10 MGB ce(uLes",
+      "line_confidence": 0.72,
+      "raw_line": "300649 12 | IPPROTON 10 MGB ce(uLes"
+    },
+    {
+      "code": "300532",
+      "quantite": "60",
+      "designation": "IPPROTON20MG'aH6 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "300532 60 IPPROTON20MG'aH6 GELULES"
+    },
+    {
+      "code": "300533",
+      "quantite": "420",
+      "designation": "IPPROTON 20 MG Ba GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "300533 | 420 IPPROTON 20 MG Ba GELULES"
+    },
+    {
+      "code": "300535",
+      "quantite": "280",
+      "designation": "1PPROTON 40MG BI INJ",
+      "line_confidence": 0.72,
+      "raw_line": "300535 280 |1PPROTON 40MG BI INJ"
+    },
+    {
+      "code": "1300825",
+      "quantite": "36",
+      "designation": "{IRYS 1 MG B/30 cp",
+      "line_confidence": 0.72,
+      "raw_line": "1300825 | 36 {IRYS 1 MG B/30 cp"
+    },
+    {
+      "code": "301690",
+      "quantite": "2",
+      "designation": "IRYS 1MG B80 CF",
+      "line_confidence": 0.72,
+      "raw_line": "301690 2 | IRYS 1MG B80 CF"
+    },
+    {
+      "code": "300828",
+      "quantite": "84",
+      "designation": "IRYS2MG B/30 CP",
+      "line_confidence": 0.72,
+      "raw_line": "300828 | 84 IRYS2MG B/30 CP"
+    },
+    {
+      "code": "301691",
+      "quantite": "40",
+      "designation": "lirys2me preo oP",
+      "line_confidence": 0.72,
+      "raw_line": "301691 | 40 lirys2me preo oP"
+    },
+    {
+      "code": "301692",
+      "quantite": "48",
+      "designation": "IRYS 9M B/e0 cr",
+      "line_confidence": 0.72,
+      "raw_line": "301692 | 48 | IRYS 9M B/e0 cr"
+    },
+    {
+      "code": "300828",
+      "quantite": "72",
+      "designation": "IRYS4MGBa0Cr",
+      "line_confidence": 0.72,
+      "raw_line": "300828 | 72 IRYS4MGBa0Cr"
+    },
+    {
+      "code": "302760",
+      "quantite": "48",
+      "designation": "IRYS MG cP SEC/BT30",
+      "line_confidence": 0.72,
+      "raw_line": "302760 {| 48 |IRYS MG cP SEC/BT30"
+    },
+    {
+      "code": "302761",
+      "quantite": "1",
+      "designation": "24 IRYS6MG CP SEC BTBO",
+      "line_confidence": 0.72,
+      "raw_line": "302761 1 24 _IRYS6MG CP SEC BTBO"
+    },
+    {
+      "code": "351350",
+      "quantite": "50",
+      "designation": "7TiMFER 100MG BvS Nd q",
+      "line_confidence": 0.72,
+      "raw_line": "351350 [50 7TiMFER 100MG BvS Nd q"
+    },
+    {
+      "code": "301068",
+      "quantite": "60",
+      "designation": ", LEVOFLOX 500 MG B/10 GP",
+      "line_confidence": 0.72,
+      "raw_line": "301068 60, LEVOFLOX 500 MG B/10 GP"
+    },
+    {
+      "code": "350824",
+      "quantite": "80",
+      "designation": "LEVOFLOX SMG/ML SOL if PERF B1 100ML",
+      "line_confidence": 0.72,
+      "raw_line": "350824 80 |LEVOFLOX SMG/ML SOL if PERF B1 100ML"
+    },
+    {
+      "code": "302170",
+      "quantite": "12",
+      "designation": "LOSARSOMG Bid cP",
+      "line_confidence": 0.72,
+      "raw_line": "302170 | 12 LOSARSOMG Bid cP"
+    },
+    {
+      "code": "302651",
+      "quantite": "24",
+      "designation": "By MEDIPREX 10MG B/30 CP",
+      "line_confidence": 0.72,
+      "raw_line": "302651 ' 24 By MEDIPREX 10MG B/30 CP"
+    },
+    {
+      "code": "300173",
+      "quantite": "90",
+      "designation": "MEXINE B/10 INJ",
+      "line_confidence": 0.72,
+      "raw_line": "300173 | 90 MEXINE B/10 INJ"
+    },
+    {
+      "code": "300254",
+      "quantite": "30",
+      "designation": "NORMOPTIC 05% COLFLI5 ML",
+      "line_confidence": 0.72,
+      "raw_line": "300254 | 30 | NORMOPTIC 05% COLFLI5 ML"
+    },
+    {
+      "code": "351832",
+      "quantite": "300",
+      "designation": "FL joo AMP INJECT 7",
+      "line_confidence": 0.72,
+      "raw_line": "351832 | <a |PAMISGAN 300 FL joo AMP INJECT 7"
+    },
+    {
+      "code": "302974",
+      "quantite": "10",
+      "designation": "RETAZID 160/25MG B/30 G",
+      "line_confidence": 0.72,
+      "raw_line": "302974 | 10 RETAZID 160/25MG B/30 G"
+    },
+    {
+      "code": "302876",
+      "quantite": "20",
+      "designation": "jRETAZID 80/12 SMG B/30 GP",
+      "line_confidence": 0.72,
+      "raw_line": "302876 20 jRETAZID 80/12 SMG B/30 GP"
+    },
+    {
+      "code": "301912",
+      "quantite": "18",
+      "designation": "SERVAL 100 MG BT 30 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "301912 | 18 | SERVAL 100 MG BT 30 GELULES"
+    },
+    {
+      "code": "301397",
+      "quantite": "20",
+      "designation": "SERVAL 25 MG GEL BT30",
+      "line_confidence": 0.72,
+      "raw_line": "301397 | 20 | SERVAL 25 MG GEL_BT30"
+    },
+    {
+      "code": "301398",
+      "quantite": "20",
+      "designation": "SERVAL SMG B/S GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "301398 20 | SERVAL SMG B/S GELULES"
+    },
+    {
+      "code": "301997",
+      "quantite": "2880",
+      "designation": "STOPALGIC 1G INJ BI",
+      "line_confidence": 0.72,
+      "raw_line": "301997 2880 STOPALGIC 1G INJ BI"
+    },
+    {
+      "code": "302750",
+      "quantite": "20",
+      "designation": "STOPALGIC CODEINE 300/25 MG CP BT16",
+      "line_confidence": 0.72,
+      "raw_line": "302750 | 20 | STOPALGIC CODEINE 300/25 MG CP BT16"
+    },
+    {
+      "code": "301172",
+      "quantite": "80",
+      "designation": "TEDEMALP 37 SMG B/30 @ELULE",
+      "line_confidence": 0.72,
+      "raw_line": "[301172 ' 80 | TEDEMALP 37 SMG B/30 @ELULE"
+    },
+    {
+      "code": "300804",
+      "quantite": "36",
+      "designation": "TRAMADIS 50 MG B/10 GELU",
+      "line_confidence": 0.72,
+      "raw_line": "300804 | 36 |TRAMADIS 50 MG B/10 GELU"
+    },
+    {
+      "code": "302922",
+      "quantite": "",
+      "designation": "los | VAINCOR 5MG Bre cp ste",
+      "line_confidence": 0.42,
+      "raw_line": "302922 los | VAINCOR 5MG Bre cp ste"
+    },
+    {
+      "code": "301602",
+      "quantite": "30",
+      "designation": "VIADIS S0MG B/4 cP",
+      "line_confidence": 0.72,
+      "raw_line": "301602 | 30 | VIADIS S0MG B/4 cP"
+    },
+    {
+      "code": "351082",
+      "quantite": "40",
+      "designation": "EPOMAX WSC 2000UUML IN",
+      "line_confidence": 0.72,
+      "raw_line": "351082 | 40 EPOMAX WSC 2000UUML IN"
+    }
+  ]
+}

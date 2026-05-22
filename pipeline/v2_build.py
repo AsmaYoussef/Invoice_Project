@@ -97,6 +97,64 @@ def apply_v2_line_hints(
     return out
 
 
+def merge_v2_quantities_into_product_lines(
+    legacy_lines: List[dict],
+    v2_payload: Dict[str, Any],
+) -> List[dict]:
+    """
+    Copy quantite / designation from v2 body parsers into legacy all_product_lines.
+    v2 BC parser often finds Qté when table/pdf mapping missed it.
+    """
+    v2_items = list(v2_payload.get("line_items") or [])
+    if not v2_items:
+        return legacy_lines
+
+    def _codes(item: dict) -> list[str]:
+        out = []
+        for k in ("code", "code_pct", "code_article"):
+            c = str(item.get(k) or "").strip().upper()
+            if c:
+                out.append(c)
+        return out
+
+    by_code: dict[str, dict] = {}
+    for leg in legacy_lines:
+        for c in _codes(leg):
+            by_code[c] = leg
+
+    for v2 in v2_items:
+        codes = _codes(v2)
+        if not codes:
+            continue
+        qty = v2.get("quantite") or v2.get("quantite_commande")
+        desig = v2.get("designation") or v2.get("designation_article") or ""
+        v2_conf = float(v2.get("line_confidence") or 0.88)
+
+        for code in codes:
+            leg = by_code.get(code)
+            if leg is None:
+                continue
+            if qty and str(qty).strip() and not str(leg.get("quantite") or "").strip():
+                try:
+                    from services.reconciliation import parse_price
+
+                    qf = parse_price(qty)
+                    if qf is not None and qf > 0:
+                        leg["quantite"] = int(qf) if qf == int(qf) else qf
+                        src = dict(leg.get("_field_source") or {})
+                        fconf = dict(leg.get("_field_confidence") or {})
+                        src["quantite"] = "v2_parser"
+                        fconf["quantite"] = max(float(fconf.get("quantite") or 0), v2_conf)
+                        leg["_field_source"] = src
+                        leg["_field_confidence"] = fconf
+                except (TypeError, ValueError):
+                    pass
+            if desig and len(str(desig).strip()) >= 3:
+                if not str(leg.get("designation") or "").strip():
+                    leg["designation"] = str(desig).strip()
+    return legacy_lines
+
+
 def merge_v2_resolver_hints(
     v2_payload: Dict[str, Any],
     legacy_accepted_hints: List[dict],

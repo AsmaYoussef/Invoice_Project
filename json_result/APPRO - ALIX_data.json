@@ -1,0 +1,69 @@
+{
+  "schema_version": 2,
+  "invoice_family": "unknown",
+  "document_metadata": {
+    "type": "Statistiques",
+    "numero": "5011/2024",
+    "date": "02/03/2023",
+    "fournisseur_nom": "STAT VENTES / APPRO - ALIX http //192 168 1 5//stock/etat//stat_ventes_appro/?fourmsseur=D22f&",
+    "supplier_mf": "",
+    "client_mf": "",
+    "tel": "",
+    "fax": "",
+    "email": "",
+    "rc": "",
+    "adresse": ""
+  },
+  "line_items": [
+    {
+      "code": "7130",
+      "raw_line": "7130 ACIDE FUSIDIQUE CREME DERMIQUE 96 107 30| 26 0 | 94 ceo) 8|= 11/2025 65|",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "2155",
+      "raw_line": "2155 | sAPYROSIS SA B/24 “484 «360~«#S42| O«S7SS:«2 | aii cas 11/2023 SC*«SG|",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "261071",
+      "raw_line": "261071‘ ASTAIR 10MG COMP B/30 “36° ~#«4l (a7]Sti«i 7 | 14 cid 12/2023 21|",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "39736",
+      "raw_line": "39736 | CORTINASE 64ug SUSP NAS 120ML “s1 e9 C«SS |i 0 | 70 C50 01/2025 45|",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "441118",
+      "raw_line": "441118 — DERMOSONE NEO CREME oo of Oo ° a) 5002/2024 o|",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "531021",
+      "raw_line": "531021 | |DOMPER SUSP BUV FL 200ML | 20 16 8| o| ° | [40 |e24 07/2023] 15|",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "571483",
+      "raw_line": "571483 ~ECOREX LP 150MG OV B/1 “44 38~«481 CO«O 61 a) C100 01/2024 43|",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "581482",
+      "raw_line": "581482 | | ECOREX SPRAY SOL | wow 8| o| ° | [aa |e50 03/2024| 14]",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "1625218",
+      "raw_line": "1625218 % ZOLE 4% SUSP BUY B/2 SA ee ee ee o | | o cs 9",
+      "line_confidence": 0.35
+    },
+    {
+      "code": "1675196",
+      "raw_line": "1675196 ZENEXOR LP 75MG GEL 8/30 16 10 16 19 | | 1 e830 12/2024 14",
+      "line_confidence": 0.35
+    }
+  ]
+}

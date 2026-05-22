@@ -1,0 +1,649 @@
+{
+  "schema_version": 2,
+  "invoice_family": "bc_omnipharm",
+  "document_metadata": {
+    "type": "Bon de Commande",
+    "numero": "",
+    "date": "24/02/2023",
+    "fournisseur_nom": "ack _",
+    "supplier_mf": "",
+    "client_mf": "00539219G/A/M/000",
+    "tel": "",
+    "fax": "",
+    "email": "",
+    "rc": "",
+    "adresse": "ROUTE DE GREMDA KM 4 Av. FL GHAZELIO MEDIS"
+  },
+  "line_items": [
+    {
+      "code": "300390",
+      "quantite": "30",
+      "designation": "AD ‘ 2,5MG BT 30 CP",
+      "line_confidence": 0.72,
+      "raw_line": "300390 30 AD ‘ 2,5MG BT 30 CP _"
+    },
+    {
+      "code": "301500",
+      "quantite": "30",
+      "designation": "ADE, LP 1.5MG BT 30 CP",
+      "line_confidence": 0.72,
+      "raw_line": "301500 30 | ADE, LP 1.5MG BT 30 CP"
+    },
+    {
+      "code": "PF00070004",
+      "quantite": "10",
+      "designation": "AMLODIPINE MEDIS 10MGBT 30 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "PF00070004 10 AMLODIPINE MEDIS 10MGBT 30 CP PELL"
+    },
+    {
+      "code": "PF000700003",
+      "quantite": "5",
+      "designation": "AMLODIPINE MEDIS 5 MG BT 90 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "PF000700003 5 AMLODIPINE MEDIS 5 MG BT 90 CP PELL"
+    },
+    {
+      "code": "302463",
+      "quantite": "240",
+      "designation": "ATOR 10MG BT 30 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "302463 240 ATOR 10MG BT 30 CP PELL"
+    },
+    {
+      "code": "302464",
+      "quantite": "144",
+      "designation": "ATOR 10MG BT 90 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "302464 144 ATOR 10MG BT 90 CP PELL"
+    },
+    {
+      "code": "302459",
+      "quantite": "90",
+      "designation": "ATOR 20MG BT 30 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "302459 90 ATOR 20MG BT 30 CP PELL"
+    },
+    {
+      "code": "302465",
+      "quantite": "180",
+      "designation": "ATOR 40MG BT 30 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "302465 180 ATOR 40MG BT 30 CP PELL"
+    },
+    {
+      "code": "302467",
+      "quantite": "144",
+      "designation": "ATOR 40MG BT 90 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "302467 144 ATOR 40MG BT 90 CP PELL"
+    },
+    {
+      "code": "PF002700004",
+      "quantite": "30",
+      "designation": "GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "PF002700004 $0. scrER 120MG BT 30 GELULES"
+    },
+    {
+      "code": "PH00174",
+      "quantite": "10",
+      "designation": "7 BIGFER PLUS BT 30 GELULES a",
+      "line_confidence": 0.72,
+      "raw_line": "PH00174 (10 7 BIGFER PLUS BT 30 GELULES a"
+    },
+    {
+      "code": "PHO0175",
+      "quantite": "160",
+      "designation": "“ BIGMAG BT 30 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "PHO0175 160“ BIGMAG BT 30 GELULES"
+    },
+    {
+      "code": "PH00181",
+      "quantite": "50",
+      "designation": "BIGMAG PLUS BT 30 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "PH00181 50 BIGMAG PLUS BT 30 GELULES"
+    },
+    {
+      "code": "PF003900003",
+      "quantite": "50",
+      "designation": "CALCITRUS PLUS BT 30 SA",
+      "line_confidence": 0.72,
+      "raw_line": "PF003900003 50 CALCITRUS PLUS BT 30 SA"
+    },
+    {
+      "code": "300546",
+      "quantite": "150",
+      "designation": "CIPRO 0,3% FL 5ML COLLYRE",
+      "line_confidence": 0.72,
+      "raw_line": "300546 150 CIPRO 0,3% FL 5ML COLLYRE"
+    },
+    {
+      "code": "300646",
+      "quantite": "240",
+      "designation": "CIPRO S00MG BT 14 CP ENR",
+      "line_confidence": 0.72,
+      "raw_line": "300646 240 CIPRO S00MG BT 14 CP ENR"
+    },
+    {
+      "code": "300647",
+      "quantite": "240",
+      "designation": "CIPRO 750MG BT 14 CP ENR",
+      "line_confidence": 0.72,
+      "raw_line": "300647 240 CIPRO 750MG BT 14 CP ENR"
+    },
+    {
+      "code": "300806",
+      "quantite": "100",
+      "designation": "COLOSAR 50/12,5 BT 30 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "300806 100 COLOSAR 50/12,5 BT 30 CP PELL"
+    },
+    {
+      "code": "302097",
+      "quantite": "144",
+      "designation": "COLOSAR FORT 100/25 BT 30 CP PELL SEC",
+      "line_confidence": 0.72,
+      "raw_line": "302097 144 COLOSAR FORT 100/25 BT 30 CP PELL SEC"
+    },
+    {
+      "code": "302122",
+      "quantite": "48",
+      "designation": "COLOSAR FORT 100/25 BT 80 CP PELL SEC",
+      "line_confidence": 0.72,
+      "raw_line": "302122 48 COLOSAR FORT 100/25 BT 80 CP PELL SEC"
+    },
+    {
+      "code": "PF013500010",
+      "quantite": "144",
+      "designation": "COLOSAR PLUS 100/12,5 BT 30 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "PF013500010 144 COLOSAR PLUS 100/12,5 BT 30 CP PELL"
+    },
+    {
+      "code": "300766",
+      "quantite": "7",
+      "designation": "DESYOR 5MG BT 15 cP PELL “",
+      "line_confidence": 0.72,
+      "raw_line": "300766 C108 7 | DESYOR 5MG BT 15 cP PELL “"
+    },
+    {
+      "code": "301647",
+      "quantite": "360",
+      "designation": "nan 5MG BT 7 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "301647 360 nan 5MG BT 7 CP PELL"
+    },
+    {
+      "code": "300209",
+      "quantite": "270",
+      "designation": "DEXAMEDIS 4MG BT 10 AMP INJ 1ML",
+      "line_confidence": 0.72,
+      "raw_line": "300209 270 | DEXAMEDIS 4MG BT 10 AMP INJ 1ML"
+    },
+    {
+      "code": "300397",
+      "quantite": "280",
+      "designation": "D EDIS FORT 8MG BT 1 AMP 2ML",
+      "line_confidence": 0.72,
+      "raw_line": "300397 280 D EDIS FORT 8MG BT 1 AMP 2ML"
+    },
+    {
+      "code": "302752",
+      "quantite": "98",
+      "designation": ", | DIABIPHAGE 1000MG COMP PELL B/60 :7",
+      "line_confidence": 0.72,
+      "raw_line": "302752 (98, ° | DIABIPHAGE 1000MG COMP PELL B/60 :7"
+    },
+    {
+      "code": "302577",
+      "quantite": "48",
+      "designation": "DIAB PHAGE 850 MG COMP PELL B/60",
+      "line_confidence": 0.72,
+      "raw_line": "302577 + 48 DIAB PHAGE 850 MG COMP PELL B/60"
+    },
+    {
+      "code": "301005",
+      "quantite": "50",
+      "designation": "DOPFZIL 10MG BT 30 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "301005 50 DOPFZIL 10MG BT 30 CP PELL"
+    },
+    {
+      "code": "300914",
+      "quantite": "1530",
+      "designation": "ENOXA 4000UI BT 2 SER INJ 0 4ML",
+      "line_confidence": 0.72,
+      "raw_line": "300914 1530 ENOXA 4000UI BT 2 SER INJ 0 4ML"
+    },
+    {
+      "code": "300915",
+      "quantite": "153",
+      "designation": "ENOXA 6000UI BT 2 SER INJ 0 6ML",
+      "line_confidence": 0.72,
+      "raw_line": "300915 153 | ENOXA 6000UI BT 2 SER INJ 0 6ML"
+    },
+    {
+      "code": "301187",
+      "quantite": "128",
+      "designation": "ESORAL 20MG BT 28 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "301187 128 ESORAL 20MG BT 28 GELULES"
+    },
+    {
+      "code": "301365",
+      "quantite": "288",
+      "designation": "ESORAL 20MG BT 8 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "301365 288 ESORAL 20MG BT 8 GELULES"
+    },
+    {
+      "code": "301189",
+      "quantite": "640",
+      "designation": "ESORAL 40MG BT 28 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "301189 640 | ESORAL 40MG BT 28 GELULES"
+    },
+    {
+      "code": "301366",
+      "quantite": "288",
+      "designation": "ESORAL 40MG BT 8 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "301366 288 | ESORAL 40MG BT 8 GELULES"
+    },
+    {
+      "code": "PF008300001",
+      "quantite": "10",
+      "designation": "FERTILIS HOMME BT 120 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "PF008300001 10 FERTILIS HOMME BT 120 GELULES"
+    },
+    {
+      "code": "350748",
+      "quantite": "20",
+      "designation": "FLU 100 FL SOML SOL INJ",
+      "line_confidence": 0.72,
+      "raw_line": "350748 20 | FLU 100 FL SOML SOL INJ"
+    },
+    {
+      "code": "301884",
+      "quantite": "10",
+      "designation": "FLU 150MG BT 12 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "301884 10 | FLU 150MG BT 12 GELULES"
+    },
+    {
+      "code": "300830",
+      "quantite": "50",
+      "designation": "FLU 150MG BT 4 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "300830 50 FLU 150MG BT 4 GELULES"
+    },
+    {
+      "code": "350305",
+      "quantite": "60",
+      "designation": "FURQLIX 20MG BT 50 AMP INJ 2ML",
+      "line_confidence": 0.72,
+      "raw_line": "350305 60 FURQLIX 20MG BT 50 AMP INJ 2ML"
+    },
+    {
+      "code": "300140",
+      "quantite": "30",
+      "designation": "GENTA 20MG BT 5 AMP INJ 2ML",
+      "line_confidence": 0.72,
+      "raw_line": "300140 30 | GENTA 20MG BT 5 AMP INJ 2ML"
+    },
+    {
+      "code": "350367",
+      "quantite": "20",
+      "designation": "HEPARINE MEDIS 25000UI BT 10 AMP INJ",
+      "line_confidence": 0.72,
+      "raw_line": "350367 20 HEPARINE MEDIS 25000UI BT 10 AMP INJ"
+    },
+    {
+      "code": "300825",
+      "quantite": "50",
+      "designation": "IRYS 1MG BT 30 CP PELL SEC a —",
+      "line_confidence": 0.72,
+      "raw_line": "300825 50 IRYS 1MG BT 30 CP PELL SEC a —"
+    },
+    {
+      "code": "301690",
+      "quantite": "20",
+      "designation": "IRYS 1MG BT 90 GP PELLSEC",
+      "line_confidence": 0.72,
+      "raw_line": "301690 20 IRYS 1MG BT 90 GP PELLSEC"
+    },
+    {
+      "code": "301691",
+      "quantite": "20",
+      "designation": "IRYS 2MG BT 90 CP PELL SEC",
+      "line_confidence": 0.72,
+      "raw_line": "301691 20 IRYS 2MG BT 90 CP PELL SEC"
+    },
+    {
+      "code": "300827",
+      "quantite": "50",
+      "designation": "IRYS 3MG BT 30 CP PELL SEC",
+      "line_confidence": 0.72,
+      "raw_line": "300827 50 IRYS 3MG BT 30 CP PELL SEC"
+    },
+    {
+      "code": "351350",
+      "quantite": "5",
+      "designation": "AMP INJ 5ML Z ,",
+      "line_confidence": 0.72,
+      "raw_line": "351350 0g IVFER 100MG BT 5 AMP INJ 5ML Z ,"
+    },
+    {
+      "code": "PF001300001",
+      "quantite": "1",
+      "designation": "80 4 JOINTABS ANTI ARTHROSIQUE BT 30 CP",
+      "line_confidence": 0.72,
+      "raw_line": "PF001300001 1 80 4 JOINTABS ANTI ARTHROSIQUE BT 30 CP"
+    },
+    {
+      "code": "350824",
+      "quantite": "240",
+      "designation": "moe 500 FL INJ 100ML IV",
+      "line_confidence": 0.72,
+      "raw_line": "350824 “240 moe 500 FL INJ 100ML IV"
+    },
+    {
+      "code": "300836",
+      "quantite": "120",
+      "designation": "LEVOFLOX 500MG BT 5 CP PELL SEC",
+      "line_confidence": 0.72,
+      "raw_line": "300836 120 | LEVOFLOX 500MG BT 5 CP PELL SEC"
+    },
+    {
+      "code": "302513",
+      "quantite": "50",
+      "designation": "LEVORGICA 5MG BT 30 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "302513 50 LEVORGICA 5MG BT 30 CP PELL"
+    },
+    {
+      "code": "302511",
+      "quantite": "50",
+      "designation": "LEVQRGICA SMG BT 7 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "302511 50 LEVQRGICA SMG BT 7 CP PELL"
+    },
+    {
+      "code": "PF013500034",
+      "quantite": "96",
+      "designation": "LOSAR 50MG BT 90 CP PELL SEC",
+      "line_confidence": 0.72,
+      "raw_line": "PF013500034 96 | LOSAR 50MG BT 90 CP PELL SEC"
+    },
+    {
+      "code": "PF013500038",
+      "quantite": "144",
+      "designation": "LOSAR FORT 100MG BT 30 CP PELL SEC",
+      "line_confidence": 0.72,
+      "raw_line": "PF013500038 144 LOSAR FORT 100MG BT 30 CP PELL SEC"
+    },
+    {
+      "code": "302124",
+      "quantite": "48",
+      "designation": "LOSAR FORT 100MG BT 90 CP PELL SEC",
+      "line_confidence": 0.72,
+      "raw_line": "302124 48 LOSAR FORT 100MG BT 90 CP PELL SEC"
+    },
+    {
+      "code": "302550",
+      "quantite": "10",
+      "designation": "MED PREX 10MG BT 45 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "302550 10 MED PREX 10MG BT 45 CP PELL"
+    },
+    {
+      "code": "PF007500003",
+      "quantite": "50",
+      "designation": "MEDIPREX 10MG BT 30 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "PF007500003 50_ | MEDIPREX 10MG BT 30 CP PELL"
+    },
+    {
+      "code": "301475",
+      "quantite": "50",
+      "designation": ".5 MEDISIUM 75MG BT 5AMP INS 3ML",
+      "line_confidence": 0.72,
+      "raw_line": "301475 (50.5 MEDISIUM 75MG BT 5AMP INS 3ML"
+    },
+    {
+      "code": "300173",
+      "quantite": "50",
+      "designation": "MEXINE 200MG BT 10 AMP INJ 2ML",
+      "line_confidence": 0.72,
+      "raw_line": "300173 50 MEXINE 200MG BT 10 AMP INJ 2ML"
+    },
+    {
+      "code": "350912",
+      "quantite": "20",
+      "designation": "MMF 500MG BT 56 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "350912 20 MMF 500MG BT 56 CP PELL (LOFEPAL)"
+    },
+    {
+      "code": "300337",
+      "quantite": "50",
+      "designation": "NEOPRED FL 5ML COLLYRE",
+      "line_confidence": 0.72,
+      "raw_line": "300337 50 NEOPRED FL 5ML COLLYRE"
+    },
+    {
+      "code": "302743",
+      "quantite": "50",
+      "designation": "NEUROMED 75 MG GELBT 15",
+      "line_confidence": 0.72,
+      "raw_line": "302743 50 | NEUROMED 75 MG GELBT 15"
+    },
+    {
+      "code": "302744",
+      "quantite": "30",
+      "designation": "NEUROMED 75MG GELLULES BT 30",
+      "line_confidence": 0.72,
+      "raw_line": "302744 30 NEUROMED 75MG GELLULES BT 30"
+    },
+    {
+      "code": "351650",
+      "quantite": "96",
+      "designation": "NICARDIPINE MEDIS 10MG BT 5 AMP INJ 40ML",
+      "line_confidence": 0.72,
+      "raw_line": "351650 96 NICARDIPINE MEDIS 10MG BT 5 AMP INJ 40ML (=LOXEN)"
+    },
+    {
+      "code": "300254",
+      "quantite": "50",
+      "designation": "NORMOPTIC 0,5% FL SML COLLYRE",
+      "line_confidence": 0.72,
+      "raw_line": "300254 50 NORMOPTIC 0,5% FL SML COLLYRE"
+    },
+    {
+      "code": "351335",
+      "quantite": "288",
+      "designation": "OFLQ 200MG BT 1 AMP INJ 40ML IV",
+      "line_confidence": 0.72,
+      "raw_line": "351335 288 OFLQ 200MG BT 1 AMP INJ 40ML IV"
+    },
+    {
+      "code": "350834",
+      "quantite": "240",
+      "designation": "ONDANSETRON 8MG BT 10 GP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "350834 240 ONDANSETRON 8MG BT 10 GP PELL"
+    },
+    {
+      "code": "301832",
+      "quantite": "80",
+      "designation": "PAMISCAN 300 FL 100ML SOL INU",
+      "line_confidence": 0.72,
+      "raw_line": "301832 80 PAMISCAN 300 FL 100ML SOL INU (=LOPAMIDOL)"
+    },
+    {
+      "code": "301831",
+      "quantite": "200",
+      "designation": "PAMISCAN 370 FL 100ML SOL INJ",
+      "line_confidence": 0.72,
+      "raw_line": "301831 200 PAMISCAN 370 FL 100ML SOL INJ (=LOPAMIDOL)"
+    },
+    {
+      "code": "300885",
+      "quantite": "120",
+      "designation": "PIDOGREL 75MG BT 30 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "300885 120 PIDOGREL 75MG BT 30 CP PELL"
+    },
+    {
+      "code": "301550",
+      "quantite": "72",
+      "designation": "PIDOGREL 75MG BT 90 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "301550 72 PIDOGREL 75MG BT 90 CP PELL"
+    },
+    {
+      "code": "300405",
+      "quantite": "240",
+      "designation": "PIROXEN 20MG BT 12 CP DISP",
+      "line_confidence": 0.72,
+      "raw_line": "300405 240 | PIROXEN 20MG BT 12 CP DISP"
+    },
+    {
+      "code": "302973",
+      "quantite": "10",
+      "designation": "RETA 160MG BT 30 CP PELL SEC",
+      "line_confidence": 0.72,
+      "raw_line": "302973 10 RETA 160MG BT 30 CP PELL SEC"
+    },
+    {
+      "code": "PF020300001",
+      "quantite": "20",
+      "designation": "RETA S0MG BT 30 CP PELL SEC",
+      "line_confidence": 0.72,
+      "raw_line": "PF020300001 20 RETA S0MG BT 30 CP PELL SEC"
+    },
+    {
+      "code": "PF020300011",
+      "quantite": "40",
+      "designation": "RETAZID 160MG/25MG BT 30 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "PF020300011 40 RETAZID 160MG/25MG BT 30 CP PELL"
+    },
+    {
+      "code": "PF020300007",
+      "quantite": "20",
+      "designation": "RETAZID 80MG/12.5MG BT 30 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "PF020300007 20 RETAZID 80MG/12.5MG BT 30 CP PELL"
+    },
+    {
+      "code": "300596",
+      "quantite": "50",
+      "designation": "ROSH 20MG BT 30 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "300596 50 ROSH 20MG BT 30 GELULES*"
+    },
+    {
+      "code": "301397",
+      "quantite": "120",
+      "designation": "SER in 25MG BT 30 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "301397 120 SER in 25MG BT 30 GELULES*"
+    },
+    {
+      "code": "301398",
+      "quantite": "30",
+      "designation": ", SER vp 50MG BT 30 GELULES",
+      "line_confidence": 0.72,
+      "raw_line": "301398 30, SER vp 50MG BT 30 GELULES*"
+    },
+    {
+      "code": "301997",
+      "quantite": "5",
+      "designation": "STO Fflaic 1G FL 100ML SOL INJ",
+      "line_confidence": 0.72,
+      "raw_line": "301997 r7200 5 STO Fflaic 1G FL 100ML SOL INJ"
+    },
+    {
+      "code": "PF016900012",
+      "quantite": "300",
+      "designation": "/25 MG BT 16 CP",
+      "line_confidence": 0.72,
+      "raw_line": "PF016900012 \\s0 STOPALGIC CODEINE 300/25 MG BT 16 CP"
+    },
+    {
+      "code": "351347",
+      "quantite": "196",
+      "designation": "TEICO 400MG BT 1 FLINJ",
+      "line_confidence": 0.72,
+      "raw_line": "351347 196 TEICO 400MG BT 1 FLINJ"
+    },
+    {
+      "code": "300510",
+      "quantite": "160",
+      "designation": "TRAMADIS 400MG BT SAMP INJ 2ML”",
+      "line_confidence": 0.72,
+      "raw_line": "300510 C 160 | TRAMADIS 400MG BT SAMP INJ 2ML”~"
+    },
+    {
+      "code": "300872",
+      "quantite": "10",
+      "designation": "VAINCOR 10MG BT 28 CP ENR SEC",
+      "line_confidence": 0.72,
+      "raw_line": "300872 10 | VAINCOR 10MG BT 28 CP ENR SEC*"
+    },
+    {
+      "code": "PF016100009",
+      "quantite": "5",
+      "designation": "VAINCOR 10MG BT 91 CP PELL SEC",
+      "line_confidence": 0.72,
+      "raw_line": "PF016100009 5 | VAINCOR 10MG BT 91 CP PELL SEC"
+    },
+    {
+      "code": "300871",
+      "quantite": "50",
+      "designation": "VAINCOR 5MG BT 28 CP ENR SEC",
+      "line_confidence": 0.72,
+      "raw_line": "300871 50 VAINCOR 5MG BT 28 CP ENR SEC*"
+    },
+    {
+      "code": "PF016100008",
+      "quantite": "15",
+      "designation": "VAINCOR 5MG BT 91 CP PELL SEC",
+      "line_confidence": 0.72,
+      "raw_line": "PF016100008 15 VAINCOR 5MG BT 91 CP PELL SEC"
+    },
+    {
+      "code": "PF018900007",
+      "quantite": "50",
+      "designation": "VIADIS 100 MG B 4",
+      "line_confidence": 0.72,
+      "raw_line": "PF018900007 50 VIADIS 100 MG B 4"
+    },
+    {
+      "code": "301601",
+      "quantite": "10",
+      "designation": ", | va 25MG BT 4 CP PELL",
+      "line_confidence": 0.72,
+      "raw_line": "301601 10, | va 25MG BT 4 CP PELL"
+    },
+    {
+      "code": "PH00256",
+      "quantite": "204",
+      "designation": "VITAWIN ADULTE BT 60",
+      "line_confidence": 0.72,
+      "raw_line": "PH00256 (204 VITAWIN ADULTE BT 60 #"
+    },
+    {
+      "code": "PF021100002",
+      "quantite": "307",
+      "designation": "VITAWIN ADULTE+ BT 607",
+      "line_confidence": 0.72,
+      "raw_line": "PF021100002 307 VITAWIN ADULTE+ BT 607"
+    }
+  ]
+}
