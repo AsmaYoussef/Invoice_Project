@@ -39,7 +39,8 @@ RULES — DESIGNATION (designation field):
 - Do NOT absorb dosage numbers that are part of the product name (e.g. "10 MG", "200 MG") — those stay in designation.
 
 RULES — QUANTITE:
-- Integer from the Qté / quantity column only.
+- Integer from the Qté / quantity column only (NOT dosage: 10 MG, 200 MG stay in designation).
+- Avenir / MEDIS bon de commande: 6-digit MP code then Qté in the next column (e.g. "301475 30 X MEDISIUM...").
 - If unclear from image, keep the candidate value if plausible (1–8000); otherwise empty string.
 
 RULES — CODE:

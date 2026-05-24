@@ -5,13 +5,24 @@ from __future__ import annotations
 import re
 from typing import List, Optional, Tuple
 
-from ocr_line_clean import (
-    clean_designation_noise,
-    collapse_whitespace,
-    normalize_code_token,
-    repair_date_ocr_fragment,
-)
-from schema_v2 import PharmasudLineItemV2
+try:
+    from pipeline.ocr_line_clean import (
+        clean_designation_noise,
+        collapse_whitespace,
+        normalize_code_token,
+        repair_date_ocr_fragment,
+    )
+except ImportError:
+    from ocr_line_clean import (
+        clean_designation_noise,
+        collapse_whitespace,
+        normalize_code_token,
+        repair_date_ocr_fragment,
+    )
+try:
+    from pipeline.schema_v2 import PharmasudLineItemV2
+except ImportError:
+    from schema_v2 import PharmasudLineItemV2
 
 CODE_PCT = re.compile(r"^([A-Z]{2,4}\d{2,12}|\d{4,7})\b", re.IGNORECASE)
 DATE_RE = re.compile(r"\b(\d{2}/\d{2}/\d{4})\b")

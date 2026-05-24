@@ -5,17 +5,32 @@ from __future__ import annotations
 import re
 from typing import List, Optional, Tuple
 
-from ocr_line_clean import (
-    _ocr_normalize_numeric_token,
-    clean_designation_noise,
-    is_pf_like,
-    is_proforma_pct_token,
-    normalize_code_token,
-    parse_french_money_token,
-    pre_clean_ocr_line,
-    split_tokens_respecting_numbers,
-)
-from schema_v2 import ProformaLineItemV2
+try:
+    from pipeline.ocr_line_clean import (
+        _ocr_normalize_numeric_token,
+        clean_designation_noise,
+        is_pf_like,
+        is_proforma_pct_token,
+        normalize_code_token,
+        parse_french_money_token,
+        pre_clean_ocr_line,
+        split_tokens_respecting_numbers,
+    )
+except ImportError:
+    from ocr_line_clean import (
+        _ocr_normalize_numeric_token,
+        clean_designation_noise,
+        is_pf_like,
+        is_proforma_pct_token,
+        normalize_code_token,
+        parse_french_money_token,
+        pre_clean_ocr_line,
+        split_tokens_respecting_numbers,
+    )
+try:
+    from pipeline.schema_v2 import ProformaLineItemV2
+except ImportError:
+    from schema_v2 import ProformaLineItemV2
 
 _UNITS = {"B", "FL", "UI", "MG", "G", "ML", "L", "CP", "SER", "PCS", "BOITE", "BT"}
 

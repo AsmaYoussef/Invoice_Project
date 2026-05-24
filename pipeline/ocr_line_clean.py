@@ -249,22 +249,30 @@ def is_plausible_column_qty(
     return False
 
 
-def line_has_quantite(item: dict[str, Any]) -> bool:
-    """True when row has a positive quantite value."""
-    q = item.get("quantite")
-    if q in (None, "", 0, 0.0):
-        try:
-            return float(q or 0) > 0
-        except (TypeError, ValueError):
-            return False
+def _parsed_qty_positive(raw: Any) -> bool:
+    """True when quantite parses to a positive number (incl. comma decimals)."""
+    if raw in (None, "", 0, 0.0):
+        return False
+    if isinstance(raw, (int, float)):
+        return float(raw) > 0
+    text = str(raw).strip().replace(" ", "").replace(",", ".")
+    parts = text.split(".")
+    if len(parts) > 2:
+        text = "".join(parts[:-1]) + "." + parts[-1]
     try:
-        return float(q) > 0
-    except (TypeError, ValueError):
+        return float(text) > 0
+    except ValueError:
         return False
 
 
+def line_has_quantite(item: dict[str, Any]) -> bool:
+    """True when row has a positive quantite value (incl. comma decimals)."""
+    return _parsed_qty_positive(item.get("quantite"))
+
+
 def quantite_is_locked(item: dict[str, Any]) -> bool:
-    return bool(item.get("_quantite_locked")) or line_has_quantite(item)
+    """True only when qty was explicitly locked by extract/merge (not merely present)."""
+    return bool(item.get("_quantite_locked"))
 
 
 def _strip_leading_junk(text: str, *, quantite_locked: bool = False) -> str:
@@ -290,6 +298,80 @@ def _strip_leading_junk(text: str, *, quantite_locked: bool = False) -> str:
         if t == prev:
             break
     return t
+
+
+def resolve_raw_row_text(row: dict[str, Any]) -> str:
+    """Best available uncleaned OCR line for qty extraction."""
+    raw = str(row.get("_row_txt") or row.get("raw_line") or "").strip()
+    if raw:
+        return raw
+    code = str(row.get("code") or row.get("code_pct") or row.get("code_article") or "").strip()
+    desig = str(row.get("designation") or "").strip()
+    if code and desig:
+        return f"{code} {desig}".strip()
+    return desig or code
+
+
+def _row_txt_has_qty_after_code(raw_line: str, code: str) -> bool:
+    """True when raw line has a plausible Qté token immediately after the product code."""
+    if not raw_line or not code:
+        return False
+    after = _text_after_code(raw_line, code)
+    if not after:
+        return False
+    qty, _, _ = _extract_qty_positional_from_tokens(_split_positional_tokens(after))
+    return bool(qty)
+
+
+def _find_body_line_for_code(combined_body: str, code: str) -> str:
+    """Find the richest body OCR line starting with this product code."""
+    code_u = str(code or "").strip().upper()
+    if not code_u or not combined_body:
+        return ""
+    best = ""
+    for raw in combined_body.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        hay = line.upper()
+        if not (hay.startswith(code_u) or re.search(rf'^\s*["\']?{re.escape(code_u)}\b', hay)):
+            continue
+        if len(line) > len(best):
+            best = line
+    return best
+
+
+def extract_mp_code_qty_from_raw(
+    raw_line: str,
+    code: str,
+) -> tuple[str | None, str, str]:
+    """
+    Avenir/MEDIS BC fast path: 6-digit MP code then integer Qté token.
+    e.g. '302970 24 7 AMLODIPINE MEDIS 10 MG B/30 COMP'
+    """
+    raw = str(raw_line or "").strip()
+    code_u = str(code or "").strip().upper()
+    digits = re.sub(r"\D", "", code_u)
+    if len(digits) != 6:
+        return None, "", ""
+    m = re.search(
+        rf'^\s*["\']?{re.escape(code_u)}\b\s+(\d{{1,5}})\b',
+        raw,
+        re.IGNORECASE,
+    )
+    if not m:
+        m = re.search(
+            rf'\b{re.escape(digits)}\b\s+(\d{{1,5}})\b',
+            raw,
+        )
+    if not m:
+        return None, "", ""
+    qty_s = m.group(1)
+    if not is_plausible_positional_prefix_qty(qty_s, following=raw[m.end() :].strip()):
+        return None, "", ""
+    remain = raw[m.end() :].strip()
+    remain = re.sub(r"^(?:[Xx×]\s*)?", "", remain).strip()
+    return qty_s, remain, "mp_code_prefix"
 
 
 def _text_after_code(raw_line: str, code: str) -> str:
@@ -378,6 +460,15 @@ def _parse_qty_from_token(
         return None
     if len(digits) >= _QTY_ARTIFACT_MIN_DIGITS:
         return None
+    if prefix_column and len(digits) == 3 and following:
+        alt = digits[:2]
+        if (
+            alt.isdigit()
+            and int(alt) > 0
+            and digits[2] == digits[1]
+            and is_plausible_positional_prefix_qty(alt, following=following)
+        ):
+            digits = alt
     if prefix_column:
         if not is_plausible_positional_prefix_qty(digits, following=following):
             return None
@@ -475,7 +566,9 @@ def lock_quantite(
         return row
     if qf <= 0:
         return row
-    row["quantite"] = int(qf) if qf == int(qf) else qf
+    q_out: int | float = int(qf) if qf == int(qf) else qf
+    row["quantite"] = q_out
+    row["qty"] = q_out
     row["_quantite_locked"] = True
     src = dict(row.get("_field_source") or {})
     fconf = dict(row.get("_field_confidence") or {})
@@ -495,27 +588,22 @@ def extract_and_lock_quantite_only(item: dict[str, Any]) -> dict[str, Any]:
     code = str(
         row.get("code") or row.get("code_pct") or row.get("code_article") or ""
     ).strip()
-    raw_line = str(row.get("_row_txt") or "").strip()
+    raw_line = resolve_raw_row_text(row)
+    if raw_line and not str(row.get("_row_txt") or "").strip():
+        row["_row_txt"] = raw_line
+
     qty_s = None
     remain = ""
     source = ""
     conf = 0.86
 
     if raw_line and code:
-        qty_s, remain, source = extract_qty_from_raw_line(raw_line, code)
-        conf = 0.88 if source in ("qty_positional_suffix", "qty_pattern_b") else 0.86
-
-    if not qty_s:
-        fragment = str(row.get("designation") or "").strip()
-        if not fragment and raw_line and code:
-            fragment = _text_after_code(raw_line, code)
-        elif not fragment:
-            fragment = raw_line
-        if fragment:
-            qty_s, remain = extract_qty_from_text_segment(fragment)
-            if qty_s:
-                source = source or "qty_recovered_row"
-                conf = 0.84
+        qty_s, remain, source = extract_mp_code_qty_from_raw(raw_line, code)
+        if not qty_s:
+            qty_s, remain, source = extract_qty_from_raw_line(raw_line, code)
+        conf = 0.89 if source == "mp_code_prefix" else (
+            0.88 if source in ("qty_positional_suffix", "qty_pattern_b") else 0.86
+        )
 
     if qty_s:
         row = lock_quantite(row, qty_s, source=source or "qty_locked", confidence=conf)
@@ -528,12 +616,14 @@ def process_line_extract_then_clean(item: dict[str, Any]) -> dict[str, Any]:
     """Canonical per-row pipeline: Extract qty from raw line → lock → sanitize designation."""
     row = extract_and_lock_quantite_only(dict(item))
     locked_qty = row.get("quantite")
+    code = str(row.get("code") or row.get("code_pct") or row.get("code_article") or "")
     desig_raw = str(row.get("designation") or "").strip()
     if desig_raw:
         cleaned = sanitize_pharma_designation(
             desig_raw,
             locked_qty,
             quantite_locked=quantite_is_locked(row),
+            code=code,
         )
         if cleaned:
             row["designation"] = cleaned
@@ -588,6 +678,57 @@ def recover_line_quantity(item: dict[str, Any]) -> dict[str, Any]:
     return row
 
 
+def _strip_locked_row_prefix(
+    text: str,
+    *,
+    code: str = "",
+    quantite: Any = None,
+) -> str:
+    """
+    When qty is locked, strip code + locked qty + rogue checkmark digits from designation.
+    e.g. '302970 24 7 AMLODIPINE...' -> 'AMLODIPINE...'
+    """
+    t = str(text or "").strip()
+    if not t:
+        return t
+    code_u = str(code or "").strip().upper()
+    code_digits = re.sub(r"\D", "", code_u) if code_u else ""
+    q_raw = str(quantite or "").strip()
+    q_digits = re.sub(r"\D", "", q_raw.split(".")[0]) if q_raw else ""
+
+    # One-pass: CODE QTY [single-digit ink artifact] before drug name
+    if code_u and q_digits:
+        combo = (
+            rf'^\s*["\']?{re.escape(code_u)}\s+{re.escape(q_digits)}\s+'
+            rf"(?:\d\s+)?(?=[A-Z])"
+        )
+        if re.match(combo, t, re.IGNORECASE):
+            t = re.sub(combo, "", t, count=1, flags=re.IGNORECASE).strip()
+    if code_digits and q_digits and code_digits != code_u:
+        combo_digits = (
+            rf'^\s*["\']?{re.escape(code_digits)}\s+{re.escape(q_digits)}\s+'
+            rf"(?:\d\s+)?(?=[A-Z])"
+        )
+        if re.match(combo_digits, t, re.IGNORECASE):
+            t = re.sub(combo_digits, "", t, count=1, flags=re.IGNORECASE).strip()
+
+    if code_u:
+        t = re.sub(
+            rf'^\s*["\']?{re.escape(code_u)}\b\s*',
+            "",
+            t,
+            flags=re.IGNORECASE,
+        ).strip()
+        if code_digits and code_digits != code_u:
+            t = re.sub(
+                rf"^\s*['\"]?{re.escape(code_digits)}\b\s*",
+                "",
+                t,
+                flags=re.IGNORECASE,
+            ).strip()
+    return strip_qty_from_designation(t, quantite)
+
+
 def strip_qty_from_designation(designation: str, quantite: Any = None) -> str:
     """Remove leading quantity bleed when it matches the Qté column value."""
     t = str(designation or "").strip()
@@ -617,6 +758,7 @@ def sanitize_pharma_designation(
     quantite: Any = None,
     *,
     quantite_locked: bool = False,
+    code: str = "",
 ) -> str:
     """
     Trim designation to commercial name + dosage + form.
@@ -624,7 +766,12 @@ def sanitize_pharma_designation(
     """
     locked = quantite_locked or bool(str(quantite or "").strip())
     t = clean_designation_noise(str(s or ""))
-    t = strip_qty_from_designation(t, quantite)
+    if quantite_locked and (code or quantite):
+        t = _strip_locked_row_prefix(t, code=code, quantite=quantite)
+    elif locked:
+        t = strip_qty_from_designation(t, quantite)
+    else:
+        t = strip_qty_from_designation(t, quantite)
     while True:
         prev = t
         t = _strip_leading_junk(t, quantite_locked=locked)
@@ -660,21 +807,25 @@ def apply_extract_and_lock_quantite(lines: list[dict]) -> list[dict]:
 
 
 def apply_designation_cleanup_only(lines: list[dict]) -> list[dict]:
-    """Step 3 only: sanitize designation when quantite is already locked."""
+    """Step 3 only: extract+lock first if needed, then sanitize designation."""
     out = []
     for item in lines:
         row = dict(item)
-        if not line_has_quantite(row) and str(row.get("_row_txt") or "").strip():
-            row = process_line_extract_then_clean(row)
-            out.append(row)
-            continue
+        if not quantite_is_locked(row):
+            row = extract_and_lock_quantite_only(row)
         locked_qty = row.get("quantite")
+        code = str(row.get("code") or row.get("code_pct") or row.get("code_article") or "")
         desig_raw = str(row.get("designation") or "").strip()
+        if quantite_is_locked(row) and code and desig_raw.upper().startswith(code.upper()):
+            row_txt = str(row.get("_row_txt") or "").strip()
+            if row_txt:
+                desig_raw = row_txt
         if desig_raw:
             cleaned = sanitize_pharma_designation(
                 desig_raw,
                 locked_qty,
                 quantite_locked=quantite_is_locked(row),
+                code=code,
             )
             if cleaned:
                 row["designation"] = cleaned
@@ -692,6 +843,35 @@ def apply_designation_cleanup_only(lines: list[dict]) -> list[dict]:
 def apply_local_designation_cleanup(lines: list[dict]) -> list[dict]:
     """Extract → lock quantite → clean designation (canonical wrapper)."""
     return apply_designation_cleanup_only(apply_extract_and_lock_quantite(lines))
+
+
+def recover_lines_quantites_from_raw(
+    lines: list[dict],
+    *,
+    combined_body: str = "",
+) -> list[dict]:
+    """
+    Re-scan _row_txt for Qté when table/Gemini left quantite empty.
+    Avenir MEDIS BC: 6-digit code then quantity (e.g. 301475 30 X MEDISIUM...).
+    """
+    out: list[dict] = []
+    for item in lines or []:
+        row = dict(item)
+        if quantite_is_locked(row) and line_has_quantite(row):
+            out.append(row)
+            continue
+
+        code = str(row.get("code") or row.get("code_pct") or row.get("code_article") or "")
+        raw = str(row.get("_row_txt") or "").strip()
+        if combined_body and code and (not raw or not _row_txt_has_qty_after_code(raw, code)):
+            body_line = _find_body_line_for_code(combined_body, code)
+            if body_line and (
+                not raw or len(body_line) > len(raw) or _row_txt_has_qty_after_code(body_line, code)
+            ):
+                row["_row_txt"] = body_line
+
+        out.append(extract_and_lock_quantite_only(row))
+    return out
 
 
 def sanitize_product_code(token: str) -> str:

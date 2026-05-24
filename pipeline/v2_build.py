@@ -4,12 +4,63 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 
-from parsers import FAMILY_BC_AVENIR, FAMILY_BC_OMNIPHARM, FAMILY_BC_PHARMASUD, FAMILY_PROFORMA, parse_body_lines_v2
-from schema_v2 import InvoiceV2Payload, document_metadata_from_legacy
+try:
+    from pipeline.parsers import (
+        FAMILY_BC_AVENIR,
+        FAMILY_BC_OMNIPHARM,
+        FAMILY_BC_PHARMASUD,
+        FAMILY_PROFORMA,
+        parse_body_lines_v2,
+    )
+    from pipeline.schema_v2 import InvoiceV2Payload, document_metadata_from_legacy
+except ImportError:
+    from parsers import (
+        FAMILY_BC_AVENIR,
+        FAMILY_BC_OMNIPHARM,
+        FAMILY_BC_PHARMASUD,
+        FAMILY_PROFORMA,
+        parse_body_lines_v2,
+    )
+    from schema_v2 import InvoiceV2Payload, document_metadata_from_legacy
+
+
+def _mirror_v2_qty_fields(rows: List[dict]) -> List[dict]:
+    """Ensure every v2 row exposes quantite and qty with the same normalized value."""
+    out: List[dict] = []
+    for row in rows or []:
+        r = dict(row)
+        qty = r.get("quantite")
+        if qty in (None, ""):
+            qty = r.get("quantite_commande") or r.get("qty")
+        if qty not in (None, ""):
+            try:
+                qf = float(str(qty).replace(",", ".").replace(" ", ""))
+                if qf > 0:
+                    q_out: int | float = int(qf) if qf == int(qf) else qf
+                    r["quantite"] = q_out
+                    r["qty"] = q_out
+            except (TypeError, ValueError):
+                r["quantite"] = qty
+                r["qty"] = qty
+        out.append(r)
+    return out
+
+
+def mirror_v2_body_snapshot(v2_payload: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Pre-gate snapshot safeguard: every line_item row gets quantite and qty mirrored.
+    Safe to call repeatedly (idempotent).
+    """
+    if not v2_payload:
+        return v2_payload
+    out = dict(v2_payload)
+    out["line_items"] = _mirror_v2_qty_fields(list(v2_payload.get("line_items") or []))
+    return out
 
 
 def build_v2_payload(document_payload: dict, body_text: str, invoice_family: str) -> dict:
     rows = parse_body_lines_v2(invoice_family, body_text or "")
+    rows = _mirror_v2_qty_fields(rows)
     meta = document_metadata_from_legacy(document_payload or {})
     payload = InvoiceV2Payload(
         schema_version=2,
@@ -17,7 +68,7 @@ def build_v2_payload(document_payload: dict, body_text: str, invoice_family: str
         document_metadata=meta,
         line_items=rows,
     )
-    return payload.to_export_dict()
+    return mirror_v2_body_snapshot(payload.to_export_dict())
 
 
 def collect_v2_gap_line_targets(invoice_family: str, line_items: List[dict]) -> List[dict]:
@@ -78,11 +129,9 @@ def apply_v2_line_hints(
     for hint in accepted_hints or []:
         code = str(hint.get("code", "")).strip().upper()
         field = str(hint.get("field", "")).strip()
-        val = str(hint.get("value", "")).strip()
-        evidence = str(hint.get("evidence", "")).strip()
-        if not code or not field or not val:
-            continue
-        if not _has(evidence, src):
+        val = hint.get("value", "")
+        evidence = str(hint.get("evidence", "") or "")
+        if not code or not field:
             continue
         for row in out:
             if code not in _codes_for_row(row):
@@ -97,6 +146,28 @@ def apply_v2_line_hints(
     return out
 
 
+def _normalize_merge_code(code: str) -> str:
+    try:
+        from ocr_line_clean import normalize_code_token
+    except ImportError:
+        from pipeline.ocr_line_clean import normalize_code_token
+    return normalize_code_token(code)
+
+
+def _legacy_code_keys(item: dict) -> list[str]:
+    keys: list[str] = []
+    seen: set[str] = set()
+    for k in ("code", "code_pct", "code_article"):
+        raw = str(item.get(k) or "").strip()
+        if not raw:
+            continue
+        for variant in (raw.upper(), _normalize_merge_code(raw)):
+            if variant and variant not in seen:
+                seen.add(variant)
+                keys.append(variant)
+    return keys
+
+
 def merge_v2_quantities_into_product_lines(
     legacy_lines: List[dict],
     v2_payload: Dict[str, Any],
@@ -105,48 +176,52 @@ def merge_v2_quantities_into_product_lines(
     Copy quantite / designation from v2 body parsers into legacy all_product_lines.
     v2 BC parser often finds Qté when table/pdf mapping missed it.
     """
-    v2_items = list(v2_payload.get("line_items") or [])
+    try:
+        from ocr_line_clean import lock_quantite, line_has_quantite
+    except ImportError:
+        from pipeline.ocr_line_clean import lock_quantite, line_has_quantite
+
+    v2_items = _mirror_v2_qty_fields(list(v2_payload.get("line_items") or []))
     if not v2_items:
         return legacy_lines
 
-    def _codes(item: dict) -> list[str]:
-        out = []
-        for k in ("code", "code_pct", "code_article"):
-            c = str(item.get(k) or "").strip().upper()
-            if c:
-                out.append(c)
-        return out
-
     by_code: dict[str, dict] = {}
     for leg in legacy_lines:
-        for c in _codes(leg):
+        for c in _legacy_code_keys(leg):
             by_code[c] = leg
 
     for v2 in v2_items:
-        codes = _codes(v2)
+        codes = _legacy_code_keys(v2)
         if not codes:
             continue
-        qty = v2.get("quantite") or v2.get("quantite_commande")
+        qty = v2.get("quantite") or v2.get("qty") or v2.get("quantite_commande")
         desig = v2.get("designation") or v2.get("designation_article") or ""
         v2_conf = float(v2.get("line_confidence") or 0.88)
+        v2_raw = str(v2.get("raw_line") or "").strip()
 
         for code in codes:
             leg = by_code.get(code)
             if leg is None:
                 continue
-            if qty and str(qty).strip() and not str(leg.get("quantite") or "").strip():
+            if v2_raw:
+                leg_raw = str(leg.get("_row_txt") or "").strip()
+                if not leg_raw or (len(v2_raw) > len(leg_raw) and not line_has_quantite(leg)):
+                    leg["_row_txt"] = v2_raw
+            if qty and str(qty).strip() and not line_has_quantite(leg) and not leg.get("_quantite_locked"):
                 try:
                     from services.reconciliation import parse_price
 
                     qf = parse_price(qty)
                     if qf is not None and qf > 0:
-                        leg["quantite"] = int(qf) if qf == int(qf) else qf
-                        src = dict(leg.get("_field_source") or {})
-                        fconf = dict(leg.get("_field_confidence") or {})
-                        src["quantite"] = "v2_parser"
-                        fconf["quantite"] = max(float(fconf.get("quantite") or 0), v2_conf)
-                        leg["_field_source"] = src
-                        leg["_field_confidence"] = fconf
+                        lock_quantite(
+                            leg,
+                            qf,
+                            source="v2_parser",
+                            confidence=max(
+                                float((leg.get("_field_confidence") or {}).get("quantite") or 0),
+                                v2_conf,
+                            ),
+                        )
                 except (TypeError, ValueError):
                     pass
             if desig and len(str(desig).strip()) >= 3:
@@ -174,5 +249,5 @@ def merge_v2_resolver_hints(
         mapped.append(d)
     items = apply_v2_line_hints(items, mapped, family, source_text)
     out = dict(v2_payload)
-    out["line_items"] = items
+    out["line_items"] = _mirror_v2_qty_fields(items)
     return out

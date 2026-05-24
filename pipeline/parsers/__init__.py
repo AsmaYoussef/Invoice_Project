@@ -7,7 +7,10 @@ from typing import List
 from .v2_pharmasud import parse_pharmasud_lines
 from .v2_proforma import parse_proforma_lines
 from .v2_simple_bc import CODE_START_RE, parse_simple_bc_lines
-from schema_v2 import UnknownFamilyLineItemV2
+try:
+    from pipeline.schema_v2 import UnknownFamilyLineItemV2
+except ImportError:
+    from schema_v2 import UnknownFamilyLineItemV2
 
 FAMILY_PROFORMA = "proforma_modele"
 FAMILY_BC_AVENIR = "bc_avenir"

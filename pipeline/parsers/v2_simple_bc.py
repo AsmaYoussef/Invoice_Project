@@ -5,8 +5,24 @@ from __future__ import annotations
 import re
 from typing import List, Optional
 
-from ocr_line_clean import clean_designation_noise, normalize_code_token, pre_clean_ocr_line
-from schema_v2 import SimpleBCLineItemV2
+try:
+    from pipeline.ocr_line_clean import (
+        clean_designation_noise,
+        extract_qty_from_raw_line,
+        normalize_code_token,
+        pre_clean_ocr_line,
+    )
+except ImportError:
+    from ocr_line_clean import (
+        clean_designation_noise,
+        extract_qty_from_raw_line,
+        normalize_code_token,
+        pre_clean_ocr_line,
+    )
+try:
+    from pipeline.schema_v2 import SimpleBCLineItemV2
+except ImportError:
+    from schema_v2 import SimpleBCLineItemV2
 
 CODE_START_RE = re.compile(
     r"^([A-Z]{2,4}\d{2,14}|\d{4,7})\b",
@@ -40,17 +56,21 @@ def parse_simple_bc_line(raw_line: str) -> Optional[SimpleBCLineItemV2]:
     rest = line[m.end() :].strip()
     if len(rest) < 2:
         return None
-    qty_hit = _first_plausible_qty_after(rest, 0)
-    if not qty_hit:
-        return SimpleBCLineItemV2(
-            code=code,
-            quantite="",
-            designation=clean_designation_noise(rest),
-            line_confidence=0.42,
-            raw_line=raw_line.strip(),
-        )
-    _, end, qty_s = qty_hit
-    designation = clean_designation_noise(rest[end:].strip())
+    qty_s, desig_remain, _src = extract_qty_from_raw_line(raw_line, code)
+    if qty_s:
+        designation = clean_designation_noise(desig_remain or rest)
+    else:
+        qty_hit = _first_plausible_qty_after(rest, 0)
+        if not qty_hit:
+            return SimpleBCLineItemV2(
+                code=code,
+                quantite="",
+                designation=clean_designation_noise(rest),
+                line_confidence=0.42,
+                raw_line=raw_line.strip(),
+            )
+        _, end, qty_s = qty_hit
+        designation = clean_designation_noise(rest[end:].strip())
     if not designation or len(designation) < 2:
         return None
     conf = 0.72 if qty_s else 0.45

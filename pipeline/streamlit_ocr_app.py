@@ -62,13 +62,6 @@ try:
         apply_structural_realignment_gate,
         apply_structural_snapshot_to_v2_payload,
         is_structural_gate_enabled,
-        recover_lines_quantites_from_raw,
-    )
-    from pipeline.ocr_line_clean import (
-        apply_designation_cleanup_only,
-        apply_local_designation_cleanup,
-        lock_quantite,
-        process_line_extract_then_clean,
     )
 except ImportError:
     try:
@@ -78,13 +71,6 @@ except ImportError:
             apply_structural_realignment_gate,
             apply_structural_snapshot_to_v2_payload,
             is_structural_gate_enabled,
-            recover_lines_quantites_from_raw,
-        )
-        from ocr_line_clean import (
-            apply_designation_cleanup_only,
-            apply_local_designation_cleanup,
-            lock_quantite,
-            process_line_extract_then_clean,
         )
     except Exception:
         ask_structured_json = None
@@ -104,7 +90,31 @@ except ImportError:
         def is_structural_gate_enabled():
             return False
 
-        def recover_lines_quantites_from_raw(lines):
+try:
+    from pipeline.ocr_line_clean import (
+        apply_designation_cleanup_only,
+        apply_local_designation_cleanup,
+        extract_and_lock_quantite_only,
+        line_has_quantite,
+        lock_quantite,
+        process_line_extract_then_clean,
+        recover_lines_quantites_from_raw,
+        _row_txt_has_qty_after_code,
+    )
+except ImportError:
+    try:
+        from ocr_line_clean import (
+            apply_designation_cleanup_only,
+            apply_local_designation_cleanup,
+            extract_and_lock_quantite_only,
+            line_has_quantite,
+            lock_quantite,
+            process_line_extract_then_clean,
+            recover_lines_quantites_from_raw,
+            _row_txt_has_qty_after_code,
+        )
+    except Exception:
+        def recover_lines_quantites_from_raw(lines, **kwargs):
             return lines
 
         def apply_local_designation_cleanup(lines):
@@ -116,8 +126,23 @@ except ImportError:
         def process_line_extract_then_clean(item):
             return item
 
+        def extract_and_lock_quantite_only(item):
+            return item
+
         def lock_quantite(row, qty, **kwargs):
             return row
+
+        def line_has_quantite(item):
+            q = item.get("quantite")
+            if q in (None, "", 0):
+                return False
+            try:
+                return float(q) > 0
+            except (TypeError, ValueError):
+                return False
+
+        def _row_txt_has_qty_after_code(raw_line, code):
+            return False
 
 try:
     from vendor_profiles import detect_invoice_family, get_profile_hints, merge_header_aliases
@@ -150,10 +175,14 @@ try:
         collect_v2_gap_line_targets,
         merge_v2_quantities_into_product_lines,
         merge_v2_resolver_hints,
+        mirror_v2_body_snapshot,
     )
 except Exception:
     def build_v2_payload(_document_payload, _body_text, _invoice_family):
         return {"schema_version": 2, "invoice_family": "unknown", "document_metadata": {}, "line_items": []}
+
+    def mirror_v2_body_snapshot(payload):
+        return payload
 
     def collect_v2_gap_line_targets(*_a, **_k):
         return []
@@ -682,7 +711,6 @@ def extract_line_items_from_tables(tables,doc_type="",profile_hints=None):
             if pu and pu>0: item["prix_unitaire"]=pu; item["_field_source"]["prix_unitaire"]="table_structured"; item["_field_confidence"]["prix_unitaire"]=0.9
             if mt and mt>0: item["montant"]=mt; item["_field_source"]["montant"]="table_structured"; item["_field_confidence"]["montant"]=0.9
             item["_row_txt"] = row_txt
-            item = process_line_extract_then_clean(item)
             row_key = legacy_line_merge_key(item)
             if row_key in seen:
                 audit["row_rejections"].append({"table_index":t_idx,"row_index":r_idx,"reason":"duplicate_row_key"})
@@ -738,6 +766,34 @@ def merge_line_items(primary,fallback):
                 base[k]=b_v; b_src[k]=b_src.get(k,"fallback"); b_conf[k]=b_score
         base["_field_source"]=b_src
         base["_field_confidence"]=b_conf
+        if idx is not None and not line_has_quantite(base):
+            fb_row = fb_list[idx]
+            fb_code = str(fb_row.get("code") or "").strip()
+            fb_raw = str(fb_row.get("_row_txt") or "").strip()
+            base_raw = str(base.get("_row_txt") or "").strip()
+            if fb_raw and fb_code:
+                fb_has_qty = _row_txt_has_qty_after_code(fb_raw, fb_code)
+                base_has_qty = _row_txt_has_qty_after_code(base_raw, fb_code) if base_raw else False
+                if fb_has_qty and (not base_raw or not base_has_qty or len(fb_raw) > len(base_raw)):
+                    base["_row_txt"] = fb_raw
+            if line_has_quantite(fb_row):
+                fb_qty = fb_row.get("quantite")
+                base = lock_quantite(
+                    base,
+                    fb_qty,
+                    source=(fb_row.get("_field_source") or {}).get("quantite", "fallback_regex"),
+                    confidence=float((fb_row.get("_field_confidence") or {}).get("quantite", 0.86)),
+                )
+                b_src["quantite"] = (fb_row.get("_field_source") or {}).get(
+                    "quantite", "fallback_regex"
+                )
+                b_conf["quantite"] = float(
+                    (fb_row.get("_field_confidence") or {}).get("quantite", 0.86)
+                )
+            elif fb_row.get("_quantite_locked"):
+                base["_quantite_locked"] = True
+                if fb_row.get("qty") not in (None, ""):
+                    base["qty"] = fb_row.get("qty")
         merged.append(base)
     for i,f in enumerate(fb_list):
         if used_fb[i]:
@@ -790,6 +846,8 @@ def normalize_line_items_for_json(items,detected_schema=None):
                 qf=float(qv)
                 if not _is_qty_plausible(qf,designation=row.get("designation","")): row["quantite"]=""
             except: row["quantite"]=""
+        elif row.get("_quantite_locked") and qv not in ("", None):
+            row["qty"] = row.get("qty", row.get("quantite"))
         normalized.append(row)
     return normalized
 
@@ -1134,7 +1192,11 @@ _VENDOR_ROW_GRAMMARS={
         re.compile(r'^(?P<quantite>\d{1,5})\s+(?P<designation>.+)$',re.I),
     ],
     "avenir_medis":[
-        re.compile(r'^(?P<quantite>\d{1,5})\s+(?P<designation>.+)$',re.I),
+        re.compile(
+            r'^(?P<quantite>\d{1,5})\s+(?:[Xx×]\s*)?(?P<designation>.+)$',
+            re.I,
+        ),
+        re.compile(r'^(?P<quantite>\d{1,5})\s+(?P<designation>.+)$', re.I),
     ],
     "modele_proforma":[
         re.compile(r'^(?P<code_article>[A-Z0-9]{7,14})\s*[-]?\s*(?P<designation>.+?)\s+(?P<quantite>\d{1,5}(?:[,.]\d{1,3})?)\s*$',re.I),
@@ -1217,7 +1279,7 @@ def _recover_fields_from_designation(item,doc_type="",profile_key=""):
     # Final cleanup: strip noise separators while preserving medicine name.
     d=re.sub(r'\s*[|]+\s*',' ',d)
     d=re.sub(r'\s{2,}',' ',d).strip(" -_|")
-    item["designation"]=_clean_designation(d, item.get("quantite"))
+    item["designation"]=d
     return item
 
 def extract_product_lines(text,doc_type="",profile_hints=None):
@@ -1318,7 +1380,7 @@ def extract_product_lines(text,doc_type="",profile_hints=None):
                 if is_valid:
                     item["date_peremption"]=norm
                     item["designation"]=d.replace(dm.group(1)," ").strip()
-        item=process_line_extract_then_clean(item)
+        item = extract_and_lock_quantite_only(item)
         if not item.get("designation"):
             continue
         mk=legacy_line_merge_key(item)
@@ -1575,12 +1637,26 @@ def extract_invoice_from_file(
             all_product_lines = merge_line_items(structured_items, all_product_lines)
             table_extraction_audit["strategy"] = "structured_primary"
 
-    structural_audit = {"ok": False, "status": "skipped", "rows_corrected": 0, "metadata_corrected": False}
-    structural_snapshot = None
     invoice_family_early = detect_invoice_family(
         display_name, combined_header, combined_full, doc_type=predicted_doc_type
     )
     combined_body_early = "\n".join(all_body_texts) if all_body_texts else combined_full
+    v2_body_snapshot = build_v2_payload(
+        {"type": predicted_doc_type or ""},
+        combined_body_early,
+        invoice_family_early,
+    )
+    v2_body_snapshot = mirror_v2_body_snapshot(v2_body_snapshot)
+    all_product_lines = merge_v2_quantities_into_product_lines(all_product_lines, v2_body_snapshot)
+    try:
+        all_product_lines = recover_lines_quantites_from_raw(
+            all_product_lines, combined_body=combined_body_early
+        )
+    except Exception:
+        pass
+
+    structural_audit = {"ok": False, "status": "skipped", "rows_corrected": 0, "metadata_corrected": False}
+    structural_snapshot = None
     structural_meta_stub = {
         "type": predicted_doc_type or "",
         "numero": "",
@@ -1621,7 +1697,9 @@ def extract_invoice_from_file(
 
     if all_product_lines:
         try:
-            all_product_lines = recover_lines_quantites_from_raw(all_product_lines)
+            all_product_lines = recover_lines_quantites_from_raw(
+                all_product_lines, combined_body=combined_body_early
+            )
         except Exception:
             pass
 
@@ -1731,9 +1809,11 @@ def extract_invoice_from_file(
     if v2_llm_validation.get("ok"):
         v2_payload = merge_v2_resolver_hints(v2_payload, v2_llm_validation.get("accepted_line_item_hints", []), combined_full)
 
-    all_product_lines = merge_v2_quantities_into_product_lines(all_product_lines, v2_payload)
+    all_product_lines = merge_v2_quantities_into_product_lines(all_product_lines, v2_body_snapshot)
     try:
-        all_product_lines = recover_lines_quantites_from_raw(all_product_lines)
+        all_product_lines = recover_lines_quantites_from_raw(
+            all_product_lines, combined_body=combined_body
+        )
     except Exception:
         pass
     try:
