@@ -5,6 +5,7 @@ import {
   Bot,
   CheckCircle2,
   Database,
+  Download,
   Eye,
   FileText,
   Loader2,
@@ -15,6 +16,14 @@ import {
 } from "lucide-react";
 
 const API_BASE_URL = "http://127.0.0.1:8000";
+
+const DEFAULT_PIPELINE_STATUS = {
+  preprocessing: "Deskew & Thresholding Active",
+  ocr_engine: "Tesseract OCR + Layout Recovery Active",
+  nlp_layer: "Extract-Lock-Clean Architecture Active",
+};
+
+const DPI_OPTIONS = [150, 200, 300];
 
 function formatApiError(error, fallback) {
   const detail = error?.response?.data?.detail;
@@ -32,6 +41,25 @@ function safeNum(raw) {
   if (raw === "" || raw == null) return null;
   const n = Number(String(raw).replace(",", "."));
   return Number.isFinite(n) ? n : null;
+}
+
+function formatTunisianPhone(raw) {
+  const digits = String(raw ?? "").replace(/\D/g, "");
+  if (!digits) return "";
+  if (digits.length === 8) {
+    return `${digits.slice(0, 2)} ${digits.slice(2, 5)} ${digits.slice(5)}`;
+  }
+  return digits;
+}
+
+function downloadBlob(content, filename, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 const TabButton = ({ active, icon: Icon, label, onClick }) => (
@@ -107,8 +135,110 @@ const rowClassForStatus = (status) => {
   }
 };
 
+const StatusLine = ({ label }) => (
+  <div className="flex items-start gap-2 text-sm text-slate-700">
+    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-emerald-500" aria-hidden />
+    <span>{label}</span>
+  </div>
+);
+
+const PipelineStatusPanel = ({
+  pipelineStatus,
+  dpiChoice,
+  onDpiChange,
+  showCleanJson,
+  onShowCleanJsonChange,
+}) => {
+  const status = { ...DEFAULT_PIPELINE_STATUS, ...(pipelineStatus || {}) };
+  return (
+    <div className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+      <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-600">
+        <Settings2 size={14} /> Pipeline Status
+      </p>
+      <div className="space-y-2">
+        <StatusLine label={`Preprocessing: ${status.preprocessing}`} />
+        <StatusLine label={`OCR Engine: ${status.ocr_engine}`} />
+        <StatusLine label={`NLP / Logic Layer: ${status.nlp_layer}`} />
+      </div>
+      <div className="border-t border-slate-200 pt-3">
+        <label className="mb-1 block text-[11px] font-bold uppercase tracking-wide text-slate-500">
+          Processing DPI
+        </label>
+        <select
+          value={dpiChoice}
+          onChange={(ev) => onDpiChange(Number(ev.target.value))}
+          className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+        >
+          {DPI_OPTIONS.map((dpi) => (
+            <option key={dpi} value={dpi}>
+              {dpi} DPI
+            </option>
+          ))}
+        </select>
+        <p className="mt-1 text-[10px] text-slate-500">Applied on next Analyze / Re-Analyze</p>
+      </div>
+      <div className="border-t border-slate-200 pt-3">
+        <label className="flex cursor-pointer items-start gap-2 text-sm text-slate-700">
+          <input
+            type="checkbox"
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+            checked={showCleanJson}
+            onChange={(ev) => onShowCleanJsonChange(ev.target.checked)}
+          />
+          <span>
+            <span className="block text-[11px] font-bold uppercase tracking-wide text-slate-500">
+              Debug
+            </span>
+            Show Cleaned Pipeline JSON
+          </span>
+        </label>
+      </div>
+    </div>
+  );
+};
+
+const PageCompareCard = ({ page, index }) => (
+  <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <p className="mb-4 text-xs font-black uppercase tracking-widest text-slate-400">
+      Page {page.page ?? index + 1}
+    </p>
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div>
+        <p className="mb-2 text-[11px] font-semibold uppercase text-slate-500">Original Upload</p>
+        <div className="max-h-[480px] overflow-auto rounded-xl border border-slate-100 bg-slate-50 p-2">
+          {page.original_image_b64 ? (
+            <img
+              src={page.original_image_b64}
+              alt={`Original page ${index + 1}`}
+              className="mx-auto w-full object-contain"
+            />
+          ) : (
+            <p className="p-4 text-sm text-slate-400">Original preview unavailable</p>
+          )}
+        </div>
+      </div>
+      <div>
+        <p className="mb-2 text-[11px] font-semibold uppercase text-slate-500">Cleaned Binary</p>
+        <div className="max-h-[480px] overflow-auto rounded-xl border border-slate-100 bg-slate-50 p-2">
+          {page.cleaned_image_b64 ? (
+            <img
+              src={page.cleaned_image_b64}
+              alt={`Cleaned page ${index + 1}`}
+              className="mx-auto w-full object-contain"
+            />
+          ) : (
+            <p className="p-4 text-sm text-slate-400">Cleaned preview unavailable</p>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const SupplierBanner = ({ generalInfo }) => {
   const matched = generalInfo?.supplier_status === "SUPPLIER_MATCH";
+  const tel = formatTunisianPhone(generalInfo?.tel);
+  const fax = formatTunisianPhone(generalInfo?.fax);
   return (
     <div
       className={`rounded-xl border p-4 ${
@@ -127,6 +257,14 @@ const SupplierBanner = ({ generalInfo }) => {
             {generalInfo?.erp_supplier_name || "No match in fournisseur"}
           </p>
         </div>
+        <div>
+          <p className="text-[11px] text-slate-500">Telephone</p>
+          <p className="font-mono font-semibold text-slate-800">{tel || "—"}</p>
+        </div>
+        <div>
+          <p className="text-[11px] text-slate-500">Fax</p>
+          <p className="font-mono font-semibold text-slate-800">{fax || "—"}</p>
+        </div>
       </div>
     </div>
   );
@@ -143,6 +281,7 @@ const AccountantDashboard = () => {
   const [syncLoading, setSyncLoading] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
   const [apiError, setApiError] = useState("");
+  const [showCleanJson, setShowCleanJson] = useState(false);
 
   const [settings, setSettings] = useState({
     use_nlp: true,
@@ -226,7 +365,7 @@ const AccountantDashboard = () => {
     })),
   });
 
-  const handleUpload = async () => {
+  const runUpload = async () => {
     if (!selectedFile) return;
     setLoading(true);
     setApiError("");
@@ -249,6 +388,11 @@ const AccountantDashboard = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleUpload = async (e) => {
+    e?.preventDefault?.();
+    await runUpload();
   };
 
   const handleRevalidate = async (e) => {
@@ -294,6 +438,17 @@ const AccountantDashboard = () => {
     }
   };
 
+  const handleDownloadCleanJson = (e) => {
+    e.preventDefault();
+    const payload = technical?.clean_json || dashboard || {};
+    downloadBlob(JSON.stringify(payload, null, 2), "invoice-clean.json", "application/json");
+  };
+
+  const handleDownloadRawOcr = (e) => {
+    e.preventDefault();
+    downloadBlob(technical?.raw_ocr_text || "", "invoice-raw-ocr.txt", "text/plain;charset=utf-8");
+  };
+
   return (
     <div className="min-h-screen bg-slate-100 text-slate-800 font-sans">
       <div className="grid min-h-screen grid-cols-12">
@@ -308,22 +463,13 @@ const AccountantDashboard = () => {
             </div>
           </div>
 
-          <div className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-600">
-              <Settings2 size={14} /> Pipeline Config
-            </p>
-            {Object.keys(settings).map((key) => (
-              <label key={key} className="flex items-center justify-between text-sm cursor-pointer capitalize">
-                {key.replace(/_/g, " ")}
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
-                  checked={settings[key]}
-                  onChange={(ev) => setSettings({ ...settings, [key]: ev.target.checked })}
-                />
-              </label>
-            ))}
-          </div>
+          <PipelineStatusPanel
+            pipelineStatus={technical?.pipeline_status}
+            dpiChoice={settings.dpi_choice}
+            onDpiChange={(dpi) => setSettings((prev) => ({ ...prev, dpi_choice: dpi }))}
+            showCleanJson={showCleanJson}
+            onShowCleanJsonChange={setShowCleanJson}
+          />
         </aside>
 
         <main className="col-span-12 p-8 lg:col-span-9">
@@ -351,7 +497,7 @@ const AccountantDashboard = () => {
                 className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg transition hover:bg-indigo-700 disabled:opacity-50"
               >
                 {loading ? <Loader2 size={18} className="animate-spin" /> : <FileText size={18} />}
-                {loading ? "Analyzing..." : "Analyze"}
+                {loading ? "Analyzing..." : dashboard && selectedFile ? "Re-Analyze" : "Analyze"}
               </button>
 
               <button
@@ -451,6 +597,8 @@ const AccountantDashboard = () => {
                     <InfoField label="Date" value={generalInfo.invoice_date} />
                     <InfoField label="Supplier Name" value={generalInfo.supplier_name} />
                     <InfoField label="Supplier MF" value={generalInfo.supplier_mf} />
+                    <InfoField label="Telephone" value={formatTunisianPhone(generalInfo.tel)} />
+                    <InfoField label="Fax" value={formatTunisianPhone(generalInfo.fax)} />
                     <div className="md:col-span-2">
                       <InfoField label="Physical Address" value={generalInfo.address} />
                     </div>
@@ -557,21 +705,50 @@ const AccountantDashboard = () => {
                 <p className="text-slate-500">No preview images for this document.</p>
               ) : (
                 pages.map((page, idx) => (
-                  <div key={idx} className="rounded-2xl border border-slate-200 bg-white p-4">
-                    <p className="mb-4 text-xs font-black uppercase tracking-widest text-slate-400">Original Scan</p>
-                    <img src={page.original_image_b64} alt="Original" className="w-full rounded-xl shadow-md" />
-                  </div>
+                  <PageCompareCard key={page.page ?? idx} page={page} index={idx} />
                 ))
               )}
             </div>
           )}
 
           {dashboard && activeTab === "technical" && (
-            <div className="rounded-2xl border border-slate-200 bg-slate-900 p-6 shadow-2xl">
-              <h3 className="mb-4 text-xs font-black uppercase tracking-widest text-slate-500">Raw OCR Output</h3>
-              <pre className="max-h-[600px] overflow-auto text-xs text-indigo-300 leading-relaxed whitespace-pre-wrap font-mono">
-                {technical?.raw_ocr_text || JSON.stringify(dashboard, null, 2)}
-              </pre>
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleDownloadCleanJson}
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 shadow-sm transition hover:bg-slate-50"
+                >
+                  <Download size={16} />
+                  Download Cleaned JSON
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDownloadRawOcr}
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 shadow-sm transition hover:bg-slate-50"
+                >
+                  <Download size={16} />
+                  Download Raw OCR Text
+                </button>
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-slate-900 p-6 shadow-2xl">
+                <h3 className="mb-4 text-xs font-black uppercase tracking-widest text-slate-500">Raw OCR Output</h3>
+                <pre className="max-h-[600px] overflow-auto text-xs text-indigo-300 leading-relaxed whitespace-pre-wrap font-mono">
+                  {technical?.raw_ocr_text || JSON.stringify(dashboard, null, 2)}
+                </pre>
+              </div>
+
+              {showCleanJson && (
+                <div className="rounded-2xl border border-slate-200 bg-slate-900 p-6 shadow-2xl">
+                  <h3 className="mb-4 text-xs font-black uppercase tracking-widest text-slate-500">
+                    Cleaned Pipeline JSON
+                  </h3>
+                  <pre className="max-h-[600px] overflow-auto text-xs text-emerald-300 leading-relaxed whitespace-pre-wrap font-mono">
+                    {JSON.stringify(technical?.clean_json || {}, null, 2)}
+                  </pre>
+                </div>
+              )}
             </div>
           )}
         </main>

@@ -15,6 +15,7 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 
 import cv2
+import numpy as np
 
 import mysql.connector
 
@@ -93,6 +94,12 @@ class GeneralInfo(BaseModel):
 
     erp_supplier_code: Optional[str] = None
 
+    tel: Optional[str] = ""
+
+    fax: Optional[str] = ""
+
+    email: Optional[str] = ""
+
 class ProductLine(BaseModel):
 
     code: Optional[str] = ""
@@ -152,6 +159,17 @@ def _image_to_data_url(img) -> str:
     b64 = base64.b64encode(encoded.tobytes()).decode("utf-8")
 
     return f"data:image/png;base64,{b64}"
+
+
+def _clean_img_to_data_url(img) -> str:
+    if img is None:
+        return ""
+    arr = np.asarray(img)
+    if arr.size == 0:
+        return ""
+    if len(arr.shape) == 2:
+        arr = cv2.cvtColor(arr, cv2.COLOR_GRAY2BGR)
+    return _image_to_data_url(arr)
 
 def _get_db_connection():
 
@@ -237,6 +255,12 @@ def _build_general_info(document: Dict[str, Any], invoice_family: str = "") -> D
 
         "address": document.get("adresse", ""),
 
+        "tel": document.get("tel", ""),
+
+        "fax": document.get("fax", ""),
+
+        "email": document.get("email", ""),
+
         "document_type": document.get("type", ""),
 
         "invoice_family": invoice_family,
@@ -297,6 +321,17 @@ async def upload_and_extract(
 
         original_pages = [_image_to_data_url(img) for img in result.get("all_orig_imgs", [])]
 
+        clean_pages = [_clean_img_to_data_url(img) for img in result.get("all_clean_imgs", [])]
+
+        visualizer_pages = [
+            {
+                "page": i + 1,
+                "original_image_b64": orig,
+                "cleaned_image_b64": (clean_pages[i] if i < len(clean_pages) else "") or orig,
+            }
+            for i, orig in enumerate(original_pages)
+        ]
+
         document = result.get("document_payload", {})
 
         invoice_family = result.get("invoice_family", "") or ""
@@ -345,7 +380,7 @@ async def upload_and_extract(
 
             "visualizer": {
 
-                "pages": [{"original_image_b64": p} for p in original_pages],
+                "pages": visualizer_pages,
 
             },
 
@@ -354,6 +389,18 @@ async def upload_and_extract(
                 "raw_ocr_text": result.get("combined_full", ""),
 
                 "invoice_family": invoice_family,
+
+                "clean_json": result.get("v2_export") or result.get("v2_payload") or {},
+
+                "pipeline_status": {
+
+                    "preprocessing": "Deskew & Thresholding Active",
+
+                    "ocr_engine": "Tesseract OCR + Layout Recovery Active",
+
+                    "nlp_layer": "Extract-Lock-Clean Architecture Active",
+
+                },
 
             },
 
@@ -427,6 +474,21 @@ async def save_invoice(data: DashboardPayload):
 
         lib_facture = _lib_facture_from_number(info.get("invoice_number"))
 
+        cursor.execute(
+            "SELECT IDFacture FROM facture WHERE LibFacture = %s LIMIT 1",
+            (lib_facture,),
+        )
+        existing = cursor.fetchone()
+        if existing:
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    f"This invoice was already saved to ERP as '{lib_facture}' "
+                    f"(facture ID {existing['IDFacture']}). "
+                    "Re-saving the same document is not allowed."
+                ),
+            )
+
         date_facture = _parse_invoice_date(info.get("invoice_date", ""))
 
         supplier = info.get("erp_supplier_name") or info.get("supplier_name") or ""
@@ -463,9 +525,9 @@ async def save_invoice(data: DashboardPayload):
 
                 LibFacture, DateFacture, Client, TotalHT, TotalTTC, TotalTVA,
 
-                MF, Adresse, SaisiPar, SaisiLe, Observations
+                MF, Adresse, SaisiPar, SaisiLe, Observations, CoordonneesBancaires
 
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, CURDATE(), %s)
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, CURDATE(), %s, %s)
 
             """,
 
@@ -490,6 +552,8 @@ async def save_invoice(data: DashboardPayload):
                 "OCR-API",
 
                 f"Imported from OCR document {info.get('invoice_number', '')}",
+
+                "",
 
             ),
 
@@ -639,6 +703,10 @@ async def save_invoice(data: DashboardPayload):
 
         }
 
+    except HTTPException:
+        if conn:
+            conn.rollback()
+        raise
     except Exception as e:
 
         if conn:

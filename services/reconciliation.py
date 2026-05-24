@@ -9,6 +9,8 @@ from rapidfuzz import fuzz
 
 PRICE_TOLERANCE = 0.001
 CONFIDENCE_THRESHOLD = 0.85
+STRUCTURAL_VALID_CONFIDENCE = 0.95
+DESIGNATION_EMPTY_CONFIDENCE = 0.0
 DESIGNATION_MATCH_HIGH = 0.95
 DESIGNATION_MATCH_NOISY = 0.72
 DESIGNATION_RATIO_HIGH = 0.88
@@ -205,6 +207,26 @@ def _line_has_quantite(line: dict[str, Any]) -> bool:
     return _parsed_qty_positive(line.get("quantite"))
 
 
+def _designation_empty(line: dict[str, Any]) -> bool:
+    return not str(line.get("designation") or "").strip()
+
+
+def _price_structurally_ok(
+    *,
+    ocr_price: float | None,
+    erp_price: float | None,
+    price_from_db: bool,
+    bc_layout: bool,
+) -> bool:
+    if price_from_db and erp_price is not None:
+        return True
+    if ocr_price is not None and erp_price is not None:
+        return abs(ocr_price - erp_price) <= PRICE_TOLERANCE
+    if bc_layout and erp_price is not None and ocr_price is None:
+        return True
+    return False
+
+
 def combined_line_confidence(
     line: dict[str, Any],
     *,
@@ -212,12 +234,18 @@ def combined_line_confidence(
     ref_row: bool = False,
     bc_layout: bool = False,
 ) -> float:
-    if ref_row and erp_name:
-        des_conf = designation_db_confidence(line.get("designation") or "", erp_name)
-    else:
-        des_conf = line_confidence_score(line)
-    qty_conf = quantite_confidence_score(line, bc_layout=bc_layout)
-    return min(des_conf, qty_conf)
+    """
+    Structural confidence only — no fuzzy LibProd string matching.
+    Drops score on empty designation or missing quantity; high baseline when ERP row matches.
+    """
+    del erp_name  # display-only; not used for scoring
+    if _designation_empty(line):
+        return DESIGNATION_EMPTY_CONFIDENCE
+    if not _line_has_quantite(line):
+        return QTY_CONF_MISSING if bc_layout else 0.55
+    if ref_row:
+        return STRUCTURAL_VALID_CONFIDENCE
+    return line_confidence_score(line)
 
 
 def line_confidence_score(line: dict[str, Any]) -> float:
@@ -368,46 +396,67 @@ class ReconciliationService:
             line.get("quantite"),
         )
 
-        confidence = combined_line_confidence(
-            line,
-            erp_name=erp_name,
-            ref_row=bool(ref_row),
-            bc_layout=bc_layout,
-        )
+        code_known = bool(mp_row or article_row or ref_row)
+        has_codes = bool(mp_code or article_code or primary)
 
-        if ref_row and erp_name and display_designation:
-            if designation_db_confidence(
-                display_designation or line.get("designation") or "", erp_name
-            ) >= DESIGNATION_MATCH_HIGH:
-                flags.append("designation_match_high")
         if _line_has_quantite(line):
             flags.append("qty_present")
         else:
             flags.append("qty_missing")
+        if _designation_empty(line):
+            flags.append("designation_empty")
+        else:
+            flags.append("designation_present")
 
-        code_known = bool(mp_row or article_row or ref_row)
-        has_codes = bool(mp_code or article_code or primary)
+        price_ok = _price_structurally_ok(
+            ocr_price=ocr_price,
+            erp_price=erp_price,
+            price_from_db=price_from_db,
+            bc_layout=bc_layout,
+        )
 
         if not code_known and has_codes:
             validation_status = "UNKNOWN_PRODUCT"
+            confidence = combined_line_confidence(
+                line, ref_row=False, bc_layout=bc_layout
+            )
         elif (
             ocr_price is not None
             and erp_price is not None
             and abs(ocr_price - erp_price) > PRICE_TOLERANCE
         ):
             validation_status = "PRICE_MISMATCH"
-        elif confidence < CONFIDENCE_THRESHOLD:
+            confidence = combined_line_confidence(
+                line, ref_row=bool(ref_row), bc_layout=bc_layout
+            )
+        elif _designation_empty(line) or not _line_has_quantite(line):
             validation_status = "LOW_CONFIDENCE"
+            confidence = combined_line_confidence(
+                line, ref_row=bool(ref_row), bc_layout=bc_layout
+            )
         elif not code_known:
             validation_status = "UNKNOWN_PRODUCT"
-        elif bc_layout and ocr_price is None and erp_price is not None:
+            confidence = combined_line_confidence(
+                line, ref_row=False, bc_layout=bc_layout
+            )
+        elif (
+            code_known
+            and _line_has_quantite(line)
+            and not _designation_empty(line)
+            and price_ok
+        ):
             validation_status = "VALID"
-        elif ocr_price is not None and erp_price is not None:
-            validation_status = "VALID"
+            confidence = STRUCTURAL_VALID_CONFIDENCE
         elif ocr_price is None and not bc_layout:
             validation_status = "UNKNOWN_PRODUCT"
+            confidence = combined_line_confidence(
+                line, ref_row=bool(ref_row), bc_layout=bc_layout
+            )
         else:
-            validation_status = "VALID"
+            validation_status = "LOW_CONFIDENCE"
+            confidence = combined_line_confidence(
+                line, ref_row=bool(ref_row), bc_layout=bc_layout
+            )
 
         computed_montant = None
         if qty and display_price is not None:

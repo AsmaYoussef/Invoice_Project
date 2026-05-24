@@ -1,4 +1,4 @@
-﻿"""
+"""
 Invoice OCR Pipeline — v4.6
 ════════════════════════════
 New in v4.6 vs v4.5:
@@ -1820,6 +1820,27 @@ def extract_invoice_from_file(
         all_product_lines = apply_designation_cleanup_only(all_product_lines)
     except Exception:
         pass
+
+    gap_fill_audit = {"ok": False, "status": "skipped"}
+    if all_product_lines and page_assets:
+        try:
+            from pipeline.ai.gap_filler import apply_vision_gap_fill, is_gap_filler_enabled
+        except ImportError:
+            try:
+                from ai.gap_filler import apply_vision_gap_fill, is_gap_filler_enabled
+            except ImportError:
+                apply_vision_gap_fill = None
+                is_gap_filler_enabled = lambda: False  # noqa: E731
+        try:
+            if apply_vision_gap_fill and is_gap_filler_enabled():
+                all_product_lines, gap_fill_audit = apply_vision_gap_fill(
+                    all_product_lines,
+                    page_assets,
+                    doc_type=predicted_doc_type,
+                    invoice_family=invoice_family,
+                )
+        except Exception:
+            pass
 
     all_product_lines = normalize_line_items_for_json(
         all_product_lines,
