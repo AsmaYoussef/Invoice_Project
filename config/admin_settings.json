@@ -1,0 +1,24 @@
+{
+  "confidence_threshold": 0.85,
+  "default_dpi": 200,
+  "alert_rules": {
+    "enabled": true,
+    "price_mismatch_pct_threshold": 15.0
+  },
+  "notifications": {
+    "emails": [
+      "youssefasma005@gmail.com"
+    ],
+    "webhooks": [
+      "https://webhook.site/bd0b8dab-040b-46ff-b955-0851f0025114"
+    ]
+  },
+  "smtp": {
+    "host": "",
+    "port": 587,
+    "username": "",
+    "password": "",
+    "from_address": "alerts@diva.local",
+    "use_tls": true
+  }
+}

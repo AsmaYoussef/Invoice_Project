@@ -282,10 +282,18 @@ def is_bc_document(doc_type: str, invoice_family: str = "") -> bool:
 
 
 class ReconciliationService:
-    def __init__(self, cursor, *, articles_cache: dict | None = None, suppliers_cache: list | None = None):
+    def __init__(
+        self,
+        cursor,
+        *,
+        articles_cache: dict | None = None,
+        suppliers_cache: list | None = None,
+        confidence_threshold: float = 0.85,
+    ):
         self.cursor = cursor
         self._articles = articles_cache
         self._suppliers = suppliers_cache
+        self.confidence_threshold = confidence_threshold
 
     def load_reference_data(self) -> None:
         self.cursor.execute("SELECT IDArticle, Code, LibProd, PrixAchat FROM article")
@@ -461,6 +469,12 @@ class ReconciliationService:
         computed_montant = None
         if qty and display_price is not None:
             computed_montant = round(qty * display_price, 3)
+
+        if (
+            validation_status == "VALID"
+            and confidence < self.confidence_threshold
+        ):
+            validation_status = "LOW_CONFIDENCE"
 
         return {
             "code": primary or line.get("code", ""),

@@ -10,6 +10,8 @@ import shutil
 
 import base64
 
+import time
+
 from datetime import datetime
 
 from typing import List, Dict, Any, Optional
@@ -17,7 +19,7 @@ from typing import List, Dict, Any, Optional
 import cv2
 import numpy as np
 
-import mysql.connector
+import requests
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 
@@ -33,6 +35,13 @@ from services.reconciliation import (
     pipeline_line_to_internal,
     parse_quantity,
 )
+from services.db import get_db_connection
+from services.admin_config import evaluate_price_mismatch_alert, load_config
+from services.admin_logger import log_error, log_info, log_warn
+from services.admin_telemetry import record_pipeline_run
+from services.admin_alerts import dispatch_discrepancy_alert, dispatch_pipeline_failure_alert
+from api_admin import router as admin_router
+from routes.auth import router as auth_router
 
 app = FastAPI(title="Diva Software - Real OCR Sync")
 
@@ -50,25 +59,22 @@ app.add_middleware(
 
 )
 
-db_config = {
-
-    "host": "127.0.0.1",
-
-    "port": 3307,
-
-    "user": "root",
-
-    "password": "admin",
-
-    "database": "diva_demo",
-
-    "auth_plugin": "mysql_native_password",
-
-}
+app.include_router(auth_router)
+app.include_router(admin_router)
 
 UPLOAD_DIR = "temp_uploads"
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+
+@app.on_event("startup")
+def _startup_seed():
+    """Ensure the default admin user exists so login works on first boot."""
+    try:
+        from api_admin import seed_default_admin
+        seed_default_admin()
+    except Exception:
+        pass
 
 class GeneralInfo(BaseModel):
 
@@ -172,8 +178,7 @@ def _clean_img_to_data_url(img) -> str:
     return _image_to_data_url(arr)
 
 def _get_db_connection():
-
-    return mysql.connector.connect(**db_config)
+    return get_db_connection()
 
 def _parse_invoice_date(raw: str):
 
@@ -219,7 +224,10 @@ def reconcile_dashboard(
 
         cursor = conn.cursor(dictionary=True)
 
-        service = ReconciliationService(cursor)
+        service = ReconciliationService(
+            cursor,
+            confidence_threshold=float(load_config().get("confidence_threshold", 0.85)),
+        )
 
         service.load_reference_data()
 
@@ -289,6 +297,7 @@ async def upload_and_extract(
 ):
 
     file_path = None
+    started = time.perf_counter()
 
     try:
 
@@ -358,6 +367,25 @@ async def upload_and_extract(
 
         )
 
+        duration_ms = int((time.perf_counter() - started) * 1000)
+        page_count = len(original_pages) or 1
+        record_pipeline_run(
+            filename=file.filename or "upload",
+            page_count=page_count,
+            duration_ms=duration_ms,
+            invoice_number=general_info.get("invoice_number", ""),
+            product_lines=reconciled.get("product_lines", []),
+            status="SUCCESS",
+        )
+        log_info(
+            "Pipeline extraction completed",
+            filename=file.filename,
+            invoice_number=general_info.get("invoice_number", ""),
+            duration_ms=duration_ms,
+            page_count=page_count,
+            line_count=len(reconciled.get("product_lines", [])),
+        )
+
         return {
 
             "dashboard": {
@@ -408,6 +436,15 @@ async def upload_and_extract(
 
     except Exception as e:
 
+        log_error(
+            "Pipeline extraction failed",
+            exc=e,
+            filename=getattr(file, "filename", ""),
+        )
+        dispatch_pipeline_failure_alert(
+            filename=getattr(file, "filename", "unknown"),
+            exception_string=str(e),
+        )
         raise HTTPException(status_code=500, detail=str(e)) from e
 
     finally:
@@ -604,11 +641,8 @@ async def save_invoice(data: DashboardPayload):
                 """
 
                 INSERT INTO lignefac (
-
-                    IDFacture, IDArticle, Code, LibProd, Quantité, PrixVente,
-
+                    IDFacture, IDArticle, Code, LibProd, Quantite, PrixVente,
                     prixMP, TauxTVA, Ordre
-
                 ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
 
                 """,
@@ -691,6 +725,39 @@ async def save_invoice(data: DashboardPayload):
 
         conn.commit()
 
+        log_info(
+            "Invoice saved to ERP",
+            id_facture=id_facture,
+            lib_facture=lib_facture,
+            lines_saved=len(lines),
+        )
+
+        alert = evaluate_price_mismatch_alert(lines, total_ht)
+        if alert:
+            log_warn(
+                "Price mismatch alert threshold exceeded",
+                pct=alert["pct"],
+                threshold_pct=alert["threshold_pct"],
+                mismatch_lines=alert["mismatch_lines"],
+            )
+            mismatch_details = [
+                {
+                    "code": l.get("code") or l.get("code_pct") or "",
+                    "designation": l.get("designation") or "",
+                    "ocr_price": l.get("price_unit") or l.get("ocr_price"),
+                    "erp_price": l.get("erp_price"),
+                }
+                for l in lines
+                if l.get("validation_status") == "PRICE_MISMATCH"
+            ]
+            dispatch_discrepancy_alert(
+                invoice_id=lib_facture,
+                vendor_name=supplier,
+                total_amount=total_ht,
+                mismatch_details=mismatch_details,
+                mismatch_pct=alert["pct"],
+            )
+
         return {
 
             "status": "success",
@@ -714,6 +781,7 @@ async def save_invoice(data: DashboardPayload):
             conn.rollback()
 
         print(f"Sync Error: {e}")
+        log_error("Save to ERP failed", exc=e)
 
         raise HTTPException(status_code=500, detail=str(e)) from e
 

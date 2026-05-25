@@ -9,6 +9,7 @@ import {
   Eye,
   FileText,
   Loader2,
+  LogOut,
   RefreshCw,
   Settings2,
   Upload,
@@ -470,6 +471,22 @@ const AccountantDashboard = () => {
             showCleanJson={showCleanJson}
             onShowCleanJsonChange={setShowCleanJson}
           />
+
+          <div className="mt-6 space-y-3">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-500">
+              <p className="font-medium text-slate-600">
+                Signed in as <span className="font-bold text-indigo-600">{localStorage.getItem("username") || "accountant"}</span>
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => { localStorage.clear(); window.location.href = "/login"; }}
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-100 active:scale-[0.98]"
+            >
+              <LogOut size={16} />
+              Sign Out
+            </button>
+          </div>
         </aside>
 
         <main className="col-span-12 p-8 lg:col-span-9">

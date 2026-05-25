@@ -1,0 +1,12 @@
+apiVersion: 1
+
+datasources:
+  - name: DivaMySQL
+    type: mysql
+    url: mysql_db:3306
+    database: diva_demo
+    user: root
+    secureJsonData:
+      password: admin
+    isDefault: true
+    editable: true
