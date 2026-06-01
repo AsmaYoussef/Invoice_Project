@@ -17,6 +17,20 @@ import {
 } from "lucide-react";
 import InvoScanLogo from "./InvoScanLogo";
 import ThemeToggle from "./ThemeToggle";
+import { useTheme } from "../context/ThemeContext";
+
+const BTN_REFRESH =
+  "inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700";
+
+const CARD =
+  "rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900";
+
+const INPUT =
+  "w-full rounded-xl border border-slate-300 px-3 py-2 text-slate-800 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100";
+
+const SECTION_TITLE = "mb-4 text-sm font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500";
+
+const PAGE_TITLE = "text-xl font-extrabold text-slate-900 dark:text-slate-100";
 import {
   Area,
   AreaChart,
@@ -66,7 +80,9 @@ const StatusBadge = ({ status }) => {
   return (
     <span
       className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${
-        active ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-800"
+        active
+          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"
+          : "bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300"
       }`}
     >
       {active ? "Active" : "Suspended"}
@@ -78,10 +94,14 @@ const Modal = ({ open, title, onClose, children }) => {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+      <div className={`w-full max-w-lg p-6 shadow-2xl ${CARD}`}>
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-slate-900">{title}</h3>
-          <button type="button" onClick={onClose} className="rounded-lg p-1 text-slate-400 hover:bg-slate-100">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">{title}</h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+          >
             <X size={18} />
           </button>
         </div>
@@ -181,13 +201,9 @@ const UserManagementTab = ({ apiError, setApiError }) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-extrabold text-slate-900">User Management</h2>
+        <h2 className={PAGE_TITLE}>User Management</h2>
         <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={loadUsers}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50"
-          >
+          <button type="button" onClick={loadUsers} className={BTN_REFRESH}>
             <RefreshCw size={16} /> Refresh
           </button>
           <button
@@ -200,15 +216,15 @@ const UserManagementTab = ({ apiError, setApiError }) => {
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div className={`overflow-x-auto ${CARD}`}>
         {loading ? (
-          <div className="flex items-center justify-center p-12 text-slate-500">
+          <div className="flex items-center justify-center p-12 text-slate-500 dark:text-slate-400">
             <Loader2 className="animate-spin" size={24} />
           </div>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-100 text-left text-xs font-black uppercase tracking-widest text-slate-400">
+              <tr className="border-b border-slate-100 text-left text-xs font-black uppercase tracking-widest text-slate-400 dark:border-slate-800 dark:text-slate-500">
                 <th className="p-4">ID</th>
                 <th className="p-4">Username</th>
                 <th className="p-4">Email</th>
@@ -218,34 +234,34 @@ const UserManagementTab = ({ apiError, setApiError }) => {
                 <th className="p-4">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {users.map((user) => (
-                <tr key={user.id} className="hover:bg-slate-50">
-                  <td className="p-4 font-mono text-slate-600">{user.id}</td>
-                  <td className="p-4 font-semibold">{user.username}</td>
-                  <td className="p-4">{user.email}</td>
+                <tr key={user.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/80">
+                  <td className="p-4 font-mono text-slate-600 dark:text-slate-400">{user.id}</td>
+                  <td className="p-4 font-semibold text-slate-800 dark:text-slate-100">{user.username}</td>
+                  <td className="p-4 text-slate-700 dark:text-slate-300">{user.email}</td>
                   <td className="p-4">
-                    <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-700">
+                    <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300">
                       {user.role}
                     </span>
                   </td>
                   <td className="p-4">
                     <StatusBadge status={user.status} />
                   </td>
-                  <td className="p-4 text-slate-500">{user.created_at?.slice(0, 10) || "—"}</td>
+                  <td className="p-4 text-slate-500 dark:text-slate-400">{user.created_at?.slice(0, 10) || "—"}</td>
                   <td className="p-4">
                     <div className="flex gap-2">
                       <button
                         type="button"
                         onClick={() => openEdit(user)}
-                        className="rounded-lg border border-slate-200 px-3 py-1 text-xs font-semibold hover:bg-slate-100"
+                        className="rounded-lg border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
                       >
                         Edit
                       </button>
                       <button
                         type="button"
                         onClick={() => setDeleteUser(user)}
-                        className="rounded-lg border border-red-200 px-3 py-1 text-xs font-semibold text-red-700 hover:bg-red-50"
+                        className="rounded-lg border border-red-200 px-3 py-1 text-xs font-semibold text-red-700 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950/50"
                       >
                         Deactivate
                       </button>
@@ -255,7 +271,7 @@ const UserManagementTab = ({ apiError, setApiError }) => {
               ))}
               {!users.length && (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-slate-500">
+                  <td colSpan={7} className="p-8 text-center text-slate-500 dark:text-slate-400">
                     No users found.
                   </td>
                 </tr>
@@ -272,7 +288,7 @@ const UserManagementTab = ({ apiError, setApiError }) => {
             placeholder="Username"
             value={form.username}
             onChange={(e) => setForm((p) => ({ ...p, username: e.target.value }))}
-            className="w-full rounded-xl border border-slate-300 px-3 py-2"
+            className={INPUT}
           />
           <input
             required
@@ -280,7 +296,7 @@ const UserManagementTab = ({ apiError, setApiError }) => {
             placeholder="Email"
             value={form.email}
             onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-            className="w-full rounded-xl border border-slate-300 px-3 py-2"
+            className={INPUT}
           />
           <input
             required
@@ -288,12 +304,12 @@ const UserManagementTab = ({ apiError, setApiError }) => {
             placeholder="Password (min 6 chars)"
             value={form.password}
             onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
-            className="w-full rounded-xl border border-slate-300 px-3 py-2"
+            className={INPUT}
           />
           <select
             value={form.role}
             onChange={(e) => setForm((p) => ({ ...p, role: e.target.value }))}
-            className="w-full rounded-xl border border-slate-300 px-3 py-2"
+            className={INPUT}
           >
             <option value="ACCOUNTANT">Accountant</option>
             <option value="ADMINISTRATOR">Administrator</option>
@@ -315,12 +331,12 @@ const UserManagementTab = ({ apiError, setApiError }) => {
             type="email"
             value={editForm.email}
             onChange={(e) => setEditForm((p) => ({ ...p, email: e.target.value }))}
-            className="w-full rounded-xl border border-slate-300 px-3 py-2"
+            className={INPUT}
           />
           <select
             value={editForm.role}
             onChange={(e) => setEditForm((p) => ({ ...p, role: e.target.value }))}
-            className="w-full rounded-xl border border-slate-300 px-3 py-2"
+            className={INPUT}
           >
             <option value="ACCOUNTANT">Accountant</option>
             <option value="ADMINISTRATOR">Administrator</option>
@@ -328,7 +344,7 @@ const UserManagementTab = ({ apiError, setApiError }) => {
           <select
             value={editForm.status}
             onChange={(e) => setEditForm((p) => ({ ...p, status: e.target.value }))}
-            className="w-full rounded-xl border border-slate-300 px-3 py-2"
+            className={INPUT}
           >
             <option value="ACTIVE">Active</option>
             <option value="SUSPENDED">Suspended</option>
@@ -338,7 +354,7 @@ const UserManagementTab = ({ apiError, setApiError }) => {
             placeholder="New password (optional)"
             value={editForm.password}
             onChange={(e) => setEditForm((p) => ({ ...p, password: e.target.value }))}
-            className="w-full rounded-xl border border-slate-300 px-3 py-2"
+            className={INPUT}
           />
           <button
             type="submit"
@@ -351,7 +367,7 @@ const UserManagementTab = ({ apiError, setApiError }) => {
       </Modal>
 
       <Modal open={!!deleteUser} title="Confirm Deactivation" onClose={() => setDeleteUser(null)}>
-        <p className="mb-4 text-sm text-slate-600">
+        <p className="mb-4 text-sm text-slate-600 dark:text-slate-300">
           Suspend <strong>{deleteUser?.username}</strong> or permanently delete this account?
         </p>
         <div className="flex flex-col gap-2">
@@ -378,8 +394,14 @@ const UserManagementTab = ({ apiError, setApiError }) => {
 };
 
 const PerformanceTab = ({ setApiError }) => {
+  const { isDark } = useTheme();
   const [metrics, setMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
+  const chartGrid = isDark ? "#334155" : "#e2e8f0";
+  const chartTick = isDark ? "#94a3b8" : "#64748b";
+  const tooltipStyle = isDark
+    ? { backgroundColor: "#0f172a", border: "1px solid #334155", borderRadius: 8, color: "#f1f5f9" }
+    : undefined;
 
   const loadMetrics = useCallback(async () => {
     try {
@@ -408,7 +430,7 @@ const PerformanceTab = ({ setApiError }) => {
 
   if (loading && !metrics) {
     return (
-      <div className="flex items-center justify-center p-20 text-slate-500">
+      <div className="flex items-center justify-center p-20 text-slate-500 dark:text-slate-400">
         <Loader2 className="animate-spin" size={28} />
       </div>
     );
@@ -428,61 +450,65 @@ const PerformanceTab = ({ setApiError }) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-extrabold text-slate-900">Performance Monitoring</h2>
-        <button
-          type="button"
-          onClick={loadMetrics}
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50"
-        >
+        <h2 className={PAGE_TITLE}>Performance Monitoring</h2>
+        <button type="button" onClick={loadMetrics} className={BTN_REFRESH}>
           <RefreshCw size={16} /> Refresh
         </button>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         {kpis.map((kpi) => (
-          <div key={kpi.label} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-400">{kpi.label}</p>
-            <p className="mt-2 text-3xl font-black text-indigo-600">
+          <div key={kpi.label} className={`${CARD} p-5`}>
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+              {kpi.label}
+            </p>
+            <p className="mt-2 text-3xl font-black text-indigo-600 dark:text-indigo-400">
               {kpi.value}
-              <span className="text-base font-semibold text-slate-500">{kpi.suffix}</span>
+              <span className="text-base font-semibold text-slate-500 dark:text-slate-400">{kpi.suffix}</span>
             </p>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-400">
-            Volume Velocity (daily)
-          </h3>
+        <div className={`${CARD} p-5`}>
+          <h3 className={SECTION_TITLE}>Volume Velocity (daily)</h3>
           <ResponsiveContainer width="100%" height={260}>
             <AreaChart data={metrics?.volume_by_day || []}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis dataKey="date" tick={{ fontSize: 11 }} />
-              <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
-              <Tooltip />
-              <Area type="monotone" dataKey="count" stroke="#4f46e5" fill="#818cf8" fillOpacity={0.35} />
+              <CartesianGrid strokeDasharray="3 3" stroke={chartGrid} />
+              <XAxis dataKey="date" tick={{ fontSize: 11, fill: chartTick }} />
+              <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: chartTick }} />
+              <Tooltip contentStyle={tooltipStyle} />
+              <Area type="monotone" dataKey="count" stroke="#818cf8" fill="#6366f1" fillOpacity={0.4} />
             </AreaChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-400">
-            Validation Breakdown
-          </h3>
+        <div className={`${CARD} p-5`}>
+          <h3 className={SECTION_TITLE}>Validation Breakdown</h3>
           {pieData.length ? (
             <ResponsiveContainer width="100%" height={260}>
               <PieChart>
-                <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90} label>
+                <Pie
+                  data={pieData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={90}
+                  label={{ fill: chartTick, fontSize: 11 }}
+                >
                   {pieData.map((entry) => (
                     <Cell key={entry.name} fill={PIE_COLORS[entry.name] || "#64748b"} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip contentStyle={tooltipStyle} />
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <p className="py-16 text-center text-sm text-slate-500">No validation data yet. Run OCR uploads first.</p>
+            <p className="py-16 text-center text-sm text-slate-500 dark:text-slate-400">
+              No validation data yet. Run OCR uploads first.
+            </p>
           )}
         </div>
       </div>
@@ -519,12 +545,8 @@ const LogAuditorTab = ({ setApiError }) => {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-xl font-extrabold text-slate-900">System Log Auditor</h2>
-        <button
-          type="button"
-          onClick={loadLogs}
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50"
-        >
+        <h2 className={PAGE_TITLE}>System Log Auditor</h2>
+        <button type="button" onClick={loadLogs} className={BTN_REFRESH}>
           <RefreshCw size={16} /> Refresh
         </button>
       </div>
@@ -580,34 +602,40 @@ const LogAuditorTab = ({ setApiError }) => {
       </div>
 
       {selected && (
-        <div className="fixed inset-y-0 right-0 z-50 w-full max-w-md border-l border-slate-200 bg-white p-6 shadow-2xl">
+        <div className="fixed inset-y-0 right-0 z-50 w-full max-w-md border-l border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="font-bold text-slate-900">Log Details</h3>
-            <button type="button" onClick={() => setSelected(null)} className="rounded-lg p-1 hover:bg-slate-100">
+            <h3 className="font-bold text-slate-900 dark:text-slate-100">Log Details</h3>
+            <button
+              type="button"
+              onClick={() => setSelected(null)}
+              className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
               <X size={18} />
             </button>
           </div>
-          <div className="space-y-3 text-sm">
+          <div className="space-y-3 text-sm text-slate-700 dark:text-slate-300">
             <p>
-              <span className="font-semibold text-slate-500">Level:</span>{" "}
+              <span className="font-semibold text-slate-500 dark:text-slate-400">Level:</span>{" "}
               <span className={logLevelClass(selected.level)}>{selected.level}</span>
             </p>
             <p>
-              <span className="font-semibold text-slate-500">Time:</span> {selected.timestamp}
+              <span className="font-semibold text-slate-500 dark:text-slate-400">Time:</span>{" "}
+              {selected.timestamp}
             </p>
             <p>
-              <span className="font-semibold text-slate-500">Message:</span> {selected.message}
+              <span className="font-semibold text-slate-500 dark:text-slate-400">Message:</span>{" "}
+              {selected.message}
             </p>
             {selected.context?.stack_trace && (
               <div>
-                <p className="mb-1 font-semibold text-slate-500">Stack Trace</p>
+                <p className="mb-1 font-semibold text-slate-500 dark:text-slate-400">Stack Trace</p>
                 <pre className="max-h-40 overflow-auto rounded-lg bg-slate-950 p-3 text-xs text-red-300">
                   {selected.context.stack_trace}
                 </pre>
               </div>
             )}
             <div>
-              <p className="mb-1 font-semibold text-slate-500">Context / Raw JSON</p>
+              <p className="mb-1 font-semibold text-slate-500 dark:text-slate-400">Context / Raw JSON</p>
               <pre className="max-h-80 overflow-auto rounded-lg bg-slate-950 p-3 text-xs text-emerald-300">
                 {JSON.stringify(selected.context || {}, null, 2)}
               </pre>
@@ -671,7 +699,7 @@ const ConfigTab = ({ setApiError }) => {
 
   if (!config) {
     return (
-      <div className="flex items-center justify-center p-20 text-slate-500">
+      <div className="flex items-center justify-center p-20 text-slate-500 dark:text-slate-400">
         <Loader2 className="animate-spin" size={28} />
       </div>
     );
@@ -679,11 +707,11 @@ const ConfigTab = ({ setApiError }) => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-extrabold text-slate-900">System Configuration & Alerts</h2>
+      <h2 className={PAGE_TITLE}>System Configuration & Alerts</h2>
       <form onSubmit={handleSave} className="space-y-6">
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-400">Reconciliation</h3>
-          <label className="block text-sm font-semibold text-slate-700">
+        <section className={`${CARD} p-6`}>
+          <h3 className={SECTION_TITLE}>Reconciliation</h3>
+          <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
             Fuzzy Match Threshold: {(config.confidence_threshold * 100).toFixed(0)}%
           </label>
           <input
@@ -699,13 +727,15 @@ const ConfigTab = ({ setApiError }) => {
           />
         </section>
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-400">OCR Defaults</h3>
-          <label className="mb-1 block text-sm font-semibold text-slate-700">Default Processing DPI</label>
+        <section className={`${CARD} p-6`}>
+          <h3 className={SECTION_TITLE}>OCR Defaults</h3>
+          <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-200">
+            Default Processing DPI
+          </label>
           <select
             value={config.default_dpi}
             onChange={(e) => setConfig((p) => ({ ...p, default_dpi: Number(e.target.value) }))}
-            className="w-full max-w-xs rounded-xl border border-slate-300 px-3 py-2"
+            className={`max-w-xs ${INPUT}`}
           >
             {[150, 200, 300].map((dpi) => (
               <option key={dpi} value={dpi}>
@@ -715,9 +745,9 @@ const ConfigTab = ({ setApiError }) => {
           </select>
         </section>
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-400">Alert Rules</h3>
-          <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+        <section className={`${CARD} p-6`}>
+          <h3 className={SECTION_TITLE}>Alert Rules</h3>
+          <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
             <input
               type="checkbox"
               checked={config.alert_rules?.enabled ?? true}
@@ -727,11 +757,11 @@ const ConfigTab = ({ setApiError }) => {
                   alert_rules: { ...p.alert_rules, enabled: e.target.checked },
                 }))
               }
-              className="h-4 w-4 rounded accent-indigo-600"
+              className="h-4 w-4 rounded accent-indigo-600 dark:bg-slate-950"
             />
             Enable price mismatch alerts
           </label>
-          <label className="mt-3 block text-sm text-slate-600">
+          <label className="mt-3 block text-sm text-slate-600 dark:text-slate-400">
             Trigger alert when mismatch exceeds (% of total HT)
           </label>
           <input
@@ -748,28 +778,30 @@ const ConfigTab = ({ setApiError }) => {
                 },
               }))
             }
-            className="mt-1 w-full max-w-xs rounded-xl border border-slate-300 px-3 py-2"
+            className={`mt-1 max-w-xs ${INPUT}`}
           />
         </section>
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-400">
-            Notification Routing
-          </h3>
-          <label className="block text-sm font-semibold text-slate-700">Alert Emails (comma-separated)</label>
+        <section className={`${CARD} p-6`}>
+          <h3 className={SECTION_TITLE}>Notification Routing</h3>
+          <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
+            Alert Emails (comma-separated)
+          </label>
           <input
             value={emailsText}
             onChange={(e) => setEmailsText(e.target.value)}
             placeholder="ops@diva.local, finance@motion.div"
-            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2"
+            className={`mt-1 ${INPUT}`}
           />
-          <label className="mt-4 block text-sm font-semibold text-slate-700">Webhook URLs (one per line)</label>
+          <label className="mt-4 block text-sm font-semibold text-slate-700 dark:text-slate-200">
+            Webhook URLs (one per line)
+          </label>
           <textarea
             value={webhooksText}
             onChange={(e) => setWebhooksText(e.target.value)}
             rows={3}
             placeholder="https://hooks.example.com/alert"
-            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 font-mono text-sm"
+            className={`mt-1 font-mono text-sm ${INPUT}`}
           />
         </section>
 
@@ -815,7 +847,7 @@ const AdminDashboard = () => {
                 className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold transition active:scale-[0.98] ${
                   activeTab === id
                     ? "bg-indigo-600 text-white shadow-md"
-                    : "text-slate-600 hover:bg-slate-100"
+                    : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
                 }`}
               >
                 <Icon size={18} />
@@ -825,15 +857,15 @@ const AdminDashboard = () => {
           </nav>
 
           <div className="mt-8 space-y-3">
-            <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-500">
-              <p className="font-medium text-slate-600">
-                Signed in as <span className="font-bold text-indigo-600">{localStorage.getItem("username") || "admin"}</span>
+            <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+              <p className="font-medium text-slate-600 dark:text-slate-300">
+                Signed in as <span className="font-bold text-indigo-600 dark:text-indigo-400">{localStorage.getItem("username") || "admin"}</span>
               </p>
             </div>
             <button
               type="button"
               onClick={() => { localStorage.clear(); window.location.href = "/login"; }}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-100 active:scale-[0.98]"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-100 active:scale-[0.98] dark:border-red-900 dark:bg-red-950/40 dark:text-red-400 dark:hover:bg-red-950/60"
             >
               <LogOut size={16} />
               Sign Out
@@ -843,7 +875,7 @@ const AdminDashboard = () => {
 
         <main className="col-span-12 p-6 lg:col-span-9 lg:p-8">
           {apiError && (
-            <div className="mb-6 flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            <div className="mb-6 flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/50 dark:text-red-300">
               <AlertTriangle size={18} />
               <p className="font-semibold">{apiError}</p>
             </div>
