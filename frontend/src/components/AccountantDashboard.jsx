@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import axios from "axios";
 import {
   Activity,
-  Bot,
   CheckCircle2,
   Database,
   Download,
@@ -14,7 +13,13 @@ import {
   Settings2,
   Upload,
   AlertCircle,
+  History,
 } from "lucide-react";
+
+import InvoScanLogo from "./InvoScanLogo";
+import InvoiceHistoryPanel from "./InvoiceHistoryPanel";
+import NotificationBell from "./NotificationBell";
+import ThemeToggle from "./ThemeToggle";
 
 const API_BASE_URL = "http://127.0.0.1:8000";
 
@@ -69,8 +74,8 @@ const TabButton = ({ active, icon: Icon, label, onClick }) => (
     onClick={onClick}
     className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition ${
       active
-        ? "bg-slate-900 text-white shadow"
-        : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+        ? "bg-slate-900 text-white shadow dark:bg-indigo-600"
+        : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
     }`}
   >
     <Icon size={16} />
@@ -80,8 +85,8 @@ const TabButton = ({ active, icon: Icon, label, onClick }) => (
 
 const InfoField = ({ label, value }) => (
   <div className="space-y-1">
-    <p className="text-[11px] uppercase tracking-wide text-slate-500">{label}</p>
-    <p className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-800 min-h-9">
+    <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-400">{label}</p>
+    <p className="min-h-9 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-800 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100">
       {String(value ?? "") || "—"}
     </p>
   </div>
@@ -125,19 +130,19 @@ const ValidationBadge = ({ status }) => {
 const rowClassForStatus = (status) => {
   switch (status) {
     case "VALID":
-      return "bg-emerald-50/60 hover:bg-emerald-50";
+      return "bg-emerald-50/60 hover:bg-emerald-50 dark:bg-emerald-950/40 dark:hover:bg-emerald-950/60";
     case "PRICE_MISMATCH":
     case "UNKNOWN_PRODUCT":
-      return "bg-red-50/70 hover:bg-red-50";
+      return "bg-red-50/70 hover:bg-red-50 dark:bg-red-950/40 dark:hover:bg-red-950/60";
     case "LOW_CONFIDENCE":
-      return "bg-amber-50/70 hover:bg-amber-50";
+      return "bg-amber-50/70 hover:bg-amber-50 dark:bg-amber-950/40 dark:hover:bg-amber-950/60";
     default:
-      return "hover:bg-slate-50";
+      return "hover:bg-slate-50 dark:hover:bg-slate-800/80";
   }
 };
 
 const StatusLine = ({ label }) => (
-  <div className="flex items-start gap-2 text-sm text-slate-700">
+  <div className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
     <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-emerald-500" aria-hidden />
     <span>{label}</span>
   </div>
@@ -152,8 +157,8 @@ const PipelineStatusPanel = ({
 }) => {
   const status = { ...DEFAULT_PIPELINE_STATUS, ...(pipelineStatus || {}) };
   return (
-    <div className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
-      <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-600">
+    <div className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-950">
+      <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
         <Settings2 size={14} /> Pipeline Status
       </p>
       <div className="space-y-2">
@@ -161,14 +166,14 @@ const PipelineStatusPanel = ({
         <StatusLine label={`OCR Engine: ${status.ocr_engine}`} />
         <StatusLine label={`NLP / Logic Layer: ${status.nlp_layer}`} />
       </div>
-      <div className="border-t border-slate-200 pt-3">
-        <label className="mb-1 block text-[11px] font-bold uppercase tracking-wide text-slate-500">
+      <div className="border-t border-slate-200 pt-3 dark:border-slate-700">
+        <label className="mb-1 block text-[11px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
           Processing DPI
         </label>
         <select
           value={dpiChoice}
           onChange={(ev) => onDpiChange(Number(ev.target.value))}
-          className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
         >
           {DPI_OPTIONS.map((dpi) => (
             <option key={dpi} value={dpi}>
@@ -176,18 +181,18 @@ const PipelineStatusPanel = ({
             </option>
           ))}
         </select>
-        <p className="mt-1 text-[10px] text-slate-500">Applied on next Analyze / Re-Analyze</p>
+        <p className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">Applied on next Analyze / Re-Analyze</p>
       </div>
-      <div className="border-t border-slate-200 pt-3">
-        <label className="flex cursor-pointer items-start gap-2 text-sm text-slate-700">
+      <div className="border-t border-slate-200 pt-3 dark:border-slate-700">
+        <label className="flex cursor-pointer items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
           <input
             type="checkbox"
-            className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 dark:border-slate-600 dark:bg-slate-900"
             checked={showCleanJson}
             onChange={(ev) => onShowCleanJsonChange(ev.target.checked)}
           />
           <span>
-            <span className="block text-[11px] font-bold uppercase tracking-wide text-slate-500">
+            <span className="block text-[11px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               Debug
             </span>
             Show Cleaned Pipeline JSON
@@ -243,28 +248,32 @@ const SupplierBanner = ({ generalInfo }) => {
   return (
     <div
       className={`rounded-xl border p-4 ${
-        matched ? "border-emerald-200 bg-emerald-50" : "border-amber-200 bg-amber-50"
+        matched
+          ? "border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/50"
+          : "border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/50"
       }`}
     >
-      <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Supplier reconciliation</p>
+      <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+        Supplier reconciliation
+      </p>
       <div className="mt-2 grid gap-2 md:grid-cols-2">
         <div>
-          <p className="text-[11px] text-slate-500">OCR extracted</p>
-          <p className="font-semibold text-slate-900">{generalInfo?.supplier_name || "—"}</p>
+          <p className="text-[11px] text-slate-500 dark:text-slate-400">OCR extracted</p>
+          <p className="font-semibold text-slate-900 dark:text-slate-100">{generalInfo?.supplier_name || "—"}</p>
         </div>
         <div>
-          <p className="text-[11px] text-slate-500">ERP reference</p>
-          <p className="font-semibold text-indigo-700">
+          <p className="text-[11px] text-slate-500 dark:text-slate-400">ERP reference</p>
+          <p className="font-semibold text-indigo-700 dark:text-indigo-400">
             {generalInfo?.erp_supplier_name || "No match in fournisseur"}
           </p>
         </div>
         <div>
-          <p className="text-[11px] text-slate-500">Telephone</p>
-          <p className="font-mono font-semibold text-slate-800">{tel || "—"}</p>
+          <p className="text-[11px] text-slate-500 dark:text-slate-400">Telephone</p>
+          <p className="font-mono font-semibold text-slate-800 dark:text-slate-200">{tel || "—"}</p>
         </div>
         <div>
-          <p className="text-[11px] text-slate-500">Fax</p>
-          <p className="font-mono font-semibold text-slate-800">{fax || "—"}</p>
+          <p className="text-[11px] text-slate-500 dark:text-slate-400">Fax</p>
+          <p className="font-mono font-semibold text-slate-800 dark:text-slate-200">{fax || "—"}</p>
         </div>
       </div>
     </div>
@@ -283,6 +292,7 @@ const AccountantDashboard = () => {
   const [syncSuccess, setSyncSuccess] = useState(false);
   const [apiError, setApiError] = useState("");
   const [showCleanJson, setShowCleanJson] = useState(false);
+  const [historyRefreshKey, setHistoryRefreshKey] = useState(0);
 
   const [settings, setSettings] = useState({
     use_nlp: true,
@@ -431,6 +441,7 @@ const AccountantDashboard = () => {
       );
       setSyncSuccess(true);
       setApiError("");
+      setHistoryRefreshKey((k) => k + 1);
       console.log("Saved:", response.data);
     } catch (error) {
       setApiError(formatApiError(error, "Save to ERP failed. Check MySQL and seed data."));
@@ -451,17 +462,20 @@ const AccountantDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-800 font-sans">
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 dark:bg-slate-950 dark:text-slate-100">
       <div className="grid min-h-screen grid-cols-12">
-        <aside className="col-span-12 border-r border-slate-200 bg-white p-5 lg:col-span-3">
-          <div className="mb-8 flex items-center gap-3">
+        <aside className="col-span-12 border-r border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 lg:col-span-3">
+          <div className="mb-6 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-3">
             <div className="rounded-lg bg-indigo-600 p-2 text-white">
-              <Bot size={20} />
+              <InvoScanLogo size={20} />
             </div>
             <div>
-              <h1 className="text-lg font-bold tracking-tight">Diva Software</h1>
-              <p className="text-xs text-slate-500 font-medium">Smart OCR Engine v2.0</p>
+              <h1 className="text-lg font-bold tracking-tight">InvoScan</h1>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Invoice Extraction v2.0</p>
             </div>
+            </div>
+            <ThemeToggle />
           </div>
 
           <PipelineStatusPanel
@@ -473,15 +487,15 @@ const AccountantDashboard = () => {
           />
 
           <div className="mt-6 space-y-3">
-            <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-500">
-              <p className="font-medium text-slate-600">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+              <p className="font-medium text-slate-600 dark:text-slate-300">
                 Signed in as <span className="font-bold text-indigo-600">{localStorage.getItem("username") || "accountant"}</span>
               </p>
             </div>
             <button
               type="button"
               onClick={() => { localStorage.clear(); window.location.href = "/login"; }}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-100 active:scale-[0.98]"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-100 active:scale-[0.98] dark:border-red-900 dark:bg-red-950/40 dark:text-red-400 dark:hover:bg-red-950/60"
             >
               <LogOut size={16} />
               Sign Out
@@ -490,14 +504,19 @@ const AccountantDashboard = () => {
         </aside>
 
         <main className="col-span-12 p-8 lg:col-span-9">
-          <header className="mb-8 flex flex-col gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:flex-row lg:items-center lg:justify-between">
+          <header className="mb-8 flex flex-col gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Invoice Reconciliation</h2>
-              <p className="text-slate-500">Extract, validate against ERP, and save to facture / lignefac.</p>
+              <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+                Invoice Reconciliation
+              </h2>
+              <p className="text-slate-500 dark:text-slate-400">
+                Extract, validate against ERP, and save to facture / lignefac.
+              </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold transition hover:bg-slate-50">
+              <NotificationBell />
+              <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700">
                 <Upload size={16} />
                 <span>{selectedFile?.name || "Select Document"}</span>
                 <input
@@ -521,7 +540,7 @@ const AccountantDashboard = () => {
                 type="button"
                 onClick={handleRevalidate}
                 disabled={!dashboard || revalidateLoading}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-slate-800 shadow transition hover:bg-slate-50 disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-slate-800 shadow transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
               >
                 {revalidateLoading ? <Loader2 size={18} className="animate-spin" /> : <RefreshCw size={18} />}
                 Re-Validate
@@ -571,6 +590,12 @@ const AccountantDashboard = () => {
               label="Raw Data"
               onClick={() => setActiveTab("technical")}
             />
+            <TabButton
+              active={activeTab === "history"}
+              icon={History}
+              label="History"
+              onClick={() => setActiveTab("history")}
+            />
           </div>
 
           {dashboard && activeTab === "dashboard" && (
@@ -591,12 +616,12 @@ const AccountantDashboard = () => {
           )}
 
           {!dashboard && !loading && (
-            <div className="flex min-h-[400px] flex-col items-center justify-center rounded-3xl border-2 border-dashed border-slate-300 bg-white p-12 text-center shadow-inner">
-              <div className="mb-4 rounded-full bg-slate-100 p-4 text-slate-400">
+            <div className="flex min-h-[400px] flex-col items-center justify-center rounded-3xl border-2 border-dashed border-slate-300 bg-white p-12 text-center shadow-inner dark:border-slate-700 dark:bg-slate-900">
+              <div className="mb-4 rounded-full bg-slate-100 p-4 text-slate-400 dark:bg-slate-800 dark:text-slate-500">
                 <Upload size={48} />
               </div>
-              <h3 className="text-lg font-bold text-slate-800">Ready to start</h3>
-              <p className="max-w-xs text-slate-500">
+              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">Ready to start</h3>
+              <p className="max-w-xs text-slate-500 dark:text-slate-400">
                 Upload a supplier invoice. Run seed SQL in DBeaver first if the demo DB is empty.
               </p>
             </div>
@@ -607,8 +632,10 @@ const AccountantDashboard = () => {
               <SupplierBanner generalInfo={generalInfo} />
 
               <div className="grid grid-cols-12 gap-6">
-                <section className="col-span-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm xl:col-span-8">
-                  <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-slate-400">Header Information</h3>
+                <section className="col-span-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 xl:col-span-8">
+                  <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                    Header Information
+                  </h3>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <InfoField label="Invoice #" value={generalInfo.invoice_number} />
                     <InfoField label="Date" value={generalInfo.invoice_date} />
@@ -622,31 +649,41 @@ const AccountantDashboard = () => {
                   </div>
                 </section>
 
-                <section className="col-span-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm xl:col-span-4">
-                  <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-slate-400">Financial Summary</h3>
+                <section className="col-span-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 xl:col-span-4">
+                  <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                    Financial Summary
+                  </h3>
                   <div className="space-y-4">
-                    <div className="flex justify-between border-b border-slate-100 pb-2">
-                      <span className="text-sm text-slate-500">Total HT</span>
-                      <span className="font-bold text-slate-900">{financialTotals.total_ht ?? "—"} TND</span>
+                    <div className="flex justify-between border-b border-slate-100 pb-2 dark:border-slate-800">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Total HT</span>
+                      <span className="font-bold text-slate-900 dark:text-slate-100">
+                        {financialTotals.total_ht ?? "—"} TND
+                      </span>
                     </div>
-                    <div className="flex justify-between border-b border-slate-100 pb-2">
-                      <span className="text-sm text-slate-500">TVA</span>
-                      <span className="font-bold text-slate-900">{financialTotals.tva ?? "—"} TND</span>
+                    <div className="flex justify-between border-b border-slate-100 pb-2 dark:border-slate-800">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">TVA</span>
+                      <span className="font-bold text-slate-900 dark:text-slate-100">
+                        {financialTotals.tva ?? "—"} TND
+                      </span>
                     </div>
                     <div className="flex justify-between pt-2">
-                      <span className="text-base font-bold text-slate-900">Total TTC</span>
-                      <span className="text-xl font-black text-indigo-600">{financialTotals.total_ttc ?? "—"} TND</span>
+                      <span className="text-base font-bold text-slate-900 dark:text-slate-100">Total TTC</span>
+                      <span className="text-xl font-black text-indigo-600 dark:text-indigo-400">
+                        {financialTotals.total_ttc ?? "—"} TND
+                      </span>
                     </div>
                   </div>
                 </section>
               </div>
 
-              <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-slate-400">Line Item Validation</h3>
+              <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                  Line Item Validation
+                </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b-2 border-slate-100 text-left text-xs font-black uppercase tracking-widest text-slate-400">
+                      <tr className="border-b-2 border-slate-100 text-left text-xs font-black uppercase tracking-widest text-slate-400 dark:border-slate-800 dark:text-slate-500">
                         <th className="pb-4 pr-2">Status</th>
                         <th className="pb-4 pr-2">Code / MP</th>
                         <th className="pb-4 pr-2">Article PF</th>
@@ -656,53 +693,53 @@ const AccountantDashboard = () => {
                         <th className="pb-4">ERP Price</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                       {productLines.map((line, idx) => (
                         <tr key={idx} className={rowClassForStatus(line.validation_status)}>
                           <td className="py-3 pr-2">
                             <ValidationBadge status={line.validation_status} />
                             {typeof line.confidence === "number" && (
-                              <p className="mt-1 text-[10px] text-slate-500">
+                              <p className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">
                                 {(line.confidence * 100).toFixed(0)}%
                               </p>
                             )}
                           </td>
                           <td className="py-3 pr-2">
                             <input
-                              className="w-24 rounded border border-slate-200 bg-white px-2 py-1 font-mono text-xs"
+                              className="w-24 rounded border border-slate-200 bg-white px-2 py-1 font-mono text-xs dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
                               value={line.code_pct || line.code || ""}
                               onChange={(ev) => updateLineCodes(idx, ev.target.value)}
                             />
                           </td>
                           <td className="py-3 pr-2">
                             <input
-                              className="w-28 rounded border border-slate-200 bg-white px-2 py-1 font-mono text-xs"
+                              className="w-28 rounded border border-slate-200 bg-white px-2 py-1 font-mono text-xs dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
                               value={line.code_article || ""}
                               onChange={(ev) => updateLine(idx, "code_article", ev.target.value)}
                             />
                           </td>
                           <td className="py-3 pr-2">
                             <input
-                              className="min-w-[180px] rounded border border-slate-200 bg-white px-2 py-1 text-xs"
+                              className="min-w-[180px] rounded border border-slate-200 bg-white px-2 py-1 text-xs dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
                               value={line.designation || line.erp_name || ""}
                               onChange={(ev) => updateLine(idx, "designation", ev.target.value)}
                             />
                           </td>
                           <td className="py-3 pr-2">
                             <input
-                              className="w-16 rounded border border-slate-200 bg-white px-2 py-1 text-xs"
+                              className="w-16 rounded border border-slate-200 bg-white px-2 py-1 text-xs dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
                               value={line.quantite ?? ""}
                               onChange={(ev) => updateLine(idx, "quantite", ev.target.value)}
                             />
                           </td>
                           <td className="py-3 pr-2">
                             <input
-                              className="w-20 rounded border border-slate-200 bg-white px-2 py-1 text-xs font-bold"
+                              className="w-20 rounded border border-slate-200 bg-white px-2 py-1 text-xs font-bold dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
                               value={line.ocr_price ?? line.price_unit ?? ""}
                               onChange={(ev) => updateLine(idx, "price_unit", ev.target.value)}
                             />
                           </td>
-                          <td className="py-3 font-black text-indigo-600">
+                          <td className="py-3 font-black text-indigo-600 dark:text-indigo-400">
                             {line.erp_price != null && Number.isFinite(Number(line.erp_price))
                               ? Number(line.erp_price).toFixed(3)
                               : "—"}
@@ -726,6 +763,10 @@ const AccountantDashboard = () => {
                 ))
               )}
             </div>
+          )}
+
+          {activeTab === "history" && (
+            <InvoiceHistoryPanel refreshKey={historyRefreshKey} />
           )}
 
           {dashboard && activeTab === "technical" && (

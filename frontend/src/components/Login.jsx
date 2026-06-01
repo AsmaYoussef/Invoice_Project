@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Eye, EyeOff, Lock, LogIn, User } from "lucide-react";
+import InvoScanLogo from "./InvoScanLogo";
+import ThemeToggle from "./ThemeToggle";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -52,17 +54,20 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 px-4">
+    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 px-4 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <div className="absolute right-4 top-4">
+        <ThemeToggle />
+      </div>
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-600 shadow-lg shadow-indigo-500/30">
-            <Lock className="text-white" size={28} />
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/30">
+            <InvoScanLogo size={36} />
           </div>
           <h1 className="text-3xl font-extrabold tracking-tight text-white">
-            Diva Software
+            InvoScan
           </h1>
           <p className="mt-1 text-sm text-indigo-300">
-            Secure OCR Platform Access
+            Invoice Intelligence Platform
           </p>
         </div>
 

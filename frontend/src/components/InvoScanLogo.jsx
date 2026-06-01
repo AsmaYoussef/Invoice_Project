@@ -1,0 +1,53 @@
+export default function InvoScanLogo({ size = 32, className = "" }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect
+        x="8"
+        y="4"
+        width="32"
+        height="40"
+        rx="3"
+        fill="currentColor"
+        fillOpacity="0.12"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <line
+        x1="14"
+        y1="13"
+        x2="34"
+        y2="13"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <line
+        x1="14"
+        y1="19"
+        x2="26"
+        y2="19"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        opacity="0.7"
+      />
+      <ellipse
+        cx="24"
+        cy="30"
+        rx="9"
+        ry="5.5"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <circle cx="24" cy="30" r="3.25" fill="currentColor" />
+    </svg>
+  );
+}

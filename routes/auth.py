@@ -76,6 +76,23 @@ def get_current_user(request: Request) -> dict[str, Any]:
     return {"sub": username, "role": role}
 
 
+def get_current_user_optional(request: Request) -> dict[str, Any] | None:
+    """Return JWT user if Bearer token present and valid; otherwise None."""
+    auth_header = request.headers.get("Authorization") or ""
+    if not auth_header.startswith("Bearer "):
+        return None
+    token = auth_header[7:]
+    try:
+        payload = decode_access_token(token)
+    except HTTPException:
+        return None
+    username = payload.get("sub")
+    role = payload.get("role")
+    if not username or not role:
+        return None
+    return {"sub": username, "role": role}
+
+
 def require_role(required_role: str):
     """Return a dependency that enforces a specific role."""
     def _guard(user: dict[str, Any] = Depends(get_current_user)) -> dict[str, Any]:

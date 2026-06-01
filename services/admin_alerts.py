@@ -118,13 +118,13 @@ def dispatch_discrepancy_alert(
         <tbody>{rows_html}</tbody>
       </table>
       <p style="margin-top:24px;color:#64748b;font-size:12px">
-        Diva Software &mdash; Automated OCR Reconciliation Engine
+        InvoScan &mdash; Automated OCR Reconciliation Engine
       </p>
     </div>
     """
 
     _send_email(
-        subject=f"[DIVA ALERT] Price Discrepancy \u2014 Invoice {invoice_id}",
+        subject=f"[InvoScan ALERT] Price Discrepancy \u2014 Invoice {invoice_id}",
         html_body=html,
         recipients=targets["emails"],
     )
@@ -146,7 +146,7 @@ def dispatch_discrepancy_alert(
                     {"name": "Affected Lines", "value": str(len(mismatch_details)), "inline": True},
                     *webhook_fields,
                 ],
-                "footer": {"text": f"Diva OCR Engine \u2022 {now}"},
+                "footer": {"text": f"InvoScan \u2022 {now}"},
             }
         ],
     }
@@ -185,7 +185,7 @@ def dispatch_pipeline_failure_alert(
                     {"name": "Exception", "value": f"```\n{exception_string[:500]}\n```"},
                     {"name": "Stack Trace", "value": f"```\n{stack[:800]}\n```"},
                 ],
-                "footer": {"text": "Diva OCR Engine \u2022 Critical System Alert"},
+                "footer": {"text": "InvoScan \u2022 Critical System Alert"},
             }
         ],
     }
@@ -204,13 +204,13 @@ def dispatch_pipeline_failure_alert(
       <h3 style="color:#334155">Stack Trace</h3>
       <pre style="background:#0f172a;color:#f8fafc;padding:12px;border-radius:8px;font-size:11px;overflow:auto;max-height:400px">{stack[:1500]}</pre>
       <p style="margin-top:24px;color:#64748b;font-size:12px">
-        Diva Software &mdash; System Administration Alert
+        InvoScan &mdash; System Administration Alert
       </p>
     </div>
     """
 
     _send_email(
-        subject=f"[DIVA CRITICAL] Pipeline Failure \u2014 {filename}",
+        subject=f"[InvoScan CRITICAL] Pipeline Failure \u2014 {filename}",
         html_body=html,
         recipients=targets["emails"],
     )

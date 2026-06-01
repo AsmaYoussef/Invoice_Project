@@ -11,11 +11,12 @@ import {
   RefreshCw,
   ScrollText,
   Settings,
-  Shield,
   Trash2,
   Users,
   X,
 } from "lucide-react";
+import InvoScanLogo from "./InvoScanLogo";
+import ThemeToggle from "./ThemeToggle";
 import {
   Area,
   AreaChart,
@@ -789,17 +790,20 @@ const AdminDashboard = () => {
   const [apiError, setApiError] = useState("");
 
   return (
-    <div className="min-h-screen bg-slate-100 font-sans text-slate-800">
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 dark:bg-slate-950 dark:text-slate-100">
       <div className="grid min-h-screen grid-cols-12">
-        <aside className="col-span-12 border-r border-slate-200 bg-white p-5 lg:col-span-3 lg:min-h-screen">
-          <div className="mb-8 flex items-center gap-3">
+        <aside className="col-span-12 border-r border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 lg:col-span-3 lg:min-h-screen">
+          <div className="mb-8 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-3">
             <div className="rounded-lg bg-indigo-600 p-2 text-white">
-              <Shield size={20} />
+              <InvoScanLogo size={20} />
             </div>
             <div>
-              <h1 className="text-lg font-bold tracking-tight">Diva Admin Console</h1>
-              <p className="text-xs font-medium text-slate-500">System Supervision v1.0</p>
+              <h1 className="text-lg font-bold tracking-tight">InvoScan Admin</h1>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">System Supervision v1.0</p>
             </div>
+          </div>
+          <ThemeToggle />
           </div>
 
           <nav className="space-y-1">

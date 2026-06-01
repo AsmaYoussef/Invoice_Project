@@ -21,7 +21,7 @@ import numpy as np
 
 import requests
 
-from fastapi import FastAPI, UploadFile, File, HTTPException, Form
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form, Request
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -41,9 +41,14 @@ from services.admin_logger import log_error, log_info, log_warn
 from services.admin_telemetry import record_pipeline_run
 from services.admin_alerts import dispatch_discrepancy_alert, dispatch_pipeline_failure_alert
 from api_admin import router as admin_router
-from routes.auth import router as auth_router
+from routes.auth import router as auth_router, get_current_user_optional
+from routes.accountant import router as accountant_router
+from services.accountant_notifications import (
+    create_notification,
+    ensure_accountant_notifications_table,
+)
 
-app = FastAPI(title="Diva Software - Real OCR Sync")
+app = FastAPI(title="InvoScan API")
 
 app.add_middleware(
 
@@ -61,6 +66,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(admin_router)
+app.include_router(accountant_router)
 
 UPLOAD_DIR = "temp_uploads"
 
@@ -73,6 +79,7 @@ def _startup_seed():
     try:
         from api_admin import seed_default_admin
         seed_default_admin()
+        ensure_accountant_notifications_table()
     except Exception:
         pass
 
@@ -279,12 +286,12 @@ def _build_general_info(document: Dict[str, Any], invoice_family: str = "") -> D
 
 def health():
 
-    return {"status": "Online", "database": "Connected to Diva MySQL"}
+    return {"status": "Online", "database": "Connected to InvoScan MySQL"}
 
 @app.post("/upload-invoice")
 
 async def upload_and_extract(
-
+    request: Request,
     file: UploadFile = File(...),
 
     use_nlp: bool = Form(True),
@@ -385,6 +392,24 @@ async def upload_and_extract(
             page_count=page_count,
             line_count=len(reconciled.get("product_lines", [])),
         )
+
+        user = get_current_user_optional(request)
+        if user and user.get("role") == "ACCOUNTANT":
+            lines = reconciled.get("product_lines", [])
+            mismatch = sum(1 for l in lines if l.get("validation_status") == "PRICE_MISMATCH")
+            unknown = sum(1 for l in lines if l.get("validation_status") == "UNKNOWN_PRODUCT")
+            inv_ref = general_info.get("invoice_number") or file.filename or ""
+            if mismatch or unknown:
+                create_notification(
+                    username=user["sub"],
+                    type="validation_warning",
+                    title="Validation issues detected",
+                    message=(
+                        f"Invoice {inv_ref}: {mismatch} price mismatch(es), "
+                        f"{unknown} unknown product(s). Review before saving."
+                    ),
+                    invoice_ref=inv_ref,
+                )
 
         return {
 
@@ -497,9 +522,14 @@ async def revalidate(data: DashboardPayload):
 
 @app.post("/save-invoice")
 
-async def save_invoice(data: DashboardPayload):
+async def save_invoice(
+    request: Request,
+    data: DashboardPayload,
+):
 
     conn = None
+    user = get_current_user_optional(request)
+    saisi_par = (user["sub"] if user else None) or "OCR-API"
 
     try:
 
@@ -517,6 +547,17 @@ async def save_invoice(data: DashboardPayload):
         )
         existing = cursor.fetchone()
         if existing:
+            if user and user.get("role") == "ACCOUNTANT":
+                create_notification(
+                    username=user["sub"],
+                    type="save_error",
+                    title="Duplicate invoice blocked",
+                    message=(
+                        f"Invoice '{lib_facture}' was already saved "
+                        f"(ID {existing['IDFacture']}). Re-saving is not allowed."
+                    ),
+                    invoice_ref=lib_facture,
+                )
             raise HTTPException(
                 status_code=409,
                 detail=(
@@ -586,7 +627,7 @@ async def save_invoice(data: DashboardPayload):
 
                 (info.get("address") or "")[:150],
 
-                "OCR-API",
+                saisi_par[:50],
 
                 f"Imported from OCR document {info.get('invoice_number', '')}",
 
@@ -756,6 +797,30 @@ async def save_invoice(data: DashboardPayload):
                 total_amount=total_ht,
                 mismatch_details=mismatch_details,
                 mismatch_pct=alert["pct"],
+            )
+            if user and user.get("role") == "ACCOUNTANT":
+                create_notification(
+                    username=user["sub"],
+                    type="price_alert",
+                    title="Price discrepancy threshold exceeded",
+                    message=(
+                        f"Invoice {lib_facture}: {alert['pct']:.1f}% of lines "
+                        f"have price mismatches (threshold {alert['threshold_pct']:.0f}%)."
+                    ),
+                    invoice_ref=lib_facture,
+                )
+
+        if user and user.get("role") == "ACCOUNTANT":
+            avg_conf = sum(float(l.get("confidence") or 0) for l in lines) / max(len(lines), 1)
+            create_notification(
+                username=user["sub"],
+                type="save_success",
+                title="Invoice saved to ERP",
+                message=(
+                    f"{lib_facture} saved successfully ({len(lines)} lines, "
+                    f"review score {round(avg_conf * 100)}%)."
+                ),
+                invoice_ref=lib_facture,
             )
 
         return {
