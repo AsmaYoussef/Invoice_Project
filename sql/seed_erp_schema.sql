@@ -83,6 +83,35 @@ CREATE TABLE IF NOT EXISTS system_users (
     CreatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS invoice_submissions (
+    IDSubmission INT AUTO_INCREMENT PRIMARY KEY,
+    lib_facture VARCHAR(100) NOT NULL,
+    invoice_number VARCHAR(100),
+    supplier_name VARCHAR(255),
+    invoice_date DATE,
+    total_ht DECIMAL(12,3) DEFAULT 0,
+    filename VARCHAR(255),
+    submitted_by VARCHAR(50) NOT NULL,
+    submitted_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    workflow_status ENUM('PENDING_ADMIN', 'ON_HOLD', 'POSTED_TO_ERP') NOT NULL DEFAULT 'PENDING_ADMIN',
+    validation_status VARCHAR(30) NOT NULL DEFAULT 'NEEDS_REVIEW',
+    review_score_pct DECIMAL(5,2) DEFAULT 0,
+    line_count INT DEFAULT 0,
+    valid_count INT DEFAULT 0,
+    price_mismatch_count INT DEFAULT 0,
+    low_confidence_count INT DEFAULT 0,
+    unknown_count INT DEFAULT 0,
+    payload_json LONGTEXT NOT NULL,
+    id_facture INT DEFAULT NULL,
+    approved_by VARCHAR(50) DEFAULT NULL,
+    approved_at DATETIME DEFAULT NULL,
+    admin_note TEXT,
+    force_approved TINYINT DEFAULT 0,
+    INDEX idx_workflow (workflow_status),
+    INDEX idx_submitted_by (submitted_by),
+    INDEX idx_lib_facture (lib_facture)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS pipeline_runs (
     IDRun INT AUTO_INCREMENT PRIMARY KEY,
     filename VARCHAR(255),

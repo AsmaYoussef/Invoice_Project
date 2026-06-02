@@ -7,9 +7,20 @@ from typing import Any, Literal, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from routes.auth import get_password_hash, require_role
+from routes.auth import get_current_user, get_password_hash, require_role
 from services.admin_config import load_config, save_config
-from services.admin_logger import read_logs
+from services.admin_logger import log_info, read_logs
+from services.erp_invoice_sync import post_invoice_to_erp
+from services.invoice_submissions import (
+    WORKFLOW_ON_HOLD,
+    WORKFLOW_PENDING,
+    WORKFLOW_POSTED,
+    check_can_approve,
+    ensure_submissions_table,
+    get_submission_by_id,
+    list_submissions,
+    update_workflow_status,
+)
 from services.admin_telemetry import (
     aggregate_from_extraction_metadata,
     ensure_admin_tables,
@@ -43,8 +54,17 @@ class UserUpdate(BaseModel):
 class AdminConfigPayload(BaseModel):
     confidence_threshold: float = Field(ge=0.5, le=0.99)
     default_dpi: int = Field(ge=150, le=450)
+    approval_rules: dict[str, Any] = Field(default_factory=dict)
     alert_rules: dict[str, Any] = Field(default_factory=dict)
     notifications: dict[str, Any] = Field(default_factory=dict)
+
+
+class ApproveErpBody(BaseModel):
+    force: bool = False
+
+
+class HoldBody(BaseModel):
+    note: Optional[str] = None
 
 
 def _hash_password(raw: str) -> str:
@@ -225,6 +245,126 @@ def delete_user(user_id: int, hard: bool = Query(False)):
         return {"status": "success", "action": action, "user_id": user_id}
     finally:
         conn.close()
+
+
+@router.get("/pending-invoices")
+def get_pending_invoices(
+    status: str = Query("ALL"),
+    search: str = Query(""),
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+):
+    ensure_submissions_table()
+    return list_submissions(
+        workflow_status=status,
+        search=search,
+        limit=limit,
+        offset=offset,
+    )
+
+
+@router.get("/pending-invoices/{submission_id}")
+def get_pending_invoice_detail(submission_id: int):
+    ensure_submissions_table()
+    try:
+        return get_submission_by_id(submission_id)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.post("/pending-invoices/{submission_id}/approve-erp")
+def approve_pending_invoice(
+    submission_id: int,
+    body: ApproveErpBody,
+    user: dict[str, Any] = Depends(get_current_user),
+):
+    ensure_submissions_table()
+    cfg = load_config()
+    rules = cfg.get("approval_rules") or {}
+    try:
+        submission = get_submission_by_id(submission_id)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    try:
+        check_can_approve(submission, force=body.force, approval_rules=rules)
+    except ValueError as exc:
+        raise HTTPException(status_code=403, detail=str(exc)) from exc
+
+    payload = submission.get("payload") or {}
+    submitted_by = submission.get("submitted_by") or "OCR-API"
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor(dictionary=True)
+        result = post_invoice_to_erp(
+            cursor,
+            payload,
+            saisi_par=submitted_by,
+            approved_by=user["sub"],
+            notify_accountant=submitted_by,
+        )
+        conn.commit()
+    except ValueError as exc:
+        conn.rollback()
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except Exception as exc:
+        conn.rollback()
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+    finally:
+        conn.close()
+
+    updated = update_workflow_status(
+        submission_id,
+        workflow_status=WORKFLOW_POSTED,
+        approved_by=user["sub"],
+        id_facture=result["id_facture"],
+        force_approved=body.force,
+    )
+    log_info(
+        "Admin approved invoice to ERP",
+        submission_id=submission_id,
+        id_facture=result["id_facture"],
+        approved_by=user["sub"],
+        force=body.force,
+    )
+    return {
+        "status": "success",
+        "submission": updated,
+        "erp": result,
+    }
+
+
+@router.post("/pending-invoices/{submission_id}/hold")
+def hold_pending_invoice(submission_id: int, body: HoldBody):
+    ensure_submissions_table()
+    try:
+        submission = get_submission_by_id(submission_id)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    if submission.get("workflow_status") == WORKFLOW_POSTED:
+        raise HTTPException(status_code=400, detail="Cannot hold a posted invoice.")
+    updated = update_workflow_status(
+        submission_id,
+        workflow_status=WORKFLOW_ON_HOLD,
+        admin_note=body.note,
+    )
+    return {"status": "success", "submission": updated}
+
+
+@router.post("/pending-invoices/{submission_id}/release")
+def release_pending_invoice(submission_id: int):
+    ensure_submissions_table()
+    try:
+        submission = get_submission_by_id(submission_id)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    if submission.get("workflow_status") != WORKFLOW_ON_HOLD:
+        raise HTTPException(status_code=400, detail="Only ON_HOLD submissions can be released.")
+    updated = update_workflow_status(
+        submission_id,
+        workflow_status=WORKFLOW_PENDING,
+    )
+    return {"status": "success", "submission": updated}
 
 
 @router.get("/metrics")

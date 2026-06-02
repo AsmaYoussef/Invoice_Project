@@ -4,8 +4,11 @@ import {
   Activity,
   AlertTriangle,
   BarChart3,
+  CheckCircle2,
+  ClipboardList,
   FileText,
   Loader2,
+  PauseCircle,
   LogOut,
   Plus,
   RefreshCw,
@@ -48,9 +51,17 @@ const API_BASE = "http://127.0.0.1:8000/api/admin";
 
 const NAV_ITEMS = [
   { id: "users", label: "User Management", icon: Users },
+  { id: "pending", label: "Pending Invoices", icon: ClipboardList },
   { id: "performance", label: "Performance", icon: BarChart3 },
   { id: "logs", label: "System Logs", icon: ScrollText },
   { id: "config", label: "Configuration", icon: Settings },
+];
+
+const WORKFLOW_FILTERS = [
+  { id: "ALL", label: "All" },
+  { id: "PENDING_ADMIN", label: "Pending" },
+  { id: "ON_HOLD", label: "On Hold" },
+  { id: "POSTED_TO_ERP", label: "Posted" },
 ];
 
 const PIE_COLORS = {
@@ -647,6 +658,374 @@ const LogAuditorTab = ({ setApiError }) => {
   );
 };
 
+const WorkflowBadge = ({ status }) => {
+  const map = {
+    PENDING_ADMIN: "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-300",
+    ON_HOLD: "bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-200",
+    POSTED_TO_ERP: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300",
+  };
+  return (
+    <span
+      className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${
+        map[status] || "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+      }`}
+    >
+      {String(status || "").replace(/_/g, " ")}
+    </span>
+  );
+};
+
+const PendingInvoicesTab = ({ setApiError }) => {
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState("PENDING_ADMIN");
+  const [search, setSearch] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
+  const [detail, setDetail] = useState(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
+
+  const loadList = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`${API_BASE}/pending-invoices`, {
+        params: { status: statusFilter, search, limit: 100, offset: 0 },
+      });
+      setRows(res.data.submissions || []);
+      setApiError("");
+    } catch (err) {
+      setApiError(formatApiError(err, "Failed to load pending invoices."));
+    } finally {
+      setLoading(false);
+    }
+  }, [statusFilter, search, setApiError]);
+
+  useEffect(() => {
+    loadList();
+  }, [loadList]);
+
+  const openDetail = async (id) => {
+    setSelectedId(id);
+    setDetailLoading(true);
+    try {
+      const res = await axios.get(`${API_BASE}/pending-invoices/${id}`);
+      setDetail(res.data);
+    } catch (err) {
+      setApiError(formatApiError(err, "Failed to load invoice detail."));
+      setSelectedId(null);
+    } finally {
+      setDetailLoading(false);
+    }
+  };
+
+  const closeDrawer = () => {
+    setSelectedId(null);
+    setDetail(null);
+  };
+
+  const handleApprove = async (force = false) => {
+    if (!selectedId) return;
+    if (force && !window.confirm("Force-approve this invoice despite a low review score?")) return;
+    setActionLoading(true);
+    try {
+      await axios.post(`${API_BASE}/pending-invoices/${selectedId}/approve-erp`, { force });
+      closeDrawer();
+      await loadList();
+      setApiError("");
+    } catch (err) {
+      setApiError(formatApiError(err, "ERP approval failed."));
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleHold = async () => {
+    if (!selectedId) return;
+    const note = window.prompt("Optional note for hold:") || "";
+    setActionLoading(true);
+    try {
+      await axios.post(`${API_BASE}/pending-invoices/${selectedId}/hold`, { note });
+      closeDrawer();
+      await loadList();
+    } catch (err) {
+      setApiError(formatApiError(err, "Could not place invoice on hold."));
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleRelease = async () => {
+    if (!selectedId) return;
+    setActionLoading(true);
+    try {
+      await axios.post(`${API_BASE}/pending-invoices/${selectedId}/release`);
+      const res = await axios.get(`${API_BASE}/pending-invoices/${selectedId}`);
+      setDetail(res.data);
+      await loadList();
+    } catch (err) {
+      setApiError(formatApiError(err, "Could not release invoice."));
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const lines = detail?.payload?.product_lines || [];
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className={PAGE_TITLE}>Pending Invoices</h2>
+        <button type="button" onClick={loadList} className={BTN_REFRESH}>
+          <RefreshCw size={16} /> Refresh
+        </button>
+      </div>
+
+      <div className={`${CARD} p-4`}>
+        <div className="flex flex-wrap items-center gap-3">
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search supplier, libellé, accountant..."
+            className={`min-w-[220px] flex-1 ${INPUT}`}
+          />
+          <div className="flex flex-wrap gap-1">
+            {WORKFLOW_FILTERS.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => setStatusFilter(f.id)}
+                className={`rounded-lg px-3 py-1.5 text-xs font-bold ${
+                  statusFilter === f.id
+                    ? "bg-indigo-600 text-white"
+                    : "border border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800"
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className={`overflow-x-auto ${CARD}`}>
+        {loading ? (
+          <div className="flex justify-center p-12">
+            <Loader2 className="animate-spin text-indigo-600" size={28} />
+          </div>
+        ) : (
+          <table className="w-full min-w-[960px] text-sm">
+            <thead>
+              <tr className="border-b border-slate-100 text-left text-xs font-black uppercase tracking-widest text-slate-400 dark:border-slate-800">
+                <th className="p-4">Libellé</th>
+                <th className="p-4">Supplier</th>
+                <th className="p-4">Date</th>
+                <th className="p-4">Total HT</th>
+                <th className="p-4">Accountant</th>
+                <th className="p-4">Validation</th>
+                <th className="p-4">Score</th>
+                <th className="p-4">Workflow</th>
+                <th className="p-4">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              {rows.map((row) => (
+                <tr key={row.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/80">
+                  <td className="p-4 font-mono font-semibold">{row.lib_facture}</td>
+                  <td className="max-w-[160px] truncate p-4">{row.supplier_name || "—"}</td>
+                  <td className="p-4 text-slate-600 dark:text-slate-400">
+                    {row.invoice_date ? String(row.invoice_date).slice(0, 10) : "—"}
+                  </td>
+                  <td className="p-4 font-mono">{Number(row.total_ht || 0).toFixed(3)}</td>
+                  <td className="p-4">{row.submitted_by}</td>
+                  <td className="p-4">
+                    <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+                      {row.validation_status?.replace(/_/g, " ")}
+                    </span>
+                  </td>
+                  <td className="p-4">
+                    <span
+                      className={`font-bold ${
+                        row.review_score_pct >= 85
+                          ? "text-emerald-600"
+                          : row.review_score_pct >= 70
+                            ? "text-amber-600"
+                            : "text-red-600"
+                      }`}
+                    >
+                      {row.review_score_pct}%
+                    </span>
+                  </td>
+                  <td className="p-4">
+                    <WorkflowBadge status={row.workflow_status} />
+                  </td>
+                  <td className="p-4">
+                    <button
+                      type="button"
+                      onClick={() => openDetail(row.id)}
+                      className="rounded-lg border border-indigo-200 px-3 py-1 text-xs font-semibold text-indigo-700 hover:bg-indigo-50 dark:border-indigo-800 dark:text-indigo-300 dark:hover:bg-indigo-950/50"
+                    >
+                      Inspect
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {!rows.length && (
+                <tr>
+                  <td colSpan={9} className="p-12 text-center text-slate-500">
+                    No invoices match this filter.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {selectedId && (
+        <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-sm">
+          <div className="flex h-full w-full max-w-xl flex-col border-l border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+            <div className="flex items-center justify-between border-b border-slate-200 p-5 dark:border-slate-800">
+              <div>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Invoice Review</h3>
+                <p className="text-xs text-slate-500">{detail?.lib_facture || "Loading..."}</p>
+              </div>
+              <button
+                type="button"
+                onClick={closeDrawer}
+                className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-5">
+              {detailLoading || !detail ? (
+                <div className="flex justify-center py-16">
+                  <Loader2 className="animate-spin text-indigo-600" size={28} />
+                </div>
+              ) : (
+                <div className="space-y-5">
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <p className="text-xs font-bold uppercase text-slate-400">Supplier</p>
+                      <p className="font-semibold">{detail.supplier_name || "—"}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase text-slate-400">Date</p>
+                      <p className="font-semibold">{detail.invoice_date || "—"}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase text-slate-400">Total HT</p>
+                      <p className="font-mono font-semibold">{Number(detail.total_ht || 0).toFixed(3)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase text-slate-400">Accountant</p>
+                      <p className="font-semibold">{detail.submitted_by}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase text-slate-400">Review score</p>
+                      <p className="font-bold text-indigo-600">{detail.review_score_pct}%</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase text-slate-400">Workflow</p>
+                      <WorkflowBadge status={detail.workflow_status} />
+                    </div>
+                  </div>
+
+                  {!detail.can_approve && detail.workflow_status !== "POSTED_TO_ERP" && (
+                    <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
+                      {detail.approve_block_reason}
+                      {detail.allow_admin_override && " Force-approve is available."}
+                    </div>
+                  )}
+
+                  <div>
+                    <h4 className={SECTION_TITLE}>Line items</h4>
+                    <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+                      <table className="w-full text-xs">
+                        <thead className="bg-slate-50 text-left font-bold uppercase text-slate-500 dark:bg-slate-950">
+                          <tr>
+                            <th className="p-2">Code</th>
+                            <th className="p-2">Designation</th>
+                            <th className="p-2">Qty</th>
+                            <th className="p-2">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                          {lines.map((line, idx) => (
+                            <tr key={idx}>
+                              <td className="p-2 font-mono">{line.code || line.code_pct}</td>
+                              <td className="max-w-[140px] truncate p-2">{line.designation}</td>
+                              <td className="p-2">{line.quantite}</td>
+                              <td className="p-2">
+                                <span
+                                  className="font-semibold"
+                                  style={{
+                                    color: PIE_COLORS[line.validation_status] || "#64748b",
+                                  }}
+                                >
+                                  {line.validation_status}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {detail && detail.workflow_status !== "POSTED_TO_ERP" && (
+              <div className="flex flex-col gap-2 border-t border-slate-200 p-5 dark:border-slate-800">
+                <button
+                  type="button"
+                  disabled={actionLoading || (!detail.can_approve && !detail.allow_admin_override)}
+                  onClick={() => handleApprove(false)}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 font-bold text-white hover:bg-emerald-700 disabled:opacity-50"
+                >
+                  {actionLoading ? <Loader2 size={18} className="animate-spin" /> : <CheckCircle2 size={18} />}
+                  Approve to ERP
+                </button>
+                {!detail.can_approve && detail.allow_admin_override && (
+                  <button
+                    type="button"
+                    disabled={actionLoading}
+                    onClick={() => handleApprove(true)}
+                    className="rounded-xl border border-amber-300 py-2.5 text-sm font-bold text-amber-800 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-300 dark:hover:bg-amber-950/40"
+                  >
+                    Force approve (override score)
+                  </button>
+                )}
+                {detail.workflow_status === "ON_HOLD" ? (
+                  <button
+                    type="button"
+                    disabled={actionLoading}
+                    onClick={handleRelease}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-indigo-200 py-2.5 text-sm font-bold text-indigo-700 dark:border-indigo-800 dark:text-indigo-300"
+                  >
+                    Release to pending queue
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    disabled={actionLoading}
+                    onClick={handleHold}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 py-2.5 text-sm font-bold text-slate-700 dark:border-slate-600 dark:text-slate-200"
+                  >
+                    <PauseCircle size={16} /> Place on hold
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const ConfigTab = ({ setApiError }) => {
   const [config, setConfig] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -725,6 +1104,46 @@ const ConfigTab = ({ setApiError }) => {
             }
             className="mt-2 w-full accent-indigo-600"
           />
+        </section>
+
+        <section className={`${CARD} p-6`}>
+          <h3 className={SECTION_TITLE}>ERP Approval Rules</h3>
+          <label className="block text-sm text-slate-600 dark:text-slate-400">
+            Minimum review score (%) required to approve without override
+          </label>
+          <input
+            type="number"
+            min="0"
+            max="100"
+            value={config.approval_rules?.min_review_score_pct ?? 85}
+            onChange={(e) =>
+              setConfig((p) => ({
+                ...p,
+                approval_rules: {
+                  ...p.approval_rules,
+                  min_review_score_pct: Number(e.target.value),
+                },
+              }))
+            }
+            className={`mt-1 max-w-xs ${INPUT}`}
+          />
+          <label className="mt-3 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+            <input
+              type="checkbox"
+              checked={config.approval_rules?.allow_admin_override ?? true}
+              onChange={(e) =>
+                setConfig((p) => ({
+                  ...p,
+                  approval_rules: {
+                    ...p.approval_rules,
+                    allow_admin_override: e.target.checked,
+                  },
+                }))
+              }
+              className="h-4 w-4 rounded accent-indigo-600"
+            />
+            Allow admin force-approve below threshold
+          </label>
         </section>
 
         <section className={`${CARD} p-6`}>
@@ -882,6 +1301,7 @@ const AdminDashboard = () => {
           )}
 
           {activeTab === "users" && <UserManagementTab apiError={apiError} setApiError={setApiError} />}
+          {activeTab === "pending" && <PendingInvoicesTab setApiError={setApiError} />}
           {activeTab === "performance" && <PerformanceTab setApiError={setApiError} />}
           {activeTab === "logs" && <LogAuditorTab setApiError={setApiError} />}
           {activeTab === "config" && <ConfigTab setApiError={setApiError} />}

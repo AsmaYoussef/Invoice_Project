@@ -1,6 +1,10 @@
 {
   "confidence_threshold": 0.85,
   "default_dpi": 200,
+  "approval_rules": {
+    "min_review_score_pct": 85,
+    "allow_admin_override": true
+  },
   "alert_rules": {
     "enabled": true,
     "price_mismatch_pct_threshold": 15.0

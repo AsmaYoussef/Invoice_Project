@@ -14,6 +14,10 @@ os.makedirs(_CONFIG_DIR, exist_ok=True)
 DEFAULT_CONFIG: dict[str, Any] = {
     "confidence_threshold": 0.85,
     "default_dpi": 200,
+    "approval_rules": {
+        "min_review_score_pct": 85,
+        "allow_admin_override": True,
+    },
     "alert_rules": {
         "enabled": True,
         "price_mismatch_pct_threshold": 15,
@@ -41,6 +45,21 @@ def _merge_defaults(data: dict[str, Any] | None) -> dict[str, Any]:
         data.get("confidence_threshold", merged["confidence_threshold"])
     )
     merged["default_dpi"] = int(data.get("default_dpi", merged["default_dpi"]))
+    approval = data.get("approval_rules") or {}
+    merged["approval_rules"] = {
+        "min_review_score_pct": float(
+            approval.get(
+                "min_review_score_pct",
+                merged["approval_rules"]["min_review_score_pct"],
+            )
+        ),
+        "allow_admin_override": bool(
+            approval.get(
+                "allow_admin_override",
+                merged["approval_rules"]["allow_admin_override"],
+            )
+        ),
+    }
     alert = data.get("alert_rules") or {}
     merged["alert_rules"] = {
         "enabled": bool(alert.get("enabled", merged["alert_rules"]["enabled"])),

@@ -36,10 +36,11 @@ from services.reconciliation import (
     parse_quantity,
 )
 from services.db import get_db_connection
-from services.admin_config import evaluate_price_mismatch_alert, load_config
+from services.admin_config import load_config
 from services.admin_logger import log_error, log_info, log_warn
 from services.admin_telemetry import record_pipeline_run
-from services.admin_alerts import dispatch_discrepancy_alert, dispatch_pipeline_failure_alert
+from services.admin_alerts import dispatch_pipeline_failure_alert
+from services.erp_invoice_sync import post_invoice_to_erp
 from api_admin import router as admin_router
 from routes.auth import router as auth_router, get_current_user_optional
 from routes.accountant import router as accountant_router
@@ -78,7 +79,10 @@ def _startup_seed():
     """Ensure the default admin user exists so login works on first boot."""
     try:
         from api_admin import seed_default_admin
+        from services.invoice_submissions import ensure_submissions_table
+
         seed_default_admin()
+        ensure_submissions_table()
         ensure_accountant_notifications_table()
     except Exception:
         pass
@@ -527,333 +531,53 @@ async def save_invoice(
     data: DashboardPayload,
 ):
 
-    conn = None
     user = get_current_user_optional(request)
+    if user and user.get("role") == "ACCOUNTANT":
+        raise HTTPException(
+            status_code=403,
+            detail=(
+                "Accountants must use Submit for Administrative Approval. "
+                "Direct ERP save is reserved for administrators via the pending queue."
+            ),
+        )
+
+    conn = None
     saisi_par = (user["sub"] if user else None) or "OCR-API"
+    payload = {
+        "general_info": data.general_info.model_dump(),
+        "product_lines": [line.model_dump() for line in data.product_lines],
+        "financial_totals": data.financial_totals.model_dump()
+        if data.financial_totals
+        else {},
+    }
 
     try:
-
         conn = _get_db_connection()
-
         cursor = conn.cursor(dictionary=True)
-
-        info = data.general_info.model_dump()
-
-        lib_facture = _lib_facture_from_number(info.get("invoice_number"))
-
-        cursor.execute(
-            "SELECT IDFacture FROM facture WHERE LibFacture = %s LIMIT 1",
-            (lib_facture,),
+        result = post_invoice_to_erp(
+            cursor,
+            payload,
+            saisi_par=saisi_par,
+            approved_by=user["sub"] if user else None,
         )
-        existing = cursor.fetchone()
-        if existing:
-            if user and user.get("role") == "ACCOUNTANT":
-                create_notification(
-                    username=user["sub"],
-                    type="save_error",
-                    title="Duplicate invoice blocked",
-                    message=(
-                        f"Invoice '{lib_facture}' was already saved "
-                        f"(ID {existing['IDFacture']}). Re-saving is not allowed."
-                    ),
-                    invoice_ref=lib_facture,
-                )
-            raise HTTPException(
-                status_code=409,
-                detail=(
-                    f"This invoice was already saved to ERP as '{lib_facture}' "
-                    f"(facture ID {existing['IDFacture']}). "
-                    "Re-saving the same document is not allowed."
-                ),
-            )
-
-        date_facture = _parse_invoice_date(info.get("invoice_date", ""))
-
-        supplier = info.get("erp_supplier_name") or info.get("supplier_name") or ""
-
-        total_ht = 0.0
-
-        lines = [line.model_dump() for line in data.product_lines]
-
-        for line in lines:
-
-            qty = float(line.get("quantite") or 0) if str(line.get("quantite", "")).replace(",", ".").replace(" ", "").replace(".", "", 1).isdigit() else 0.0
-
-            try:
-
-                qty = float(str(line.get("quantite", "0")).replace(",", ".").replace(" ", ""))
-
-            except ValueError:
-
-                qty = 0.0
-
-            price = float(line.get("price_unit") or 0)
-
-            total_ht += qty * price
-
-        if data.financial_totals and data.financial_totals.total_ht:
-
-            total_ht = float(data.financial_totals.total_ht)
-
-        cursor.execute(
-
-            """
-
-            INSERT INTO facture (
-
-                LibFacture, DateFacture, Client, TotalHT, TotalTTC, TotalTVA,
-
-                MF, Adresse, SaisiPar, SaisiLe, Observations, CoordonneesBancaires
-
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, CURDATE(), %s, %s)
-
-            """,
-
-            (
-
-                lib_facture,
-
-                date_facture,
-
-                supplier[:150],
-
-                total_ht,
-
-                total_ht * 1.19,
-
-                total_ht * 0.19,
-
-                (info.get("erp_supplier_mf") or info.get("supplier_mf") or "")[:20],
-
-                (info.get("address") or "")[:150],
-
-                saisi_par[:50],
-
-                f"Imported from OCR document {info.get('invoice_number', '')}",
-
-                "",
-
-            ),
-
-        )
-
-        id_facture = cursor.lastrowid
-
-        ordre = 0
-
-        for line in lines:
-
-            ordre += 1
-
-            code = str(line.get("code") or line.get("code_article") or line.get("code_pct") or "N/A")
-
-            lib = str(line.get("designation") or line.get("erp_name") or "Unknown Item")
-
-            try:
-
-                qty = float(str(line.get("quantite", "0")).replace(",", ".").replace(" ", ""))
-
-            except ValueError:
-
-                qty = 0.0
-
-            price = float(line.get("price_unit") or line.get("erp_price") or 0)
-
-            id_article = line.get("id_article") or 0
-
-            if not id_article:
-
-                cursor.execute(
-
-                    "SELECT IDArticle FROM article WHERE Code = %s LIMIT 1",
-
-                    (code.upper(),),
-
-                )
-
-                row = cursor.fetchone()
-
-                if row:
-
-                    id_article = row["IDArticle"]
-
-            cursor.execute(
-
-                """
-
-                INSERT INTO lignefac (
-                    IDFacture, IDArticle, Code, LibProd, Quantite, PrixVente,
-                    prixMP, TauxTVA, Ordre
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-
-                """,
-
-                (
-
-                    id_facture,
-
-                    id_article or 0,
-
-                    code[:50],
-
-                    lib,
-
-                    qty,
-
-                    price,
-
-                    float(line.get("erp_price") or price),
-
-                    19.0,
-
-                    ordre,
-
-                ),
-
-            )
-
-            if line.get("validation_status") == "PRICE_MISMATCH":
-
-                cursor.execute(
-
-                    """
-
-                    INSERT INTO reconciliation_alerts (
-
-                        IDFacture, type, description, is_resolved
-
-                    ) VALUES (%s, %s, %s, 0)
-
-                    """,
-
-                    (
-
-                        id_facture,
-
-                        "price_mismatch",
-
-                        f"Code {code}: OCR {line.get('price_unit')} vs ERP {line.get('erp_price')}",
-
-                    ),
-
-                )
-
-        cursor.execute(
-
-            """
-
-            INSERT INTO extraction_metadata (
-
-                IDFacture, raw_json, avg_confidence, model_version
-
-            ) VALUES (%s, %s, %s, %s)
-
-            """,
-
-            (
-
-                id_facture,
-
-                json.dumps({"general_info": info, "product_lines": lines}, ensure_ascii=False),
-
-                sum(float(l.get("confidence") or 0) for l in lines) / max(len(lines), 1),
-
-                "ocr-api-v2",
-
-            ),
-
-        )
-
         conn.commit()
-
-        log_info(
-            "Invoice saved to ERP",
-            id_facture=id_facture,
-            lib_facture=lib_facture,
-            lines_saved=len(lines),
-        )
-
-        alert = evaluate_price_mismatch_alert(lines, total_ht)
-        if alert:
-            log_warn(
-                "Price mismatch alert threshold exceeded",
-                pct=alert["pct"],
-                threshold_pct=alert["threshold_pct"],
-                mismatch_lines=alert["mismatch_lines"],
-            )
-            mismatch_details = [
-                {
-                    "code": l.get("code") or l.get("code_pct") or "",
-                    "designation": l.get("designation") or "",
-                    "ocr_price": l.get("price_unit") or l.get("ocr_price"),
-                    "erp_price": l.get("erp_price"),
-                }
-                for l in lines
-                if l.get("validation_status") == "PRICE_MISMATCH"
-            ]
-            dispatch_discrepancy_alert(
-                invoice_id=lib_facture,
-                vendor_name=supplier,
-                total_amount=total_ht,
-                mismatch_details=mismatch_details,
-                mismatch_pct=alert["pct"],
-            )
-            if user and user.get("role") == "ACCOUNTANT":
-                create_notification(
-                    username=user["sub"],
-                    type="price_alert",
-                    title="Price discrepancy threshold exceeded",
-                    message=(
-                        f"Invoice {lib_facture}: {alert['pct']:.1f}% of lines "
-                        f"have price mismatches (threshold {alert['threshold_pct']:.0f}%)."
-                    ),
-                    invoice_ref=lib_facture,
-                )
-
-        if user and user.get("role") == "ACCOUNTANT":
-            avg_conf = sum(float(l.get("confidence") or 0) for l in lines) / max(len(lines), 1)
-            create_notification(
-                username=user["sub"],
-                type="save_success",
-                title="Invoice saved to ERP",
-                message=(
-                    f"{lib_facture} saved successfully ({len(lines)} lines, "
-                    f"review score {round(avg_conf * 100)}%)."
-                ),
-                invoice_ref=lib_facture,
-            )
-
-        return {
-
-            "status": "success",
-
-            "id_facture": id_facture,
-
-            "lib_facture": lib_facture,
-
-            "lines_saved": len(lines),
-
-        }
-
+        return {"status": "success", **result}
+    except ValueError as e:
+        if conn:
+            conn.rollback()
+        raise HTTPException(status_code=409, detail=str(e)) from e
     except HTTPException:
         if conn:
             conn.rollback()
         raise
     except Exception as e:
-
         if conn:
-
             conn.rollback()
-
         print(f"Sync Error: {e}")
         log_error("Save to ERP failed", exc=e)
-
         raise HTTPException(status_code=500, detail=str(e)) from e
-
     finally:
-
         if conn:
-
             conn.close()
 
 if __name__ == "__main__":

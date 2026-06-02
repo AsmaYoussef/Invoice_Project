@@ -429,22 +429,22 @@ const AccountantDashboard = () => {
     }
   };
 
-  const handleSave = async (e) => {
+  const handleSubmit = async (e) => {
     e?.preventDefault?.();
     if (!dashboard) return;
     setSyncLoading(true);
     setApiError("");
+    setSyncSuccess(false);
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/save-invoice`,
-        buildApiPayload(dashboard)
-      );
+      await axios.post(`${API_BASE_URL}/api/accountant/submit-invoice`, {
+        ...buildApiPayload(dashboard),
+        filename: selectedFile?.name || "",
+      });
       setSyncSuccess(true);
       setApiError("");
       setHistoryRefreshKey((k) => k + 1);
-      console.log("Saved:", response.data);
     } catch (error) {
-      setApiError(formatApiError(error, "Save to ERP failed. Check MySQL and seed data."));
+      setApiError(formatApiError(error, "Submission failed. Check your connection and data."));
     } finally {
       setSyncLoading(false);
     }
@@ -548,12 +548,12 @@ const AccountantDashboard = () => {
 
               <button
                 type="button"
-                onClick={handleSave}
+                onClick={handleSubmit}
                 disabled={!dashboard || syncLoading}
                 className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg transition hover:bg-emerald-700 disabled:opacity-50"
               >
                 {syncLoading ? <Loader2 size={18} className="animate-spin" /> : <Database size={18} />}
-                {syncSuccess ? "Saved to ERP" : "Save to ERP"}
+                {syncSuccess ? "Submitted" : "Submit for Administrative Approval"}
               </button>
             </div>
           </header>
@@ -566,8 +566,9 @@ const AccountantDashboard = () => {
           )}
 
           {syncSuccess && (
-            <div className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">
-              Document saved to ERP (facture + lignefac).
+            <div className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300">
+              Invoice submitted for administrative approval. It will appear in your history as pending until an
+              administrator posts it to ERP.
             </div>
           )}
 

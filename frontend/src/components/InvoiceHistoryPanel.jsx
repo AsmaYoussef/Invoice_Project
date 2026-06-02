@@ -6,6 +6,9 @@ const API_BASE_URL = "http://127.0.0.1:8000";
 
 const FILTERS = [
   { id: "ALL", label: "All" },
+  { id: "PENDING_ADMIN", label: "Pending Admin" },
+  { id: "ON_HOLD", label: "On Hold" },
+  { id: "POSTED_TO_ERP", label: "Posted to ERP" },
   { id: "VALIDATED", label: "Validated" },
   { id: "NEEDS_REVIEW", label: "Needs Review" },
   { id: "DISCREPANCY", label: "Discrepancies" },
@@ -16,6 +19,9 @@ function StatusBadge({ status }) {
     VALIDATED: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300",
     NEEDS_REVIEW: "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300",
     DISCREPANCY: "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300",
+    PENDING_ADMIN: "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300",
+    ON_HOLD: "bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-200",
+    POSTED_TO_ERP: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300",
   };
   const label = status?.replace(/_/g, " ") || "Unknown";
   return (
@@ -43,6 +49,22 @@ function ScoreBar({ pct }) {
   );
 }
 
+function mapSubmission(row) {
+  return {
+    id: row.id,
+    lib_facture: row.lib_facture,
+    invoice_number: row.invoice_number || row.lib_facture,
+    supplier: row.supplier_name || "—",
+    saved_at: row.submitted_at,
+    validation_status: row.validation_status,
+    workflow_status: row.workflow_status,
+    review_score_pct: row.review_score_pct,
+    line_count: row.line_count,
+    valid_count: row.valid_count,
+    total_ht: row.total_ht,
+  };
+}
+
 export default function InvoiceHistoryPanel({ refreshKey = 0 }) {
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,13 +75,13 @@ export default function InvoiceHistoryPanel({ refreshKey = 0 }) {
     setLoading(true);
     setError("");
     try {
-      const res = await axios.get(`${API_BASE_URL}/api/accountant/invoices`, {
+      const res = await axios.get(`${API_BASE_URL}/api/accountant/submissions`, {
         params: { limit: 100, offset: 0 },
       });
-      setInvoices(res.data.invoices || []);
+      setInvoices((res.data.submissions || []).map(mapSubmission));
     } catch (err) {
       const detail = err?.response?.data?.detail;
-      setError(typeof detail === "string" ? detail : "Failed to load invoice history.");
+      setError(typeof detail === "string" ? detail : "Failed to load submission history.");
       setInvoices([]);
     } finally {
       setLoading(false);
@@ -72,6 +94,9 @@ export default function InvoiceHistoryPanel({ refreshKey = 0 }) {
 
   const filtered = useMemo(() => {
     if (filter === "ALL") return invoices;
+    if (["PENDING_ADMIN", "ON_HOLD", "POSTED_TO_ERP"].includes(filter)) {
+      return invoices.filter((inv) => inv.workflow_status === filter);
+    }
     return invoices.filter((inv) => inv.validation_status === filter);
   }, [invoices, filter]);
 
@@ -83,9 +108,9 @@ export default function InvoiceHistoryPanel({ refreshKey = 0 }) {
             <History size={20} />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">Invoice History</h3>
+            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">Submission History</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              Saved invoices with validation status and review score
+              Invoices you submitted for administrative ERP approval
             </p>
           </div>
         </div>
@@ -129,28 +154,30 @@ export default function InvoiceHistoryPanel({ refreshKey = 0 }) {
         </div>
       ) : filtered.length === 0 ? (
         <div className="rounded-xl border border-dashed border-slate-300 py-16 text-center dark:border-slate-700">
-          <p className="font-semibold text-slate-700 dark:text-slate-200">No invoices found</p>
+          <p className="font-semibold text-slate-700 dark:text-slate-200">No submissions yet</p>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Save an invoice to ERP to see it here.
+            Submit an invoice for administrative approval to see it here.
           </p>
         </div>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
-          <table className="w-full min-w-[720px] text-left text-sm">
+          <table className="w-full min-w-[800px] text-left text-sm">
             <thead className="border-b border-slate-200 bg-slate-50 text-xs font-bold uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400">
               <tr>
                 <th className="px-4 py-3">Invoice #</th>
                 <th className="px-4 py-3">Supplier</th>
-                <th className="px-4 py-3">Saved</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Review Score</th>
+                <th className="px-4 py-3">Submitted</th>
+                <th className="px-4 py-3">Workflow</th>
+                <th className="px-4 py-3">Validation</th>
+                <th className="px-4 py-3">Score</th>
+                <th className="px-4 py-3">Total HT</th>
                 <th className="px-4 py-3">Lines</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {filtered.map((inv) => (
                 <tr
-                  key={inv.id_facture}
+                  key={inv.id}
                   className="bg-white transition hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800/80"
                 >
                   <td className="px-4 py-3 font-mono font-semibold text-slate-800 dark:text-slate-100">
@@ -163,10 +190,16 @@ export default function InvoiceHistoryPanel({ refreshKey = 0 }) {
                     {inv.saved_at ? String(inv.saved_at).slice(0, 10) : "—"}
                   </td>
                   <td className="px-4 py-3">
+                    <StatusBadge status={inv.workflow_status} />
+                  </td>
+                  <td className="px-4 py-3">
                     <StatusBadge status={inv.validation_status} />
                   </td>
                   <td className="px-4 py-3">
                     <ScoreBar pct={inv.review_score_pct} />
+                  </td>
+                  <td className="px-4 py-3 font-mono text-slate-700 dark:text-slate-300">
+                    {Number(inv.total_ht || 0).toFixed(3)}
                   </td>
                   <td className="px-4 py-3 text-slate-600 dark:text-slate-400">
                     {inv.valid_count}/{inv.line_count} valid
